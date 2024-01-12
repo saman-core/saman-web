@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
       period: 'Jun 11, 2021 - Jul 10, 2021',
       payment: 'Visa',
       activity: '5 minutes ago',
-      avatar: './assets/img/avatars/2.jpg',
+      avatar: './assets/img/avatars/1.jpg',
       status: 'danger',
       color: 'info'
     },
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
       period: 'Jun 11, 2021 - Jul 10, 2021',
       payment: 'Stripe',
       activity: '1 hour ago',
-      avatar: './assets/img/avatars/3.jpg',
+      avatar: './assets/img/avatars/1.jpg',
       status: 'warning',
       color: 'warning'
     },
@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
       period: 'Jun 11, 2021 - Jul 10, 2021',
       payment: 'Paypal',
       activity: 'Last month',
-      avatar: './assets/img/avatars/4.jpg',
+      avatar: './assets/img/avatars/1.jpg',
       status: 'secondary',
       color: 'danger'
     },
@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
       period: 'Jun 11, 2021 - Jul 10, 2021',
       payment: 'ApplePay',
       activity: 'Last week',
-      avatar: './assets/img/avatars/5.jpg',
+      avatar: './assets/img/avatars/1.jpg',
       status: 'success',
       color: 'primary'
     },
@@ -100,7 +100,7 @@ export class DashboardComponent implements OnInit {
       period: 'Jun 11, 2021 - Jul 10, 2021',
       payment: 'Amex',
       activity: 'Yesterday',
-      avatar: './assets/img/avatars/6.jpg',
+      avatar: './assets/img/avatars/1.jpg',
       status: 'info',
       color: 'dark'
     }
