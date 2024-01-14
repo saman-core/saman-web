@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-declare let DmnEditor: any;
+import * as DmnEditor from "@kogito-tooling/kie-editors-standalone/dist/dmn"
 
 @Component({
   selector: 'app-dmn-editor',
