@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { Formio, FormioModule, Templates } from '@formio/angular';
 import { FormioGrid } from '@formio/angular/grid';
 import { FormioResources } from '@formio/angular/resource';
@@ -83,7 +82,6 @@ Templates.current = {
     CdeBuilderComponent
   ],
   imports: [
-    BrowserModule,
     CommonModule,
     FormioModule,
     FormioGrid

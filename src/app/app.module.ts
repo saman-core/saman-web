@@ -7,8 +7,6 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ConfigurableDataEntityModule } from './configurable-data-entity/configurable-data-entity.module';
-import { HomeComponent } from './home/home.component';
 
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
@@ -35,7 +33,6 @@ import {
 } from '@coreui/angular';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
-import { DmnEditorModule } from './dmn-editor/dmn-editor.module';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -46,7 +43,6 @@ const APP_CONTAINERS = [
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     ...APP_CONTAINERS
   ],
   imports: [
@@ -76,9 +72,7 @@ const APP_CONTAINERS = [
     BadgeModule,
     ListGroupModule,
     CardModule,
-    NgScrollbarModule,
-    ConfigurableDataEntityModule,
-    DmnEditorModule
+    NgScrollbarModule
   ],
   providers: [
     {

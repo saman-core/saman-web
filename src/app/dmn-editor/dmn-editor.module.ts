@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { DmnEditorComponent } from './dmn-editor/dmn-editor.component';
 
 @NgModule({
@@ -8,7 +7,6 @@ import { DmnEditorComponent } from './dmn-editor/dmn-editor.component';
     DmnEditorComponent
   ],
   imports: [
-    BrowserModule,
     CommonModule,
   ],
   providers: [

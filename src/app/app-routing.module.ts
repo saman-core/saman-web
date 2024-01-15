@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
 import { DefaultLayoutComponent } from './containers';
+import { Page404Component } from './views/pages/page404/page404.component';
 
 const routes: Routes = [
   {
@@ -13,9 +13,6 @@ const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
-    data: {
-      title: 'Home'
-    },
     children: [
       {
         path: 'dashboard',
@@ -23,19 +20,29 @@ const routes: Routes = [
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
       },
       {
-        path: 'home2',
-        component: HomeComponent
-      }
+        path: 'home',
+        loadChildren: () =>
+          import('./views/home/home.module').then((m) => m.HomeModule)
+      },
     ]
   },
   {
-    path: 'home',
-    component: HomeComponent
-  }
+    path: '404',
+    component: Page404Component,
+    data: {
+      title: 'Page 404'
+    }
+  },
+  {path: '**', redirectTo: '404'}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'top',
+      anchorScrolling: 'enabled',
+      initialNavigation: 'enabledBlocking'
+    })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
