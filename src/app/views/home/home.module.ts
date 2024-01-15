@@ -18,9 +18,11 @@ import { IconModule } from '@coreui/icons-angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 
 import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
 import { DmnEditorModule } from '../../dmn-editor/dmn-editor.module';
 import { ConfigurableDataEntityModule } from '../../configurable-data-entity/configurable-data-entity.module';
+import { DmnDemoComponent } from './dmn-demo/dmn-demo.component';
+import { CdeDemoComponent } from './cde-demo/cde-demo.component';
+import { CdeBuilderDemoComponent } from './cde-builder-demo/cde-builder-demo.component';
 
 @NgModule({
   imports: [
@@ -43,7 +45,7 @@ import { ConfigurableDataEntityModule } from '../../configurable-data-entity/con
     DmnEditorModule,
     ConfigurableDataEntityModule
   ],
-  declarations: [HomeComponent]
+  declarations: [DmnDemoComponent, CdeDemoComponent, CdeBuilderDemoComponent]
 })
 export class HomeModule {
 }
