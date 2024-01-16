@@ -12,17 +12,16 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Theme'
+    name: 'Product Editor'
   },
   {
-    name: 'Colors',
-    url: '/theme/colors',
+    name: 'Template',
+    url: '/home/cde-builder-demo',
     iconComponent: { name: 'cil-drop' }
   },
   {
-    name: 'Typography',
-    url: '/theme/typography',
-    linkProps: { fragment: 'someAnchor' },
+    name: 'Rules',
+    url: '/home/dmn-demo',
     iconComponent: { name: 'cil-pencil' }
   },
   {

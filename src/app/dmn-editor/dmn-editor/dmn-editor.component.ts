@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import * as DmnEditor from '@kie-tools/kie-editors-standalone/dist/dmn';
 
 @Component({
@@ -10,12 +10,24 @@ export class DmnEditorComponent implements OnInit {
   @ViewChild('dmn', {static: true}) dmnDiv?: ElementRef;
   editor: any;
   @Input() dmnData: string = '';
+  @Input() readOnly: boolean = false;
+  @Output() newDmnData = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.editor = DmnEditor.open({
       container: this.dmnDiv.nativeElement,
       initialContent: Promise.resolve(this.dmnData),
-      readOnly: false
+      readOnly: this.readOnly
+    });
+  }
+
+  save(): void {
+    this.editor.getContent().then((val) => {
+      this.editor.markAsSaved()
+      this.newDmnData.emit(val);
+      console.log(val);
+    }).catch((reason) => {
+      console.error(`Handle rejected promise (${reason}) here.`);
     });
   }
 }
