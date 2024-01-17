@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core';
 import { PrismService } from '../prism.service';
 import { FormioRefreshValue } from '@formio/angular';
 
@@ -7,13 +7,13 @@ import { FormioRefreshValue } from '@formio/angular';
   templateUrl: './cde-builder.component.html',
   styleUrl: './cde-builder.component.scss'
 })
-export class CdeBuilderComponent implements AfterViewInit {
+export class CdeBuilderComponent implements OnInit, AfterViewInit {
   @ViewChild('json', {static: true}) jsonElement?: ElementRef;
-  public form: Object;
+  @Input() formData: string = '{components: []}';
+  public form = {components: []};
   public refreshForm: EventEmitter<FormioRefreshValue> = new EventEmitter();
 
   constructor(public prism: PrismService) {
-    this.form = {components: []};
   }
 
   onChange(event) {
@@ -27,5 +27,9 @@ export class CdeBuilderComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.prism.init();
+  }
+
+  ngOnInit(): void {
+    this.form = JSON.parse(this.formData);
   }
 }
