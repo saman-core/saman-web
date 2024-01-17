@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HashLocationStrategy, LocationStrategy, CommonModule } from "@angular/common";
+import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
@@ -47,9 +47,8 @@ const APP_CONTAINERS = [
   ],
   imports: [
     BrowserModule,
-    CommonModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     AvatarModule,
     BreadcrumbModule,
     FooterModule,
