@@ -16,13 +16,14 @@ export class DmnEditorComponent implements OnInit {
   ngOnInit(): void {
     this.editor = DmnEditor.open({
       container: this.dmnDiv.nativeElement,
-      initialContent: Promise.resolve(this.dmnData),
+      initialContent: Promise.resolve(atob(this.dmnData)),
       readOnly: this.readOnly
     });
   }
 
   save(): void {
     this.editor.getContent().then((val) => {
+      console.log(btoa(val));
       this.editor.markAsSaved()
       this.newDmnData.emit(val);
       console.log(val);
