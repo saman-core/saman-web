@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
+import { OidcService } from './oidc/oidc.service';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,10 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private titleService: Title,
-    private iconSetService: IconSetService
+    private iconSetService: IconSetService,
+    private oidcService: OidcService
   ) {
+    this.oidcService.initConfiguration();
     titleService.setTitle(this.title);
     iconSetService.icons = { ...iconSubset };
   }
