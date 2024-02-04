@@ -44,7 +44,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
-      initialNavigation: 'enabledBlocking'
+      initialNavigation: 'disabled',
+      useHash: true
     })],
   exports: [RouterModule]
 })

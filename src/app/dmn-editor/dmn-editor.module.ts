@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DmnEditorComponent } from './dmn-editor/dmn-editor.component';
+import { ProductDataModule } from '@saman-core/data';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { DmnEditorComponent } from './dmn-editor/dmn-editor.component';
   ],
   imports: [
     CommonModule,
+    ProductDataModule
   ],
   providers: [
   ],

@@ -11,7 +11,7 @@ export class DatasourceFactory {
     actionUrl: string
   ): DatasourceConsumer {
     const protocol = 'http';
-    const url = `${msServer}.sige3.link/${actionUrl}`;
+    const url = `${msServer}/${actionUrl}`;
     return new DatasourceConsumer(this._http, protocol, url);
   }
 }

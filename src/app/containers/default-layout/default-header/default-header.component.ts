@@ -20,10 +20,6 @@ export class DefaultHeaderComponent extends HeaderComponent {
     super();
   }
 
-  login(): void {
-    this.oidcService.initCodeFlow();
-  }
-
   logout(): void {
     this.oidcService.logOut();
   }

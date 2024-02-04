@@ -10,7 +10,7 @@ import { ProductModel } from '@saman-core/data/lib/module/product/model/product.
 @Injectable()
 export class ProductRepository implements Repository {
   datasource: DatasourceConsumer;
-  private _server = 'product';
+  private _server = 'localhost:8080';
   private _actionUrl = 'products';
 
   constructor(private _datasourceFactory: DatasourceFactory) {
@@ -20,8 +20,8 @@ export class ProductRepository implements Repository {
     );
   }
 
-  public getById(id: number): Observable<ProductModel> {
-    return this.datasource.getByMethod<ProductModel>(`getById/${id}`);
+  public getById(id: string): Observable<ProductModel> {
+    return this.datasource.getByMethod<ProductModel>(`${id}`);
   }
 
   public getPage(

@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { authCodeFlowConfig } from './config';
+import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OidcService {
 
-  constructor(private oauthService: OAuthService) { }
+  constructor(private oauthService: OAuthService, private router: Router) { }
 
   initConfiguration(): void {
     this.oauthService.configure(authCodeFlowConfig);
-    this.oauthService.loadDiscoveryDocument();
+    this.oauthService.loadDiscoveryDocumentAndLogin().then(() => {
+      this.router.navigate(['/']);
+    });
   }
 
-  initCodeFlow(): void {
-    this.oauthService.initCodeFlow();
+  getAccessToken(): string {
+    return this.oauthService.getAccessToken();
   }
 
   logOut(): void {
