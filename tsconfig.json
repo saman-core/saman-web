@@ -31,6 +31,12 @@
       ],
       "@saman-core/data/*": [
         "app/saman-core/data/*"
+      ],
+      "@saman-core/core": [
+        "app/saman-core/core"
+      ],
+      "@saman-core/core/*": [
+        "app/saman-core/core/*"
       ]
     }
   },

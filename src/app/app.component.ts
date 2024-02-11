@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
-import { OidcService } from './oidc/oidc.service';
+import { AuthService } from '@saman-core/core';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +16,9 @@ export class AppComponent implements OnInit {
     private router: Router,
     private titleService: Title,
     private iconSetService: IconSetService,
-    private oidcService: OidcService
+    private authService: AuthService
   ) {
-    this.oidcService.initConfiguration();
+    this.authService.initConfiguration();
     titleService.setTitle(this.title);
     iconSetService.icons = { ...iconSubset };
   }

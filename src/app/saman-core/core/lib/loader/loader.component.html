@@ -1,0 +1,15 @@
+<ng-progress id="progress-bar"></ng-progress>
+<div class="loader-container">
+  <ng-template #emptyLoadingTemplate></ng-template>
+
+  <ngx-loading
+    [show]="loading"
+    [config]="{
+        animationType: ngxLoadingAnimationTypes.circle,
+        primaryColour: '#ffffff',
+        secondaryColour: '#ccc',
+        fullScreenBackdrop: true
+      }"
+    [template]="emptyLoadingTemplate"
+  ></ngx-loading>
+</div>

@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,8 +39,7 @@ import {
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { DataBaseModule } from '@saman-core/data';
-import { JwtInterceptor } from './oidc/interceptor/jwt.interceptor';
-import { OidcService } from './oidc/oidc.service';
+import { AlertModule, AuthModule, LoaderModule } from '@saman-core/core';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -80,28 +78,17 @@ const APP_CONTAINERS = [
     NgScrollbarModule,
     HttpClientModule,
     DataBaseModule,
-    OAuthModule.forRoot({
-      resourceServer: {
-        allowedUrls: ['http://localhost:8080'],
-        sendAccessToken: true,
-      },
-    }),
+    AuthModule,
+    LoaderModule,
+    AlertModule,
   ],
   providers: [
-    OidcService,
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
     },
     IconSetService,
     Title,
-    [
-      {
-        provide: HTTP_INTERCEPTORS,
-        useClass: JwtInterceptor,
-        multi: true,
-      },
-    ],
   ],
   bootstrap: [AppComponent],
 })

@@ -1,6 +1,6 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
 
-export const authCodeFlowConfig: AuthConfig = {
+export const authConfig: AuthConfig = {
   // Url of the Identity Provider
   issuer: 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k2IuT3Myb',
   logoutUrl: 'https://saman-core.auth.us-east-1.amazoncognito.com/logout?client_id=5arnotdu906unc42a61q5gh0nu&response_type=code&scope=openid+profile+email&redirect_uri=' + window.location.origin,
