@@ -24,9 +24,9 @@ export class JwtInterceptor implements HttpInterceptor {
       req = req.clone({ headers });
     }
     
-    const blockScreen = req.headers.get('ignoreBlockScreen') === 'true';
-    const progressBar = req.headers.get('ignoreProgressBar') === 'true';
-    const ignoreError = req.headers.get('ignoreerror') === 'true';
+    const blockScreen = 'true' === req.headers.get('ignoreBlockScreen');
+    const progressBar = 'true' === req.headers.get('ignoreProgressBar');
+    const ignoreError = 'true' === req.headers.get('ignoreError');
 
     this._loader.show(blockScreen, progressBar);
     return next.handle(req).pipe(
