@@ -39,7 +39,8 @@
             "styles": [
               "src/scss/styles.scss",
               "./node_modules/prism-themes/themes/prism-vs.css",
-              "./node_modules/font-awesome/scss/font-awesome.scss"
+              "./node_modules/font-awesome/scss/font-awesome.scss",
+              "./node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.js",
