@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
-import { AuthService } from '@saman-core/core';
+import { AuthService, LoaderSubscriptor } from '@saman-core/core';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private titleService: Title,
     private iconSetService: IconSetService,
-    private authService: AuthService
+    private authService: AuthService,
+    private _loader: LoaderSubscriptor,
   ) {
     this.authService.initConfiguration();
     titleService.setTitle(this.title);
@@ -25,8 +26,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.events.subscribe((evt) => {
-      if (!(evt instanceof NavigationEnd)) {
-        return;
+      if(evt instanceof NavigationStart) {
+        this._loader.show(true, true);
+      }
+      else if (evt instanceof NavigationEnd || evt instanceof NavigationCancel || evt instanceof NavigationError) {
+            this._loader.hide(true, true);
       }
     });
   }

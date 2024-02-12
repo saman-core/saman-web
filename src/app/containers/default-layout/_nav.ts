@@ -17,7 +17,7 @@ export const navItems: INavData[] = [
   {
     name: 'Template',
     url: '/home/cde-builder-demo',
-    iconComponent: { name: 'cil-drop' }
+    iconComponent: { name: 'cilLibraryAdd' }
   },
   {
     name: 'Rules',
