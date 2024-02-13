@@ -1,30 +1,29 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { UserSubscriptor } from '@saman-core/core/lib/auth/user.subscriptor';
-import { authConfig } from './config';
+import { AUTH_CONFIG } from './auth.config';
 
 @Injectable()
 export class AuthService {
-  
   constructor(
+    @Inject(AUTH_CONFIG) _authConfig: AuthConfig,
     private _oauthService: OAuthService,
     private _userSubscriptor: UserSubscriptor,
-    private router: Router
+    private _router: Router,
   ) {
+    this._oauthService.configure(_authConfig);
   }
 
   public initConfiguration(): void {
-    this._oauthService.configure(authConfig);
-
     this._oauthService.loadDiscoveryDocumentAndLogin().then((onFulfilled) => {
       if (onFulfilled) {
         this._oauthService.loadUserProfile().then(
           (user) => this._userSubscriptor.setUser(user),
-          (err) => console.error(err)
+          (err) => console.error(err),
         );
         this._oauthService.setupAutomaticSilentRefresh();
-        this.router.navigate(['/']);
+        this._router.navigate(['/']);
       } else {
         this._oauthService.initCodeFlow();
       }

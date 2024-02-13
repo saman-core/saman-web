@@ -40,6 +40,7 @@ import {
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { DataBaseModule } from '@saman-core/data';
 import { AlertModule, AuthModule, LoaderModule } from '@saman-core/core';
+import { environment } from '../environments/environment';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -78,7 +79,7 @@ const APP_CONTAINERS = [
     NgScrollbarModule,
     HttpClientModule,
     DataBaseModule,
-    AuthModule,
+    AuthModule.forRoot(environment.authConfig),
     LoaderModule,
     AlertModule,
   ],
