@@ -10,13 +10,17 @@ import { ProductModel } from '@saman-core/data/lib/module/product/model/product.
 @Injectable()
 export class ProductRepository implements Repository {
   datasource: DatasourceConsumer;
-  private _server = 'localhost:8080';
-  private _actionUrl = 'products';
+  private _dataformat = 'format1';
+  private _port = '8080';
+  private _server = '';
+  private _resource = 'products';
 
   constructor(private _datasourceFactory: DatasourceFactory) {
     this.datasource = _datasourceFactory.getConsumer(
+      this._dataformat,
+      this._port,
       this._server,
-      this._actionUrl
+      this._resource
     );
   }
 

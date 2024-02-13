@@ -11,6 +11,7 @@ export class HeaderUtils {
       ignoreBlockScreen: string;
       ignoreProgressBar: string;
       ignoreError: string;
+      resourceType: string;
     };
   } {
     return {
@@ -18,6 +19,7 @@ export class HeaderUtils {
         ignoreBlockScreen: blockScreen ? 'true' : 'false',
         ignoreProgressBar: progressBar ? 'true' : 'false',
         ignoreError: ignoreError ? 'true' : 'false',
+        resourceType: 'api',
       },
     };
   }

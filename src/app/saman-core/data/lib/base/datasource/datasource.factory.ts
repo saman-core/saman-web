@@ -1,17 +1,29 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DatasourceConsumer } from './datasource.consumer';
+import { DATA_CONFIG, DataConfType } from '../data.config';
 
 @Injectable()
 export class DatasourceFactory {
-  constructor(private _http: HttpClient) {}
+  private _confType: DataConfType;
+
+  constructor(
+    @Inject(DATA_CONFIG) _dataConfType: DataConfType,
+    private _http: HttpClient,
+  ) {
+    this._confType = _dataConfType;
+  }
 
   public getConsumer(
-    msServer: string,
-    actionUrl: string
+    datasourcesFormat: string,
+    port: string,
+    server: string,
+    resource: string,
   ): DatasourceConsumer {
-    const protocol = 'http';
-    const url = `${msServer}/${actionUrl}`;
-    return new DatasourceConsumer(this._http, protocol, url);
+    const format = this._confType[datasourcesFormat];
+    let url = format.replace('{PORT}', port);
+    url = url.replace('{SERVER}', server);
+    url = url.replace('{RESOURCE}', resource);
+    return new DatasourceConsumer(this._http, url);
   }
 }

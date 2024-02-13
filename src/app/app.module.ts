@@ -78,7 +78,7 @@ const APP_CONTAINERS = [
     CardModule,
     NgScrollbarModule,
     HttpClientModule,
-    DataBaseModule,
+    DataBaseModule.forRoot(environment.datasourcesFormat),
     AuthModule.forRoot(environment.authConfig),
     LoaderModule,
     AlertModule,
