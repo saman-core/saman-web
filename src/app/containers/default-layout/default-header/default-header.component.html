@@ -12,19 +12,26 @@
         size="lg"
       ></svg>
     </button>
-    <c-header-nav class="d-none d-lg-flex">
+    <c-header-nav class="d-none d-lg-flex m-auto">
       <c-nav-item>
         <h4>Cloud Native Insurance Core</h4>
       </c-nav-item>
     </c-header-nav>
 
-    <c-header-nav class="ms-3">
-      <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
+    <c-header-nav class="d-none d-lg-flex">
       <c-nav-item>
-        <a (click)="logout()" cNavLink>
+        <a routerLink="./" cNavLink>
+          <svg cIcon name="cilBell" size="lg"></svg>
+        </a>
+      </c-nav-item>
+      <c-nav-item>
+        <a (click)="logout()" cNavLink cTooltip="Logout">
           <svg cIcon name="cilExitToApp" size="lg" alt="logout"></svg>
         </a>
       </c-nav-item>
+    </c-header-nav>
+    <c-header-nav class="ms-3">
+      <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
     </c-header-nav>
 
   </c-container>
@@ -47,7 +54,7 @@
       <c-avatar
         cTextColor="primary"
         shape="rounded-1"
-        size="md"
+        size="lg"
         [src]="picture"
         status="success"
       >

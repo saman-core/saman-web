@@ -132,7 +132,7 @@ export const navItems: INavData[] = [
         url: '#'
       },
       {
-        name: 'Fundraisings',
+        name: 'Collections',
         url: '#'
       },
     ]
