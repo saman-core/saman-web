@@ -93,10 +93,6 @@ export const navItems: INavData[] = [
         url: '#'
       },
       {
-        name: 'Siniestro',
-        url: '#'
-      },
-      {
         name: 'Claims',
         url: '#'
       },
@@ -157,19 +153,23 @@ export const navItems: INavData[] = [
     ]
   },
   {
-    name: 'Bulk Processing',
+    name: 'Maintenance',
     url: '#',
-    iconComponent: { name: 'cil-applications-settings' }
-  },
-  {
-    name: 'Reports',
-    url: '#',
-    iconComponent: { name: 'cil-applications-settings' }
-  },
-  {
-    name: 'Documents',
-    url: '#',
-    iconComponent: { name: 'cil-applications-settings' }
+    iconComponent: { name: 'cilLibraryAdd' },
+    children: [
+      {
+        name: 'Bulk Processing',
+        url: '#',
+      },
+      {
+        name: 'Reports',
+        url: '#',
+      },
+      {
+        name: 'Documents',
+        url: '#',
+      },
+    ]
   },
   {
     name: 'Builders',
