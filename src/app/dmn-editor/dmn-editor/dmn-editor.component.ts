@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import * as DmnEditor from '@kie-tools/kie-editors-standalone/dist/dmn';
-import { ProductRepository } from '@saman-core/data';
+import { TemplateOpsRepository } from '@saman-core/data';
 
 @Component({
   selector: 'app-dmn-editor',
@@ -14,8 +14,7 @@ export class DmnEditorComponent implements OnInit {
   @Input() readOnly: boolean = false;
   @Output() newDmnData = new EventEmitter<string>();
 
-  constructor(private productRepository: ProductRepository) {
-
+  constructor(private productRepository: TemplateOpsRepository) {
   }
 
   ngOnInit(): void {
@@ -27,7 +26,7 @@ export class DmnEditorComponent implements OnInit {
   }
 
   save(): void {
-    this.productRepository.getById('auto').subscribe((data) => {
+    this.productRepository.getProduct('auto').subscribe((data) => {
       console.log(data);
     });
     this.editor.getContent().then((val) => {

@@ -6,6 +6,6 @@ export * from './lib/base/pagination/pageable.model';
 export * from './lib/base/pagination/paging-and-sorting.repository-call';
 export * from './lib/base/data-base.module';
 
-export * from './lib/module/product/model/product.model';
-export * from './lib/module/product/repository/product.repository';
-export * from './lib/module/product/product-data.module';
+export * from './lib/module/template-ops/model/node.model';
+export * from './lib/module/template-ops/repository/template-ops.repository';
+export * from './lib/module/template-ops/template-ops.module';
