@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { IconSetService } from '@coreui/icons-angular';
-import { iconSubset } from './icons/icon-subset';
+import { iconSubset } from './icon-subset';
 import { AuthService, LoaderSubscriptor } from '@saman-core/core';
 
 @Component({

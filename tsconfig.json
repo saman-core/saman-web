@@ -37,6 +37,12 @@
       ],
       "@saman-core/core/*": [
         "app/saman-core/core/*"
+      ],
+      "@saman-core/common": [
+        "app/saman-core/common"
+      ],
+      "@saman-core/common/*": [
+        "app/saman-core/common/*"
       ]
     }
   },
