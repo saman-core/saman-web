@@ -10,7 +10,7 @@ import { ConditionTypeEnum } from '../model/condition-type.enum';
 
 
 @Injectable()
-export class TemplateOpsRepository implements Repository {
+export class ResourceRepository implements Repository {
   datasource: DatasourceConsumer;
   private _dataformat = 'format1';
   private _port = '8080';
