@@ -12,7 +12,9 @@ import { PrismService } from './prism.service';
 import { HTML } from './builder-edit-form';
 import Evaluator = Utils.Evaluator;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Formio as any).icons = 'fontawesome';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Formio as any).use(bootstrap4);
 
 Templates.current = {

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-
-declare var Prism: any;
+import Prism from 'prismjs';
 
 @Injectable()
 export class PrismService {

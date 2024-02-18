@@ -4,5 +4,5 @@ import { PageModel } from './page.model';
 
 export type PagingAndSortingRepositoryCall<T> = (
   pageableModel: PageableModel,
-  ...args: any[]
+  ...args: string[] | number[]
 ) => Observable<PageModel<T>>;

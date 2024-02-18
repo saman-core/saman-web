@@ -18,7 +18,7 @@ export class JwtInterceptor implements HttpInterceptor {
     private _authService: AuthService,
   ) {}
 
-  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const blockScreen = 'true' === req.headers.get('ignoreBlockScreen');
     const progressBar = 'true' === req.headers.get('ignoreProgressBar');
     const ignoreError = 'true' === req.headers.get('ignoreError');

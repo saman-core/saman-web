@@ -17,7 +17,7 @@ import { ngxLoadingAnimationTypes } from 'ngx-loading';
 })
 export class LoaderComponent implements OnInit, OnDestroy {
   @ViewChild('emptyLoadingTemplate', { static: false })
-  emptyLoadingTemplate!: TemplateRef<any>;
+  emptyLoadingTemplate!: TemplateRef<Element>;
   
   progressRef: NgProgressRef;
   ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;

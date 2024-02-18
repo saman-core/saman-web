@@ -50,9 +50,9 @@ export class DatasourceConsumer {
     });
   }
 
-  saveMethod<T>(
+  saveMethod<T, D>(
     method: string,
-    item: any,
+    item: D,
     params: { [key: string]: string } = {},
     blockScreen: boolean = false,
     progressBar: boolean = true,
@@ -64,9 +64,9 @@ export class DatasourceConsumer {
     });
   }
 
-  savePageMethod<T>(
+  savePageMethod<T, D>(
     method: string,
-    item: any,
+    item: D,
     pageableModel: PageableModel,
     params: { [key: string]: string } = {},
     blockScreen: boolean = false,
@@ -79,9 +79,9 @@ export class DatasourceConsumer {
     });
   }
 
-  updateMethod<T>(
+  updateMethod<T, D>(
     method: string,
-    item: any,
+    item: D,
     params: { [key: string]: string } = {},
     blockScreen: boolean = false,
     progressBar: boolean = true,
@@ -93,9 +93,9 @@ export class DatasourceConsumer {
     });
   }
 
-  updatePageMethod<T>(
+  updatePageMethod<T, D>(
     method: string,
-    item: any,
+    item: D,
     pageableModel: PageableModel,
     params: { [key: string]: string } = {},
     blockScreen: boolean = false,

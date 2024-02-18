@@ -43,7 +43,7 @@ export class ResourceRepository implements Repository {
   }
 
   public persistTemplate(productName: string, templateName: string, commitRequest: CommitRequestModel): Observable<NodeModel> {
-    return this.datasource.saveMethod<NodeModel>(`${productName}/templates/${templateName}`, commitRequest);
+    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}`, commitRequest);
   }
 
   public getConditionsProperty(productName: string, templateName: string, propertyName: string): Observable<ConditionsPropertyModel> {
@@ -59,6 +59,6 @@ export class ResourceRepository implements Repository {
   }
 
   public persistCondition(productName: string, templateName: string, propertyName: string, conditionType: ConditionTypeEnum, commitRequest: CommitRequestModel): Observable<NodeModel> {
-    return this.datasource.saveMethod<NodeModel>(`${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`, commitRequest);
+    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`, commitRequest);
   }
 }

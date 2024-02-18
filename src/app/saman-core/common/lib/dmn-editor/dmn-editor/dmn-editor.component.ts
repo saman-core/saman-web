@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { StandaloneEditorApi } from '@kie-tools/kie-editors-standalone/dist/common/Editor';
 import * as DmnEditor from '@kie-tools/kie-editors-standalone/dist/dmn';
-import { ResourceRepository } from '@saman-core/data';
 
 @Component({
   selector: 'app-dmn-editor',
@@ -9,13 +9,10 @@ import { ResourceRepository } from '@saman-core/data';
 })
 export class DmnEditorComponent implements OnInit {
   @ViewChild('dmn', {static: true}) dmnDiv?: ElementRef;
-  editor: any;
+  editor: StandaloneEditorApi;
   @Input() dmnData: string = '';
   @Input() readOnly: boolean = false;
   @Output() newDmnData = new EventEmitter<string>();
-
-  constructor(private productRepository: ResourceRepository) {
-  }
 
   ngOnInit(): void {
     this.editor = DmnEditor.open({
@@ -26,14 +23,9 @@ export class DmnEditorComponent implements OnInit {
   }
 
   save(): void {
-    this.productRepository.getProduct('auto').subscribe((data) => {
-      console.log(data);
-    });
     this.editor.getContent().then((val) => {
-      console.log(btoa(val));
-      this.editor.markAsSaved()
-      this.newDmnData.emit(val);
-      console.log(val);
+      this.newDmnData.emit(btoa(val));
+      this.editor.markAsSaved();
     }).catch((reason) => {
       console.error(`Handle rejected promise (${reason}) here.`);
     });
