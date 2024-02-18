@@ -12,13 +12,17 @@
         <form [formGroup]="trafficRadioGroup">
           <c-button-group class="float-end me-3" role="group">
             <input
+              id="btnday"
+              (click)="setTrafficPeriod('Day')"
+              (keyup)="setTrafficPeriod('Day')"
               class="btn-check"
               formControlName="trafficRadio"
               type="radio"
               value="Day"
             />
             <label
-              (click)="setTrafficPeriod('Day')"
+              tabIndex=0
+              htmlFor="btnday"
               cButton
               cFormCheckLabel
               color="secondary"
@@ -26,13 +30,16 @@
             >Day</label>
 
             <input
+              id="btnmonth"
+              (click)="setTrafficPeriod('Month')"
+              (keyup)="setTrafficPeriod('Month')"
               class="btn-check"
               formControlName="trafficRadio"
               type="radio"
               value="Month"
             />
             <label
-              (click)="setTrafficPeriod('Month')"
+              htmlFor="btnmonth"
               cButton
               cFormCheckLabel
               color="secondary"
@@ -40,13 +47,16 @@
             >Month</label>
 
             <input
+              id="btnyear"
+              (click)="setTrafficPeriod('Year')"
+              (keyup)="setTrafficPeriod('Year')"
               class="btn-check"
               formControlName="trafficRadio"
               type="radio"
               value="Year"
             />
             <label
-              (click)="setTrafficPeriod('Year')"
+              htmlFor="btnyear"
               cButton
               cFormCheckLabel
               color="secondary"
