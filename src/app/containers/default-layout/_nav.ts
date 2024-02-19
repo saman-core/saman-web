@@ -213,7 +213,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Condition',
-        url: '#'
+        url: 'template-conditions'
       },
     ]
   },

@@ -28,9 +28,9 @@ const routes: Routes = [
           import('./views/builder/template-structure/template-structure.module').then((m) => m.TemplateStructureModule)
       },
       {
-        path: 'home',
+        path: 'template-conditions',
         loadChildren: () =>
-          import('./views/home/home.module').then((m) => m.HomeModule)
+          import('./views/builder/template-conditions/template-conditions.module').then((m) => m.TemplateConditionsModule)
       },
     ]
   },
