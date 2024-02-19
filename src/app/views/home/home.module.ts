@@ -20,7 +20,6 @@ import { ChartjsModule } from '@coreui/angular-chartjs';
 import { HomeRoutingModule } from './home-routing.module';
 import { DmnDemoComponent } from './dmn-demo/dmn-demo.component';
 import { CdeDemoComponent } from './cde-demo/cde-demo.component';
-import { CdeBuilderDemoComponent } from './cde-builder-demo/cde-builder-demo.component';
 import { ConfigurableDataEntityModule, DmnEditorModule } from '@saman-core/common';
 
 @NgModule({
@@ -44,7 +43,7 @@ import { ConfigurableDataEntityModule, DmnEditorModule } from '@saman-core/commo
     DmnEditorModule,
     ConfigurableDataEntityModule
   ],
-  declarations: [DmnDemoComponent, CdeDemoComponent, CdeBuilderDemoComponent]
+  declarations: [DmnDemoComponent, CdeDemoComponent]
 })
 export class HomeModule {
 }

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-cde-builder-demo',
-  templateUrl: './cde-builder-demo.component.html',
-  styleUrl: './cde-builder-demo.component.scss'
+  selector: 'app-template-structure',
+  templateUrl: './template-structure.component.html',
+  styleUrl: './template-structure.component.scss'
 })
-export class CdeBuilderDemoComponent {
+export class TemplateStructureComponent {
   data = `
 {
    "_id":"5b8c14217f43cc293958e2bc",
@@ -17,7 +17,7 @@ export class CdeBuilderDemoComponent {
    "components":[
       {
          "input":false,
-         "html":"<h1><a href=\\"https://form.io\\">Form.io</a> Example Form</h1>\\n\\n<p>This is a dynamically rendered JSON form&nbsp;built with <a href=\\"https://form.io\\">Form.io</a>. Using a simple&nbsp;drag-and-drop form builder, you can create any form that includes e-signatures, wysiwyg editors, date fields, layout components, data grids, surveys, etc.</p>\\n",
+         "html":"This is a dynamically rendered JSON. Using a simple&nbsp;drag-and-drop form builder, you can create any form that includes e-signatures, wysiwyg editors, date fields, layout components, data grids, surveys, etc.",
          "type":"content",
          "conditional":{
             "show":"",

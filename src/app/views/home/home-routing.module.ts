@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DmnDemoComponent } from './dmn-demo/dmn-demo.component';
-import { CdeBuilderDemoComponent } from './cde-builder-demo/cde-builder-demo.component';
 import { CdeDemoComponent } from './cde-demo/cde-demo.component';
 
 const routes: Routes = [
@@ -11,13 +10,6 @@ const routes: Routes = [
     component: DmnDemoComponent,
     data: {
       title: 'DMN Demo'
-    }
-  },
-  {
-    path: 'cde-builder-demo',
-    component: CdeBuilderDemoComponent,
-    data: {
-      title: 'CDE Builder Demo'
     }
   },
   {

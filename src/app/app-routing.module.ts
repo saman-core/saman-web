@@ -23,6 +23,11 @@ const routes: Routes = [
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
       },
       {
+        path: 'template-structure',
+        loadChildren: () =>
+          import('./views/builder/template-structure/template-structure.module').then((m) => m.TemplateStructureModule)
+      },
+      {
         path: 'home',
         loadChildren: () =>
           import('./views/home/home.module').then((m) => m.HomeModule)

@@ -209,7 +209,7 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Structure',
-        url: '#'
+        url: 'template-structure/'
       },
       {
         name: 'Condition',
