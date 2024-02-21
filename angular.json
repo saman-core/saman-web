@@ -38,6 +38,7 @@
             ],
             "styles": [
               "src/scss/styles.scss",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/prism-themes/themes/prism-vs.css",
               "./node_modules/font-awesome/scss/font-awesome.scss",
               "./node_modules/ngx-toastr/toastr.css"

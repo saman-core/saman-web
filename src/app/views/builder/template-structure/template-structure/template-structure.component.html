@@ -1,2 +1,15 @@
 <h1>Builder</h1>
+
+@for (product of products; track product) {
+  <mat-list>
+  <i class="fa fa-folder" matListItemIcon></i><div mat-subheader>{{product.name}}</div>
+    @for (template of product.templates; track template) {
+      <mat-list-item>
+        <i class="fa fa-file" matListItemIcon></i>
+        <div matListItemTitle>{{template.name}}</div>
+      </mat-list-item>
+    }
+  </mat-list>
+}
+
 <app-cde-builder [formData]="data"></app-cde-builder>
