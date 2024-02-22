@@ -1,15 +1,19 @@
 <h1>Builder</h1>
 
-@for (product of products; track product) {
-  <mat-list>
-  <i class="fa fa-folder" matListItemIcon></i><div mat-subheader>{{product.name}}</div>
-    @for (template of product.templates; track template) {
-      <mat-list-item>
-        <i class="fa fa-file" matListItemIcon></i>
-        <div matListItemTitle>{{template.name}}</div>
-      </mat-list-item>
-    }
-  </mat-list>
-}
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <button mat-icon-button (click)="openDialog(node.parent, node.item)">
+      <i class="fa fa-edit"></i>
+    </button>
+    {{node.item}}
+  </mat-tree-node>
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+    <button mat-icon-button
+            [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
+            <i class="fa {{treeControl.isExpanded(node) ? 'fa-chevron-down' : 'fa-chevron-right'}}"></i>
+    </button>
+    {{node.item}}
+  </mat-tree-node>
+</mat-tree>
 
 <app-cde-builder [formData]="data"></app-cde-builder>

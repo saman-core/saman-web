@@ -1,31 +1,34 @@
-import {Component} from '@angular/core';
-import { NodeModel, ResourceRepository } from '@saman-core/data';
-
-class ProdutsNode extends NodeModel {
-  public templates?: NodeModel[];
-}
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Component } from '@angular/core';
+import { DynamicFlatNode, ResourceRepository } from '@saman-core/data';
+import { DynamicDataSource } from './dynamic-data-source';
 
 @Component({
-   selector: 'app-template-structure',
-   templateUrl: './template-structure.component.html',
-   styleUrl: './template-structure.component.scss',
- })
+  selector: 'app-template-structure',
+  templateUrl: './template-structure.component.html',
+  styleUrl: './template-structure.component.scss',
+})
 export class TemplateStructureComponent {
-   data = '{}';
-   products: ProdutsNode[] = [
-   ];
+  data = '{}';
+  treeControl: FlatTreeControl<DynamicFlatNode>;
+  dataSource: DynamicDataSource;
 
-   constructor(private _resourceRepository: ResourceRepository) {
-    this._resourceRepository.getAllProducts().subscribe((produts) => {
-      this.products = produts;
-    });
-   }
+  constructor(private _resourceRepository: ResourceRepository) {
+    this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
+    this.dataSource = new DynamicDataSource(this.treeControl, _resourceRepository);
 
-   getTemplates(productName: string): void {
-    this._resourceRepository.getAllTemplatesByProduct(productName).subscribe((templates) => {
-      const product = this.products.find((product) => product.name === productName);
-      if(typeof product !== "undefined")
-        product.templates = templates;
+    this._resourceRepository.getAllProducts().subscribe((products) => {
+      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
     });
-   }
+  }
+
+  getLevel = (node: DynamicFlatNode) => node.level;
+
+  isExpandable = (node: DynamicFlatNode) => node.expandable;
+
+  hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
+
+  openDialog(productName: string, templateName: string) {
+    
+  }
 }
