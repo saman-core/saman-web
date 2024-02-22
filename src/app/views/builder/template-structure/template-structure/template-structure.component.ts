@@ -2,6 +2,8 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
 import { DynamicFlatNode, ResourceRepository } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
+import { MatDialog } from '@angular/material/dialog';
+import { TemplateFormDialogComponent } from '../template-form-dialog/template-form-dialog.component';
 
 @Component({
   selector: 'app-template-structure',
@@ -13,7 +15,10 @@ export class TemplateStructureComponent {
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
 
-  constructor(private _resourceRepository: ResourceRepository) {
+  constructor(
+    private _resourceRepository: ResourceRepository,
+    private _dialog: MatDialog
+    ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _resourceRepository);
 
@@ -29,6 +34,12 @@ export class TemplateStructureComponent {
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
   openDialog(productName: string, templateName: string) {
-    
+    this._resourceRepository.getTemplate(productName, templateName).subscribe((node) => {
+      this._dialog.open(TemplateFormDialogComponent, {
+        data: {
+          node: node,
+        },
+      });
+    });
   }
 }

@@ -6,13 +6,12 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  MatDialog,
-  MatDialogTitle,
-  MatDialogContent,
+  MatDialogModule,
 } from '@angular/material/dialog';
 import { TemplateStructureComponent } from './template-structure/template-structure.component';
 import { TemplateStructureRoutingModule } from './template-structure-routing.module';
 import { TemplateBuilderModule } from '@saman-core/data';
+import { TemplateFormDialogComponent } from './template-form-dialog/template-form-dialog.component';
 
 @NgModule({
   imports: [
@@ -22,13 +21,14 @@ import { TemplateBuilderModule } from '@saman-core/data';
     MatButtonModule,
     MatIconModule,
     MatButtonModule,
-    MatDialog,
-    MatDialogTitle,
-    MatDialogContent,
+    MatDialogModule,
     ReactiveFormsModule,
     ConfigurableDataEntityModule,
     TemplateBuilderModule,
   ],
-  declarations: [TemplateStructureComponent],
+  declarations: [
+    TemplateStructureComponent,
+    TemplateFormDialogComponent,
+  ],
 })
 export class TemplateStructureModule {}
