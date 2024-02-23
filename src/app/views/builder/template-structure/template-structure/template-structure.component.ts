@@ -37,6 +37,8 @@ export class TemplateStructureComponent {
     this._resourceRepository.getTemplate(productName, templateName).subscribe((node) => {
       this._dialog.open(TemplateFormDialogComponent, {
         data: {
+          productName: productName,
+          templateName: templateName,
           node: node,
         },
       });
