@@ -10,12 +10,12 @@ import { FormioRefreshValue } from '@formio/angular';
 export class CdeBuilderComponent implements AfterViewInit {
   public refreshForm: EventEmitter<FormioRefreshValue> = new EventEmitter();
   @Input() form: object = { components: [] };
-  @Output() formChange = new EventEmitter<object>();
+  @Output() newVal = new EventEmitter<object>();
 
   constructor(public prism: PrismService) {}
 
   onChange(event) {
-    this.formChange.emit(event.form);
+    this.newVal.emit(event.form);
     this.refreshForm.emit({
       property: 'form',
       value: event.form,

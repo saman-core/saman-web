@@ -1,5 +1,4 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommitRequestModel, NodeModel, ResourceRepository } from '@saman-core/data';
 
 export interface DialogData {
@@ -13,26 +12,43 @@ export interface DialogData {
   templateUrl: './template-form-dialog.component.html',
   styleUrl: './template-form-dialog.component.scss',
 })
-export class TemplateFormDialogComponent {
-  public formJson = {};
+export class TemplateFormDialogComponent implements OnInit {
+  public initialJson:object = { components: [] };
+  private _newJson:object = { components: [] };
+  @Input() node: NodeModel;
+  @Input() productName: string;
+  @Input() templateName: string;
+  @Output() exitEmitter = new EventEmitter<boolean>();
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private _data: DialogData,
-    private _resourceRepository: ResourceRepository,
-  ) {
-    this.formJson = JSON.parse(atob(this._data.node.content));
+  constructor(private _resourceRepository: ResourceRepository) {}
+
+  ngOnInit(): void {
+    try {
+      this.initialJson = JSON.parse(atob(this.node.content));
+      this._newJson = this.initialJson;
+    } catch (_) {
+      console.error('initial node content parser error');
+    }
+  }
+
+  setValue(json: object) {
+    this._newJson = json;
   }
 
   public save(): void {
-    this._data.node.content = btoa(JSON.stringify(this.formJson));
+    this.node.content = btoa(JSON.stringify(this._newJson));
     const commitRequest: CommitRequestModel = {
-      message: 'test web',
-      data: this._data.node,
+      message: 'test web2',
+      data: this.node,
     };
     this._resourceRepository
-      .persistTemplate(this._data.productName, this._data.templateName, commitRequest)
+      .persistTemplate(this.productName, this.templateName, commitRequest)
       .subscribe(() => {
         alert('ok');
       });
+  }
+
+  public exit(): void {
+    this.exitEmitter.emit(true);
   }
 }

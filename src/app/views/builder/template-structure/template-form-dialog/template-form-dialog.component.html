@@ -1,10 +1,9 @@
-<h2 mat-dialog-title>Edit Form</h2>
-<mat-dialog-content class="mat-typography">
+<div>
 
-  <app-cde-builder [(form)]="formJson"></app-cde-builder>
+  <app-cde-builder [form]="initialJson" (newVal)="setValue($event)"></app-cde-builder>
 
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+</div>
+<div>
+  <button mat-button (click)="exit()">Cancel</button>
   <button mat-button (click)="save()">Persist</button>
-</mat-dialog-actions>
+</div>

@@ -1,8 +1,7 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { DynamicFlatNode, ResourceRepository } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
-import { MatDialog } from '@angular/material/dialog';
 import { TemplateFormDialogComponent } from '../template-form-dialog/template-form-dialog.component';
 
 @Component({
@@ -11,14 +10,14 @@ import { TemplateFormDialogComponent } from '../template-form-dialog/template-fo
   styleUrl: './template-structure.component.scss',
 })
 export class TemplateStructureComponent {
+  @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
+  dynamicEditorLoader: ViewContainerRef;
+  step = 0;
   data = '{}';
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
 
-  constructor(
-    private _resourceRepository: ResourceRepository,
-    private _dialog: MatDialog
-    ) {
+  constructor(private _resourceRepository: ResourceRepository) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _resourceRepository);
 
@@ -35,13 +34,20 @@ export class TemplateStructureComponent {
 
   openDialog(productName: string, templateName: string) {
     this._resourceRepository.getTemplate(productName, templateName).subscribe((node) => {
-      this._dialog.open(TemplateFormDialogComponent, {
-        data: {
-          productName: productName,
-          templateName: templateName,
-          node: node,
-        },
+      this.dynamicEditorLoader.clear();
+      const componentRef = this.dynamicEditorLoader.createComponent(TemplateFormDialogComponent);
+      componentRef.instance.productName = productName;
+      componentRef.instance.templateName = templateName;
+      componentRef.instance.node = node;
+      componentRef.instance.exitEmitter.subscribe(() => {
+        this.setStep(0);
+        componentRef.destroy();
       });
+      this.step = 1;
     });
+  }
+
+  setStep(index: number) {
+    this.step = index;
   }
 }
