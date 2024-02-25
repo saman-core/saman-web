@@ -9,6 +9,7 @@ import { TemplateStructureComponent } from './template-structure/template-struct
 import { TemplateStructureRoutingModule } from './template-structure-routing.module';
 import { TemplateBuilderModule } from '@saman-core/data';
 import { TemplateFormDialogComponent } from './template-form-dialog/template-form-dialog.component';
+import { AlertModule } from '@saman-core/core';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { TemplateFormDialogComponent } from './template-form-dialog/template-for
     ReactiveFormsModule,
     ConfigurableDataEntityModule,
     TemplateBuilderModule,
+    AlertModule,
   ],
   declarations: [
     TemplateStructureComponent,

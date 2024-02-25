@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AlertSubscriptor } from '@saman-core/core';
 import { CommitRequestModel, NodeModel, ResourceRepository } from '@saman-core/data';
 
 export interface DialogData {
@@ -13,14 +14,17 @@ export interface DialogData {
   styleUrl: './template-form-dialog.component.scss',
 })
 export class TemplateFormDialogComponent implements OnInit {
-  public initialJson:object = { components: [] };
-  private _newJson:object = { components: [] };
+  public initialJson: object = { components: [] };
+  private _newJson: object = { components: [] };
   @Input() node: NodeModel;
   @Input() productName: string;
   @Input() templateName: string;
   @Output() exitEmitter = new EventEmitter<boolean>();
 
-  constructor(private _resourceRepository: ResourceRepository) {}
+  constructor(
+    private _resourceRepository: ResourceRepository,
+    private _alertSubscriptor: AlertSubscriptor,
+  ) {}
 
   ngOnInit(): void {
     try {
@@ -43,8 +47,15 @@ export class TemplateFormDialogComponent implements OnInit {
     };
     this._resourceRepository
       .persistTemplate(this.productName, this.templateName, commitRequest)
-      .subscribe(() => {
-        alert('ok');
+      .subscribe({
+        next: (node) => {
+          this.node = node;
+          this._alertSubscriptor.success('Template saved successfully');
+        },
+        error: (e) => {
+          console.error(e);
+          this._alertSubscriptor.error('Template could not be saved');
+        },
       });
   }
 

@@ -43,7 +43,7 @@ export class ResourceRepository implements Repository {
   }
 
   public persistTemplate(productName: string, templateName: string, commitRequest: CommitRequestModel): Observable<NodeModel> {
-    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}`, commitRequest);
+    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}`, commitRequest, {}, true, true, true);
   }
 
   public getConditionsProperty(productName: string, templateName: string, propertyName: string): Observable<ConditionsPropertyModel> {
