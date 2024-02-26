@@ -16,6 +16,7 @@ export class TemplateStructureComponent {
   data = '{}';
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
+  templateNameSelected = '';
 
   constructor(private _resourceRepository: ResourceRepository) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
@@ -41,8 +42,11 @@ export class TemplateStructureComponent {
       componentRef.instance.node = node;
       componentRef.instance.exitEmitter.subscribe(() => {
         this.setStep(0);
+        this.templateNameSelected = '';
         componentRef.destroy();
       });
+
+      this.templateNameSelected = templateName;
       this.step = 1;
     });
   }

@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { AlertSubscriptor } from './alert.subscriptor';
 
 @NgModule({
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     ToastrModule.forRoot({
       tapToDismiss: true,
       preventDuplicates: false,
