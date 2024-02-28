@@ -40,45 +40,50 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
+    <section class="example-container mat-elevation-z8" tabindex="0">
     <mat-table [dataSource]="dataSource2">
-      <ng-container matColumnDef="position" [sticky]="true">
-        <mat-header-cell *matHeaderCellDef> Position </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-        <mat-footer-cell *matFooterCellDef> Position Footer </mat-footer-cell>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="property" [sticky]="true">
+        <mat-header-cell *matHeaderCellDef> Property </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.property}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="name" [sticky]="false">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-        <mat-footer-cell *matFooterCellDef> Name Footer </mat-footer-cell>
+      <!-- Weight Column -->
+      <ng-container matColumnDef="value">
+        <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="weight" [stickyEnd]="false">
-        <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
-        <mat-footer-cell *matFooterCellDef> Weight Footer </mat-footer-cell>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="visible">
+        <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.visible}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="symbol" [stickyEnd]="true">
-        <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-        <mat-footer-cell *matFooterCellDef> Symbol Footer </mat-footer-cell>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="disable">
+        <mat-header-cell *matHeaderCellDef> Disable </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.disable}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="filler">
-        <mat-header-cell *matHeaderCellDef> jjj </mat-header-cell>
-        <mat-cell *matCellDef="let element"> ooo </mat-cell>
-        <mat-footer-cell *matFooterCellDef> jjj </mat-footer-cell>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="alert">
+        <mat-header-cell *matHeaderCellDef> Alert </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.alert}} </mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: false"></mat-header-row>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="validate">
+        <mat-header-cell *matHeaderCellDef> Validate </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.validate}} </mat-cell>
+      </ng-container>
+
       <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-      <mat-footer-row *matFooterRowDef="displayedColumns; sticky: false"></mat-footer-row>
-      <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
     </mat-table>
+      </section>
 
   </mat-expansion-panel>
 
