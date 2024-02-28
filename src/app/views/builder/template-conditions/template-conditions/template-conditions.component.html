@@ -1,2 +1,85 @@
-<h1>DMN</h1>
-<app-dmn-editor [dmnData]="data"></app-dmn-editor>
+<h1>Builder</h1>
+
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Select a Template to View or Edit
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <button mat-icon-button (click)="openDialog(node.parent, node.item)">
+          <i class="fa fa-edit"></i>
+        </button>
+        {{node.item}}
+      </mat-tree-node>
+      <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+        <button mat-icon-button
+                [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
+                <i class="fa {{treeControl.isExpanded(node) ? 'fa-chevron-down' : 'fa-chevron-right'}}"></i>
+        </button>
+        {{node.item}}
+      </mat-tree-node>
+    </mat-tree>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <i class="fa fa-edit"></i>
+        Builder
+      </mat-panel-title>
+      <mat-panel-description>
+        @if(templateNameSelected === '') {
+          Not Template Selected
+        } @else {
+          Conditions for "<span style="text-transform:uppercase"><b>{{templateNameSelected}}</b></span>"
+        }
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-table [dataSource]="dataSource2">
+      <ng-container matColumnDef="position" [sticky]="true">
+        <mat-header-cell *matHeaderCellDef> Position </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef> Position Footer </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name" [sticky]="false">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef> Name Footer </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="weight" [stickyEnd]="false">
+        <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef> Weight Footer </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="symbol" [stickyEnd]="true">
+        <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef> Symbol Footer </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="filler">
+        <mat-header-cell *matHeaderCellDef> jjj </mat-header-cell>
+        <mat-cell *matCellDef="let element"> ooo </mat-cell>
+        <mat-footer-cell *matFooterCellDef> jjj </mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: false"></mat-header-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <mat-footer-row *matFooterRowDef="displayedColumns; sticky: false"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+    </mat-table>
+
+  </mat-expansion-panel>
+
+</mat-accordion>
