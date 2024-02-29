@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { TemplateBuilderModule } from '@saman-core/data';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AlertModule } from '@saman-core/core';
 import { TemplateConditionsComponent } from './template-conditions/template-conditions.component';
 import { TemplateConditionDialogComponent } from './template-condition-dialog/template-condition-dialog.component';
@@ -20,12 +20,12 @@ import { TemplateConditionsRoutingModule } from './template-conditions-routing.m
     ReactiveFormsModule,
     DmnEditorModule,
     AlertModule,
-    TemplateBuilderModule,
     MatTreeModule,
     MatButtonModule,
     MatExpansionModule,
     MatTableModule,
     MatIconModule,
+    MatTooltipModule,
   ],
   declarations: [
     TemplateConditionsComponent,

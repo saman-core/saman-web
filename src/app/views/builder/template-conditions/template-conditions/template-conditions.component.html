@@ -30,8 +30,8 @@
   <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
-        Builder
+        <mat-icon>format_list_bulleted</mat-icon>
+        Conditions
       </mat-panel-title>
       <mat-panel-description>
         @if(templateNameSelected === '') {
@@ -47,20 +47,31 @@
 
       <!-- Name Column -->
       <ng-container matColumnDef="property" [sticky]="true">
-        <mat-header-cell *matHeaderCellDef> Property </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Properties </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.property}} </mat-cell>
       </ng-container>
 
       <!-- Weight Column -->
       <ng-container matColumnDef="value">
         <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+            <mat-icon>draw</mat-icon>
+          </button>
+          <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="visible">
         <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.visible}} </mat-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-mini-fab matTooltip="Add DMN" color="accent">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-cell>
       </ng-container>
 
       <!-- Symbol Column -->
