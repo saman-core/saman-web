@@ -11,14 +11,16 @@
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         <button mat-icon-button (click)="openDialog(node.parent, node.item)">
-          <i class="fa fa-edit"></i>
+          <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
         </button>
         {{node.item}}
       </mat-tree-node>
       <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
         <button mat-icon-button
                 [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
-                <i class="fa {{treeControl.isExpanded(node) ? 'fa-chevron-down' : 'fa-chevron-right'}}"></i>
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
         </button>
         {{node.item}}
       </mat-tree-node>
@@ -28,7 +30,7 @@
   <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <i class="fa fa-edit"></i>
+        <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
         Builder
       </mat-panel-title>
       <mat-panel-description>

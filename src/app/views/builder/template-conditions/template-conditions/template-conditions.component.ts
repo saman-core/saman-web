@@ -29,17 +29,6 @@ export class TemplateConditionsComponent {
     this._resourceRepository.getAllProducts().subscribe((products) => {
       this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
     });
-
-    /*
-    this.displayedColumns.length = 24;
-    this.displayedColumns.fill('filler');
-
-    // The first two columns should be position and name; the last two columns: weight, symbol
-    this.displayedColumns[0] = 'position';
-    this.displayedColumns[1] = 'name';
-    this.displayedColumns[22] = 'weight';
-    this.displayedColumns[23] = 'symbol';
-    */
   }
 
   getLevel = (node: DynamicFlatNode) => node.level;

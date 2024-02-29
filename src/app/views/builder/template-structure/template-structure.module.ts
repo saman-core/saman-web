@@ -5,6 +5,7 @@ import { ConfigurableDataEntityModule } from '@saman-core/common';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
 import { TemplateStructureComponent } from './template-structure/template-structure.component';
 import { TemplateStructureRoutingModule } from './template-structure-routing.module';
 import { TemplateBuilderModule } from '@saman-core/data';
@@ -19,6 +20,7 @@ import { AlertModule } from '@saman-core/core';
     MatTreeModule,
     MatButtonModule,
     MatButtonModule,
+    MatIconModule,
     ReactiveFormsModule,
     ConfigurableDataEntityModule,
     TemplateBuilderModule,
