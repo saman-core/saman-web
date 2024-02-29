@@ -1,0 +1,12 @@
+.example-button-row {
+  display: table-cell;
+  max-width: 600px;
+}
+section {
+  display: table;
+  margin: auto;
+  vertical-align: middle;
+}
+.example-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}

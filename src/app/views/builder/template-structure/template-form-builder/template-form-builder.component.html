@@ -1,0 +1,10 @@
+<div>
+  <app-cde-builder [form]="initialJson" (newVal)="setValue($event)"></app-cde-builder>
+</div>
+
+<section>
+  <div class="example-button-row">
+    <button mat-button mat-flat-button color="warn" (click)="exit()">Cancel</button>
+    <button mat-button mat-flat-button color="primary" (click)="save()">Persist</button>
+  </div>
+</section>

@@ -2,7 +2,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { DynamicFlatNode, ResourceRepository } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
-import { TemplateFormDialogComponent } from '../template-form-dialog/template-form-dialog.component';
+import { TemplateFormBuilderComponent } from '../template-form-builder/template-form-builder.component';
 
 @Component({
   selector: 'app-template-structure',
@@ -36,7 +36,7 @@ export class TemplateStructureComponent {
   openDialog(productName: string, templateName: string) {
     this._resourceRepository.getTemplate(productName, templateName).subscribe((node) => {
       this.dynamicEditorLoader.clear();
-      const componentRef = this.dynamicEditorLoader.createComponent(TemplateFormDialogComponent);
+      const componentRef = this.dynamicEditorLoader.createComponent(TemplateFormBuilderComponent);
       componentRef.instance.productName = productName;
       componentRef.instance.templateName = templateName;
       componentRef.instance.node = node;
