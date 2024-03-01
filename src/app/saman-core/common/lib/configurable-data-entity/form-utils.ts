@@ -4,7 +4,7 @@ import { Component as Component2 } from '@formio/js/types/components/_classes/co
 export class FormUtils {
   private _keys: string[] = [];
 
-  getComponentKeys(component: FormioComponent): string[] {
+  getComponentsKey(component: FormioComponent): string[] {
     this._keys = [];
     this._iterateComponent(component.formio.components);
     return this._keys;

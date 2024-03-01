@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
 import { CommitRequestModel, NodeModel, ResourceRepository } from '@saman-core/data';
+import { CdeBuilderComponent } from '@saman-core/common';
 import { CommitDialogComponent, CommitDialogResponse } from '../commit-dialog/commit-dialog.component';
 
 @Component({
@@ -10,6 +11,7 @@ import { CommitDialogComponent, CommitDialogResponse } from '../commit-dialog/co
   styleUrl: './template-form-builder.component.scss',
 })
 export class TemplateFormBuilderComponent implements OnInit {
+  @ViewChild('builder') builder!: CdeBuilderComponent;
   public initialJson: object = { components: [] };
   private _newJson: object = { components: [] };
   @Input() node: NodeModel;
@@ -37,6 +39,7 @@ export class TemplateFormBuilderComponent implements OnInit {
   }
 
   public save(): void {
+    this._newJson['properties'] = this.builder.getComponentsKey();
     this.node.content = btoa(JSON.stringify(this._newJson));
 
     const dialogRef = this.dialog.open(CommitDialogComponent, {

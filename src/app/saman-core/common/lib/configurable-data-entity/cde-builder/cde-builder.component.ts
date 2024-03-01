@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { FormioComponent, FormioRefreshValue } from '@formio/angular';
 import { PrismService } from '../prism.service';
-import { FormioRefreshValue } from '@formio/angular';
+import { FormUtils } from '../form-utils';
 
 @Component({
   selector: 'app-cde-builder',
@@ -8,11 +9,17 @@ import { FormioRefreshValue } from '@formio/angular';
   styleUrl: './cde-builder.component.scss',
 })
 export class CdeBuilderComponent implements AfterViewInit {
+  @ViewChild('formpreview') formComponent!: FormioComponent;
   public refreshForm: EventEmitter<FormioRefreshValue> = new EventEmitter();
   @Input() form: object = { components: [] };
   @Output() newVal = new EventEmitter<object>();
 
   constructor(public prism: PrismService) {}
+  
+  getComponentsKey(): string[] {
+    const util = new FormUtils();
+    return util.getComponentsKey(this.formComponent).sort();
+  }
 
   onChange(event) {
     this.newVal.emit(event.form);
