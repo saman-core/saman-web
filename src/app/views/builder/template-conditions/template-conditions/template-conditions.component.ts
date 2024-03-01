@@ -1,8 +1,10 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
-import { DynamicFlatNode, ResourceRepository } from '@saman-core/data';
+import { DynamicFlatNode, NodeModel, ResourceRepository } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
 import { TemplateConditionDialogComponent } from '../template-condition-dialog/template-condition-dialog.component';
+import { combineLatestWith } from 'rxjs/operators';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-template-conditions',
@@ -10,8 +12,9 @@ import { TemplateConditionDialogComponent } from '../template-condition-dialog/t
   styleUrl: './template-conditions.component.scss'
 })
 export class TemplateConditionsComponent {
-  dataSource2 = ELEMENT_DATA;
+  @ViewChild(MatTable) table: MatTable<unknown>;
   displayedColumns: string[] = ['property', 'value', 'visible', 'disable', 'alert', 'validate'];
+  elementData: ConditionNodes[] = [];
 
 
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
@@ -38,7 +41,33 @@ export class TemplateConditionsComponent {
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
   openDialog(productName: string, templateName: string) {
-    this._resourceRepository.getTemplate(productName, templateName).subscribe(() => {
+    this.elementData = [];
+    const templateObservable = this._resourceRepository.getTemplate(productName, templateName);
+    const conditionsObservable = this._resourceRepository.getAllConditionsPropertiesByTemplate(productName, templateName);
+    const combinedObservable = templateObservable.pipe(
+      combineLatestWith(conditionsObservable)
+    );
+
+    combinedObservable.subscribe(([node, conditions]) => {
+      const json = JSON.parse(atob(node.content));
+      const properties: string[] = json['properties'];
+      this.table.renderRows();
+
+      properties.forEach(p => this.elementData.push(new ConditionNodes(p)));
+
+
+      console.log(this.elementData);
+      
+      conditions.forEach(c => {
+        const found = this.elementData.find(e => e.property.toLowerCase() === c.property.toLowerCase());
+        if (typeof found === 'undefined') {
+          console.error(c);
+        } else {
+          console.log(c);
+        }
+      });
+      this.table.renderRows();
+
       this.templateNameSelected = templateName;
       this.step = 1;
     });
@@ -49,17 +78,12 @@ export class TemplateConditionsComponent {
   }
 }
 
-export interface PeriodicElement {
-  property: string;
-  value: number;
-  visible: string;
-  disable: string;
-  alert: string;
-  validate: string;
-}
+export class ConditionNodes {
+  public value: NodeModel | null = null;
+  public visible: NodeModel | null = null;
+  public disable: NodeModel | null = null;
+  public alert: NodeModel | null = null;
+  public validate: NodeModel | null = new NodeModel();
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {property: 'Hydrogen', value: 1.0079, visible: 'H', disable: 'Li', alert: 'Li', validate: 'Li'},
-  {property: 'Helium', value: 4.0026, visible: 'He', disable: 'Li', alert: 'Li', validate: 'Li'},
-  {property: 'Lithium', value: 6.941, visible: 'Li', disable: 'Li', alert: 'Li', validate: 'Li'},
-];
+  constructor(public property: string) {}
+}

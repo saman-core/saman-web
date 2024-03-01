@@ -1,11 +1,9 @@
-<h1>Builder</h1>
+<h1>Conditions</h1>
 
 <mat-accordion class="example-headers-align">
   <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        Select a Template to View or Edit
-      </mat-panel-title>
+      <mat-panel-title> Select a Template to View or Edit </mat-panel-title>
     </mat-expansion-panel-header>
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
@@ -13,16 +11,15 @@
         <button mat-icon-button (click)="openDialog(node.parent, node.item)">
           <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
         </button>
-        {{node.item}}
+        {{ node.item }}
       </mat-tree-node>
       <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-        <button mat-icon-button
-                [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
+        <button mat-icon-button [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
           <mat-icon class="mat-icon-rtl-mirror">
-            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
           </mat-icon>
         </button>
-        {{node.item}}
+        {{ node.item }}
       </mat-tree-node>
     </mat-tree>
   </mat-expansion-panel>
@@ -34,70 +31,116 @@
         Conditions
       </mat-panel-title>
       <mat-panel-description>
-        @if(templateNameSelected === '') {
+        @if (templateNameSelected === "") {
           Not Template Selected
         } @else {
-          Conditions for "<span style="text-transform:uppercase"><b>{{templateNameSelected}}</b></span>"
+          Conditions for "<span style="text-transform: uppercase"
+            ><b>{{ templateNameSelected }}</b></span
+          >"
         }
       </mat-panel-description>
     </mat-expansion-panel-header>
 
     <section class="example-container mat-elevation-z8" tabindex="0">
-    <mat-table [dataSource]="dataSource2">
+      <mat-table [dataSource]="elementData">
+        <ng-container matColumnDef="property" [sticky]="true">
+          <mat-header-cell *matHeaderCellDef> Properties </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.property }} </mat-cell>
+        </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="property" [sticky]="true">
-        <mat-header-cell *matHeaderCellDef> Properties </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.property}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="value">
+          <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            @if (element.value === null) {
+              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+                <mat-icon>add</mat-icon>
+              </button>
+            } @else {
+              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+                <mat-icon>draw</mat-icon>
+              </button>
+              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-cell>
+        </ng-container>
 
-      <!-- Weight Column -->
-      <ng-container matColumnDef="value">
-        <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <button mat-mini-fab matTooltip="Edit DMN" color="primary">
-            <mat-icon>draw</mat-icon>
-          </button>
-          <button mat-mini-fab matTooltip="Delete DMN" color="warn">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="visible">
+          <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            @if (element.visible === null) {
+              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+                <mat-icon>add</mat-icon>
+              </button>
+            } @else {
+              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+                <mat-icon>draw</mat-icon>
+              </button>
+              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-cell>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="visible">
-        <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <button mat-mini-fab matTooltip="Add DMN" color="accent">
-            <mat-icon>add</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="disable">
+          <mat-header-cell *matHeaderCellDef> Disable </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            @if (element.disable === null) {
+              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+                <mat-icon>add</mat-icon>
+              </button>
+            } @else {
+              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+                <mat-icon>draw</mat-icon>
+              </button>
+              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-cell>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="disable">
-        <mat-header-cell *matHeaderCellDef> Disable </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.disable}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="alert">
+          <mat-header-cell *matHeaderCellDef> Alert </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            @if (element.alert === null) {
+              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+                <mat-icon>add</mat-icon>
+              </button>
+            } @else {
+              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+                <mat-icon>draw</mat-icon>
+              </button>
+              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-cell>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="alert">
-        <mat-header-cell *matHeaderCellDef> Alert </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.alert}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="validate">
+          <mat-header-cell *matHeaderCellDef> Validate </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            @if (element.validate === null) {
+              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+                <mat-icon>add</mat-icon>
+              </button>
+            } @else {
+              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+                <mat-icon>draw</mat-icon>
+              </button>
+              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-cell>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="validate">
-        <mat-header-cell *matHeaderCellDef> Validate </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.validate}} </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
-    </mat-table>
-      </section>
-
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </section>
   </mat-expansion-panel>
-
 </mat-accordion>
