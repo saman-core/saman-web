@@ -51,15 +51,34 @@
         <ng-container matColumnDef="value">
           <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            @if (element.value === null) {
-              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+            @if (isUndefined(element.value)) {
+              <button
+                mat-mini-fab
+                matTooltip="Add DMN"
+                color="accent"
+                (click)="createDmn(productNameSelected, templateNameSelected, conType.VALUE)"
+              >
                 <mat-icon>add</mat-icon>
               </button>
             } @else {
-              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+              <button
+                mat-mini-fab
+                matTooltip="Edit DMN"
+                color="primary"
+                (click)="
+                  updateDmn(productNameSelected, templateNameSelected, element.value, conType.VALUE)
+                "
+              >
                 <mat-icon>draw</mat-icon>
               </button>
-              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+              <button
+                mat-mini-fab
+                matTooltip="Delete DMN"
+                color="warn"
+                (click)="
+                  deleteDmn(productNameSelected, templateNameSelected, element.value, conType.VALUE)
+                "
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             }
@@ -69,15 +88,34 @@
         <ng-container matColumnDef="visible">
           <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            @if (element.visible === null) {
-              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+            @if (isUndefined(element.visible)) {
+              <button
+                mat-mini-fab
+                matTooltip="Add DMN"
+                color="accent"
+                (click)="createDmn(productNameSelected, templateNameSelected, conType.VISIBLE)"
+              >
                 <mat-icon>add</mat-icon>
               </button>
             } @else {
-              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+              <button
+                mat-mini-fab
+                matTooltip="Edit DMN"
+                color="primary"
+                (click)="
+                  updateDmn(productNameSelected, templateNameSelected, element.visible, conType.VISIBLE)
+                "
+              >
                 <mat-icon>draw</mat-icon>
               </button>
-              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+              <button
+                mat-mini-fab
+                matTooltip="Delete DMN"
+                color="warn"
+                (click)="
+                  deleteDmn(productNameSelected, templateNameSelected, element.visible, conType.VISIBLE)
+                "
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             }
@@ -87,15 +125,34 @@
         <ng-container matColumnDef="disable">
           <mat-header-cell *matHeaderCellDef> Disable </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            @if (element.disable === null) {
-              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+            @if (isUndefined(element.disable)) {
+              <button
+                mat-mini-fab
+                matTooltip="Add DMN"
+                color="accent"
+                (click)="createDmn(productNameSelected, templateNameSelected, conType.DISABLE)"
+              >
                 <mat-icon>add</mat-icon>
               </button>
             } @else {
-              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+              <button
+                mat-mini-fab
+                matTooltip="Edit DMN"
+                color="primary"
+                (click)="
+                  updateDmn(productNameSelected, templateNameSelected, element.disable, conType.DISABLE)
+                "
+              >
                 <mat-icon>draw</mat-icon>
               </button>
-              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+              <button
+                mat-mini-fab
+                matTooltip="Delete DMN"
+                color="warn"
+                (click)="
+                  deleteDmn(productNameSelected, templateNameSelected, element.disable, conType.DISABLE)
+                "
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             }
@@ -105,15 +162,34 @@
         <ng-container matColumnDef="alert">
           <mat-header-cell *matHeaderCellDef> Alert </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            @if (element.alert === null) {
-              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+            @if (isUndefined(element.alert)) {
+              <button
+                mat-mini-fab
+                matTooltip="Add DMN"
+                color="accent"
+                (click)="createDmn(productNameSelected, templateNameSelected, conType.ALERT)"
+              >
                 <mat-icon>add</mat-icon>
               </button>
             } @else {
-              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+              <button
+                mat-mini-fab
+                matTooltip="Edit DMN"
+                color="primary"
+                (click)="
+                  updateDmn(productNameSelected, templateNameSelected, element.alert, conType.ALERT)
+                "
+              >
                 <mat-icon>draw</mat-icon>
               </button>
-              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+              <button
+                mat-mini-fab
+                matTooltip="Delete DMN"
+                color="warn"
+                (click)="
+                  deleteDmn(productNameSelected, templateNameSelected, element.alert, conType.ALERT)
+                "
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             }
@@ -123,15 +199,34 @@
         <ng-container matColumnDef="validate">
           <mat-header-cell *matHeaderCellDef> Validate </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            @if (element.validate === null) {
-              <button mat-mini-fab matTooltip="Add DMN" color="accent">
+            @if (isUndefined(element.validate)) {
+              <button
+                mat-mini-fab
+                matTooltip="Add DMN"
+                color="accent"
+                (click)="createDmn(productNameSelected, templateNameSelected, conType.VALIDATE)"
+              >
                 <mat-icon>add</mat-icon>
               </button>
             } @else {
-              <button mat-mini-fab matTooltip="Edit DMN" color="primary">
+              <button
+                mat-mini-fab
+                matTooltip="Edit DMN"
+                color="primary"
+                (click)="
+                  updateDmn(productNameSelected, templateNameSelected, element, conType.VALIDATE)
+                "
+              >
                 <mat-icon>draw</mat-icon>
               </button>
-              <button mat-mini-fab matTooltip="Delete DMN" color="warn">
+              <button
+                mat-mini-fab
+                matTooltip="Delete DMN"
+                color="warn"
+                (click)="
+                  deleteDmn(productNameSelected, templateNameSelected, element, conType.VALIDATE)
+                "
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             }
