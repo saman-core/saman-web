@@ -91,6 +91,8 @@ export class TemplateConditionsComponent {
       };
       const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
         data: conditionDialogRequest,
+        height: '80%',
+        width: '80%',
       });
       dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {
         if (response.accepted) {

@@ -21,3 +21,7 @@ $enable-rtl: true;
 
 // If you want to add something do it here
 @import "custom";
+
+.cdk-overlay-container {
+    z-index: 1040 !important;
+}

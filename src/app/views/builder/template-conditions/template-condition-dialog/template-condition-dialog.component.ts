@@ -14,11 +14,7 @@ export class TemplateConditionDialogComponent {
     public dialogRef: MatDialogRef<TemplateConditionsComponent>,
     @Inject(MAT_DIALOG_DATA) public requestData: ConditionDialogRequest,
   ) {
-    try {
-      this.data =  atob(requestData.data);
-    } catch(_) {
-      console.error('cant not parser data');
-    }
+    this.data =  requestData.data;
   }
 
   cancel(): void {
