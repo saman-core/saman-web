@@ -120,4 +120,19 @@ export class DatasourceConsumer {
       params: HeaderUtils.generateHttpParams(params),
     });
   }
+
+  deleteMethodWithBody<T, D>(
+    method: string,
+    item: D,
+    params: { [key: string]: string } = {},
+    blockScreen: boolean = false,
+    progressBar: boolean = true,
+    ignoreError: boolean = false,
+  ): Observable<T> {
+    return this._http.delete<T>(`${this._url}/${method}`, {
+      headers: HeaderUtils.generateHeaders(blockScreen, progressBar, ignoreError).headers,
+      params: HeaderUtils.generateHttpParams(params),
+      body: item,
+    });
+  }
 }

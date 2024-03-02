@@ -22,7 +22,7 @@ export class TemplateFormBuilderComponent implements OnInit {
   constructor(
     private _resourceRepository: ResourceRepository,
     private _alertSubscriptor: AlertSubscriptor,
-    public dialog: MatDialog,
+    private _dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -42,7 +42,7 @@ export class TemplateFormBuilderComponent implements OnInit {
     this._newJson['properties'] = this.builder.getComponentsKey();
     this.node.content = btoa(JSON.stringify(this._newJson));
 
-    const dialogRef = this.dialog.open(CommitDialogComponent, {
+    const dialogRef = this._dialog.open(CommitDialogComponent, {
       data: this.templateName,
     });
 

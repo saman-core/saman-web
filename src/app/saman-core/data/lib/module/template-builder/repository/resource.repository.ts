@@ -61,4 +61,8 @@ export class ResourceRepository implements Repository {
   public persistCondition(productName: string, templateName: string, propertyName: string, conditionType: ConditionTypeEnum, commitRequest: CommitRequestModel): Observable<NodeModel> {
     return this.datasource.saveMethod<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`, commitRequest);
   }
+
+  public deleteCondition(productName: string, templateName: string, propertyName: string, conditionType: ConditionTypeEnum, commitRequest: CommitRequestModel): Observable<NodeModel> {
+    return this.datasource.deleteMethodWithBody<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`, commitRequest);
+  }
 }

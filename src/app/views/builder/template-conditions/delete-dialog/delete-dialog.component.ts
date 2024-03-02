@@ -1,36 +1,32 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TemplateFormBuilderComponent } from '../template-form-builder/template-form-builder.component';
 import { FormControl, Validators } from '@angular/forms';
-
-export interface CommitDialogResponse {
-  message: string;
-  accepted: boolean;
-}
+import { TemplateConditionsComponent } from '../template-conditions/template-conditions.component';
+import { ConditionTypeEnum } from '@saman-core/data/lib/module/template-builder/model/condition-type.enum';
 
 @Component({
-  selector: 'app-commit-dialog',
-  templateUrl: './commit-dialog.component.html',
-  styleUrl: './commit-dialog.component.scss',
+  selector: 'app-delete-dialog',
+  templateUrl: './delete-dialog.component.html',
+  styleUrl: './delete-dialog.component.scss',
 })
-export class CommitDialogComponent {
+export class DeleteDialogComponent {
   message = new FormControl('', [
     Validators.required,
     Validators.minLength(8),
     Validators.maxLength(256),
   ]);
-  data: CommitDialogResponse;
+  data: DeleteDialogResponse;
 
   constructor(
-    public dialogRef: MatDialogRef<TemplateFormBuilderComponent>,
-    @Inject(MAT_DIALOG_DATA) public templateName: string,
+    public dialogRef: MatDialogRef<TemplateConditionsComponent>,
+    @Inject(MAT_DIALOG_DATA) public requestData: DeleteDialogRequest,
   ) {}
 
   cancel(): void {
     this.dialogRef.close({ message: '', accepted: false });
   }
 
-  accept(): CommitDialogResponse {
+  accept(): DeleteDialogResponse {
     return { message: this.message.value, accepted: true };
   }
 
@@ -43,4 +39,14 @@ export class CommitDialogComponent {
       ? 'The message must be between 8 and 256 characters'
       : '';
   }
+}
+
+export interface DeleteDialogRequest {
+  conditionType: ConditionTypeEnum;
+  templateName: string;
+}
+
+export interface DeleteDialogResponse {
+  message: string;
+  accepted: boolean;
 }

@@ -1,12 +1,15 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
-import { DynamicFlatNode, NodeModel, ResourceRepository } from '@saman-core/data';
+import { CommitRequestModel, DynamicFlatNode, NodeModel, ResourceRepository } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
 import { TemplateConditionDialogComponent } from '../template-condition-dialog/template-condition-dialog.component';
 import { combineLatestWith } from 'rxjs/operators';
 import { MatTable } from '@angular/material/table';
 import { ConditionsPropertyModel } from '@saman-core/data/lib/module/template-builder/model/conditions-property.model';
 import { ConditionTypeEnum } from '@saman-core/data/lib/module/template-builder/model/condition-type.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent, DeleteDialogRequest, DeleteDialogResponse } from '../delete-dialog/delete-dialog.component';
+import { AlertSubscriptor } from '@saman-core/core';
 
 @Component({
   selector: 'app-template-conditions',
@@ -28,7 +31,11 @@ export class TemplateConditionsComponent {
   productNameSelected = '';
   conType = ConditionTypeEnum;
 
-  constructor(private _resourceRepository: ResourceRepository) {
+  constructor(
+    private _resourceRepository: ResourceRepository,
+    private _dialog: MatDialog,
+    private _alertSubscriptor: AlertSubscriptor,
+  ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _resourceRepository);
 
@@ -72,12 +79,48 @@ export class TemplateConditionsComponent {
     console.log(conditionType);
   }
 
-  public updateDmn(productName: string, templateName: string, node: NodeModel, conditionType: ConditionTypeEnum) {
+  public updateDmn(
+    productName: string,
+    templateName: string,
+    node: NodeModel,
+    conditionType: ConditionTypeEnum,
+  ) {
     console.log(node);
   }
 
-  public deleteDmn(productName: string, templateName: string, node: NodeModel, conditionType: ConditionTypeEnum) {
-    console.log(node);
+  public deleteDmn(
+    productName: string,
+    templateName: string,
+    node: NodeModel,
+    conditionType: ConditionTypeEnum,
+  ) {
+    const deleteDialogRequest: DeleteDialogRequest = {
+      conditionType: conditionType,
+      templateName: templateName,
+    };
+    const dialogRef = this._dialog.open(DeleteDialogComponent, {
+      data: deleteDialogRequest,
+    });
+
+    dialogRef.afterClosed().subscribe((response: DeleteDialogResponse) => {
+      if (response.accepted) {
+        const commitRequest: CommitRequestModel = {
+          message: response.message,
+          data: node,
+        };
+        this._resourceRepository
+          .deleteCondition(productName, templateName, node.name, conditionType, commitRequest)
+          .subscribe({
+            next: (node) => {
+              this._alertSubscriptor.success(`Template deleted successfully. Response Id: ${node.id}`);
+            },
+            error: (e) => {
+              console.error(e);
+              this._alertSubscriptor.error('Template could not be saved');
+            },
+          });
+      }
+    });
   }
 
   private _fillElementData(node: NodeModel, conditions: ConditionsPropertyModel[]): void {

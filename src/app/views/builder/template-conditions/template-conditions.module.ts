@@ -8,10 +8,19 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { AlertModule } from '@saman-core/core';
+import { TemplateConditionsRoutingModule } from './template-conditions-routing.module';
 import { TemplateConditionsComponent } from './template-conditions/template-conditions.component';
 import { TemplateConditionDialogComponent } from './template-condition-dialog/template-condition-dialog.component';
-import { TemplateConditionsRoutingModule } from './template-conditions-routing.module';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 @NgModule({
   imports: [
@@ -26,10 +35,17 @@ import { TemplateConditionsRoutingModule } from './template-conditions-routing.m
     MatTableModule,
     MatIconModule,
     MatTooltipModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
   ],
   declarations: [
     TemplateConditionsComponent,
     TemplateConditionDialogComponent,
+    DeleteDialogComponent,
   ],
 })
 export class TemplateConditionsModule {}
