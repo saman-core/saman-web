@@ -33,7 +33,7 @@ export class TemplateStructureComponent {
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
-  openDialog(productName: string, templateName: string) {
+  openEditor(productName: string, templateName: string) {
     this._resourceRepository.getTemplate(productName, templateName).subscribe((node) => {
       this.dynamicEditorLoader.clear();
       const componentRef = this.dynamicEditorLoader.createComponent(TemplateFormBuilderComponent);

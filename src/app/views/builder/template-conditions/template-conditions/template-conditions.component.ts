@@ -2,7 +2,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommitRequestModel, DynamicFlatNode, NodeModel, ResourceRepository } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
-import { TemplateConditionDialogComponent } from '../template-condition-dialog/template-condition-dialog.component';
+import { ConditionDialogRequest, ConditionDialogResponse, TemplateConditionDialogComponent } from '../template-condition-dialog/template-condition-dialog.component';
 import { combineLatestWith } from 'rxjs/operators';
 import { MatTable } from '@angular/material/table';
 import { ConditionsPropertyModel } from '@saman-core/data/lib/module/template-builder/model/conditions-property.model';
@@ -85,7 +85,19 @@ export class TemplateConditionsComponent {
     node: NodeModel,
     conditionType: ConditionTypeEnum,
   ) {
-    console.log(node);
+    this._resourceRepository.getCondition(productName, templateName, node.name, conditionType).subscribe((node) => {
+      const conditionDialogRequest: ConditionDialogRequest = {
+        data: node.content,
+      };
+      const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
+        data: conditionDialogRequest,
+      });
+      dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {
+        if (response.accepted) {
+          console.log('ok');
+        }
+      });
+    });
   }
 
   public deleteDmn(

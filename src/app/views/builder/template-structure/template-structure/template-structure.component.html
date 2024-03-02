@@ -1,4 +1,4 @@
-<h1>Builder</h1>
+<h1>Template Form Builder</h1>
 
 <mat-accordion class="example-headers-align">
   <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
@@ -10,7 +10,7 @@
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-        <button mat-icon-button (click)="openDialog(node.parent, node.item)">
+        <button mat-icon-button (click)="openEditor(node.parent, node.item)">
           <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
         </button>
         {{node.item}}

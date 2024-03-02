@@ -1,2 +1,8 @@
-<h1>DMN</h1>
-<app-dmn-editor [dmnData]="data"></app-dmn-editor>
+<h2 mat-dialog-title>DMN Editor</h2>
+<mat-dialog-content>
+  <app-dmn-editor [dmnData]="data"></app-dmn-editor>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()" cdkFocusInitial>Not Edit</button>
+  <button mat-button [mat-dialog-close]="accept()">Confirm</button>
+</mat-dialog-actions>
