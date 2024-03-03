@@ -1,6 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TemplateConditionsComponent } from '../template-conditions/template-conditions.component';
+import { DmnEditorComponent } from '@saman-core/common';
 
 @Component({
   selector: 'app-template-condition-dialog',
@@ -8,6 +9,7 @@ import { TemplateConditionsComponent } from '../template-conditions/template-con
   styleUrl: './template-condition-dialog.component.scss'
 })
 export class TemplateConditionDialogComponent {
+  @ViewChild('dmneditor') dmnEditor!: DmnEditorComponent;
   data = '';
 
   constructor(
@@ -21,8 +23,10 @@ export class TemplateConditionDialogComponent {
     this.dialogRef.close({ data: '', accepted: false });
   }
 
-  accept(): ConditionDialogResponse {
-    return { data: '', accepted: true };
+  accept(): void {
+    this.dmnEditor.getContent().subscribe(data => {
+      this.dialogRef.close({ data: data, accepted: true });
+    });
   }
 }
 
@@ -32,5 +36,6 @@ export interface ConditionDialogRequest {
 
 export interface ConditionDialogResponse {
   data: string;
+  message: string;
   accepted: boolean;
 }

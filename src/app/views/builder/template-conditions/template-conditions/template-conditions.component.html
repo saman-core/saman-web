@@ -8,7 +8,7 @@
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-        <button mat-icon-button (click)="openDialog(node.parent, node.item)">
+        <button mat-icon-button (click)="openConditionSelector(node.parent, node.item)">
           <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
         </button>
         {{ node.item }}
@@ -56,7 +56,7 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(productNameSelected, templateNameSelected, conType.VALUE)"
+                (click)="createDmn(productNameSelected, templateNameSelected, element.property, conType.VALUE)"
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -66,7 +66,7 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(productNameSelected, templateNameSelected, element.value, conType.VALUE)
+                  updateDmn(productNameSelected, templateNameSelected, element.value.name, conType.VALUE)
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -93,7 +93,7 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(productNameSelected, templateNameSelected, conType.VISIBLE)"
+                (click)="createDmn(productNameSelected, templateNameSelected, element.property, conType.VISIBLE)"
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -103,7 +103,7 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(productNameSelected, templateNameSelected, element.visible, conType.VISIBLE)
+                  updateDmn(productNameSelected, templateNameSelected, element.visible.name, conType.VISIBLE)
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -130,7 +130,7 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(productNameSelected, templateNameSelected, conType.DISABLE)"
+                (click)="createDmn(productNameSelected, templateNameSelected, element.property, conType.DISABLE)"
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -140,7 +140,7 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(productNameSelected, templateNameSelected, element.disable, conType.DISABLE)
+                  updateDmn(productNameSelected, templateNameSelected, element.disable.name, conType.DISABLE)
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -167,7 +167,7 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(productNameSelected, templateNameSelected, conType.ALERT)"
+                (click)="createDmn(productNameSelected, templateNameSelected, element.property, conType.ALERT)"
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -177,7 +177,7 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(productNameSelected, templateNameSelected, element.alert, conType.ALERT)
+                  updateDmn(productNameSelected, templateNameSelected, element.alert.name, conType.ALERT)
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -204,7 +204,7 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(productNameSelected, templateNameSelected, conType.VALIDATE)"
+                (click)="createDmn(productNameSelected, templateNameSelected, element.property, conType.VALIDATE)"
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -214,7 +214,7 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(productNameSelected, templateNameSelected, element, conType.VALIDATE)
+                  updateDmn(productNameSelected, templateNameSelected, element.validate.name, conType.VALIDATE)
                 "
               >
                 <mat-icon>draw</mat-icon>

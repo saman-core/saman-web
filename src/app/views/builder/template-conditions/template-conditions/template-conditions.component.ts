@@ -1,14 +1,27 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
-import { CommitRequestModel, DynamicFlatNode, NodeModel, ResourceRepository } from '@saman-core/data';
+import {
+  CommitRequestModel,
+  DynamicFlatNode,
+  NodeModel,
+  ResourceRepository,
+} from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
-import { ConditionDialogRequest, ConditionDialogResponse, TemplateConditionDialogComponent } from '../template-condition-dialog/template-condition-dialog.component';
+import {
+  ConditionDialogRequest,
+  ConditionDialogResponse,
+  TemplateConditionDialogComponent,
+} from '../template-condition-dialog/template-condition-dialog.component';
 import { combineLatestWith } from 'rxjs/operators';
 import { MatTable } from '@angular/material/table';
 import { ConditionsPropertyModel } from '@saman-core/data/lib/module/template-builder/model/conditions-property.model';
 import { ConditionTypeEnum } from '@saman-core/data/lib/module/template-builder/model/condition-type.enum';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteDialogComponent, DeleteDialogRequest, DeleteDialogResponse } from '../delete-dialog/delete-dialog.component';
+import {
+  DeleteDialogComponent,
+  DeleteDialogRequest,
+  DeleteDialogResponse,
+} from '../delete-dialog/delete-dialog.component';
 import { AlertSubscriptor } from '@saman-core/core';
 
 @Component({
@@ -50,7 +63,7 @@ export class TemplateConditionsComponent {
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
-  openDialog(productName: string, templateName: string) {
+  openConditionSelector(productName: string, templateName: string) {
     this.elementData = [];
     this.table.renderRows();
     const templateObservable = this._resourceRepository.getTemplate(productName, templateName);
@@ -75,31 +88,61 @@ export class TemplateConditionsComponent {
     return typeof v === 'undefined';
   }
 
-  public createDmn(productName: string, templateName: string, conditionType: ConditionTypeEnum) {
+  public createDmn(
+    productName: string,
+    templateName: string,
+    propertyName: string,
+    conditionType: ConditionTypeEnum,
+  ) {
     console.log(conditionType);
   }
 
   public updateDmn(
     productName: string,
     templateName: string,
-    node: NodeModel,
+    propertyName: string,
     conditionType: ConditionTypeEnum,
   ) {
-    this._resourceRepository.getCondition(productName, templateName, node.name, conditionType).subscribe((node) => {
-      const conditionDialogRequest: ConditionDialogRequest = {
-        data: node.content,
-      };
-      const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
-        data: conditionDialogRequest,
-        height: '80%',
-        width: '80%',
+    this._resourceRepository
+      .getCondition(productName, templateName, propertyName, conditionType)
+      .subscribe((node) => {
+        const conditionDialogRequest: ConditionDialogRequest = {
+          data: node.content,
+        };
+        const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
+          data: conditionDialogRequest,
+          height: '80%',
+          width: '80%',
+        });
+        dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {
+          if (response.accepted) {
+            node.content = response.data;
+            const commitRequest: CommitRequestModel = {
+              message: response.message,
+              data: node,
+            };
+            this._resourceRepository
+              .persistCondition(
+                productName,
+                templateName,
+                propertyName,
+                conditionType,
+                commitRequest,
+              )
+              .subscribe({
+                next: (node) => {
+                  this._alertSubscriptor.success(
+                    `Template updated successfully. Response Id: ${node.id}`,
+                  );
+                },
+                error: (e) => {
+                  console.error(e);
+                  this._alertSubscriptor.error('Template could not be saved');
+                },
+              });
+          }
+        });
       });
-      dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {
-        if (response.accepted) {
-          console.log('ok');
-        }
-      });
-    });
   }
 
   public deleteDmn(
@@ -126,7 +169,9 @@ export class TemplateConditionsComponent {
           .deleteCondition(productName, templateName, node.name, conditionType, commitRequest)
           .subscribe({
             next: (node) => {
-              this._alertSubscriptor.success(`Template deleted successfully. Response Id: ${node.id}`);
+              this._alertSubscriptor.success(
+                `Template deleted successfully. Response Id: ${node.id}`,
+              );
             },
             error: (e) => {
               console.error(e);
