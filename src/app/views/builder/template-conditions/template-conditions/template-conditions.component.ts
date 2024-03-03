@@ -57,6 +57,26 @@ export class TemplateConditionsComponent {
     });
   }
 
+  refreshProductTree() {
+    this._resourceRepository.getAllProducts().subscribe((products) => {
+      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
+    });
+  }
+
+  refreshConditionsTable() {
+    this.elementData = [];
+    this.table.renderRows();
+    const templateObservable = this._resourceRepository.getTemplate(this.productNameSelected, this.templateNameSelected);
+    const conditionsObservable = this._resourceRepository.getAllConditionsPropertiesByTemplate(
+      this.productNameSelected,
+      this.templateNameSelected,
+    );
+    const combinedObservable = templateObservable.pipe(combineLatestWith(conditionsObservable));
+    combinedObservable.subscribe(([node, conditions]) => {
+      this._fillElementData(node, conditions);
+    });
+  }
+
   getLevel = (node: DynamicFlatNode) => node.level;
 
   isExpandable = (node: DynamicFlatNode) => node.expandable;
@@ -125,6 +145,7 @@ export class TemplateConditionsComponent {
               this._alertSubscriptor.success(
                 `Template updated successfully. Response Id: ${node.id}`,
               );
+              this.refreshConditionsTable();
             },
             error: (e) => {
               console.error(e);
@@ -172,6 +193,7 @@ export class TemplateConditionsComponent {
                   this._alertSubscriptor.success(
                     `Template updated successfully. Response Id: ${node.id}`,
                   );
+                  this.refreshConditionsTable();
                 },
                 error: (e) => {
                   console.error(e);
@@ -210,6 +232,7 @@ export class TemplateConditionsComponent {
               this._alertSubscriptor.success(
                 `Template deleted successfully. Response Id: ${node.id}`,
               );
+              this.refreshConditionsTable();
             },
             error: (e) => {
               console.error(e);

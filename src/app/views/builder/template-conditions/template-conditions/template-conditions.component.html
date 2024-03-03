@@ -6,6 +6,18 @@
       <mat-panel-title> Select a Template to View or Edit </mat-panel-title>
     </mat-expansion-panel-header>
 
+    <section>
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="Update"
+        matTooltip="Update"
+        (click)="refreshProductTree()"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </section>
+
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         <button mat-icon-button (click)="openConditionSelector(node.parent, node.item)">
@@ -40,6 +52,18 @@
         }
       </mat-panel-description>
     </mat-expansion-panel-header>
+
+    <section>
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="Update"
+        matTooltip="Update"
+        (click)="refreshConditionsTable()"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </section>
 
     <section class="example-container mat-elevation-z8" tabindex="0">
       <mat-table [dataSource]="elementData">

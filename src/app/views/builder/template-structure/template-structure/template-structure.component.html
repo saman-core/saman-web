@@ -3,26 +3,35 @@
 <mat-accordion class="example-headers-align">
   <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        Select a Template to View or Edit
-      </mat-panel-title>
+      <mat-panel-title> Select a Template to View or Edit </mat-panel-title>
     </mat-expansion-panel-header>
+
+    <section>
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="Update"
+        matTooltip="Update"
+        (click)="refreshProductTree()"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </section>
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         <button mat-icon-button (click)="openEditor(node.parent, node.item)">
           <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
         </button>
-        {{node.item}}
+        {{ node.item }}
       </mat-tree-node>
       <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-        <button mat-icon-button
-                [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
+        <button mat-icon-button [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
           <mat-icon class="mat-icon-rtl-mirror">
-            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
           </mat-icon>
         </button>
-        {{node.item}}
+        {{ node.item }}
       </mat-tree-node>
     </mat-tree>
   </mat-expansion-panel>
@@ -34,16 +43,16 @@
         Builder
       </mat-panel-title>
       <mat-panel-description>
-        @if(templateNameSelected === '') {
+        @if (templateNameSelected === "") {
           Not Template Selected
         } @else {
-          Edit Template "<span style="text-transform:uppercase"><b>{{templateNameSelected}}</b></span>"
+          Edit Template "<span style="text-transform: uppercase"
+            ><b>{{ templateNameSelected }}</b></span
+          >"
         }
       </mat-panel-description>
     </mat-expansion-panel-header>
 
     <ng-template #dynamicEditorLoader></ng-template>
-
   </mat-expansion-panel>
-
 </mat-accordion>

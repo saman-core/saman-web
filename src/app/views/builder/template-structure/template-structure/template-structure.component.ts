@@ -27,6 +27,12 @@ export class TemplateStructureComponent {
     });
   }
 
+  refreshProductTree() {
+    this._resourceRepository.getAllProducts().subscribe((products) => {
+      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
+    });
+  }
+
   getLevel = (node: DynamicFlatNode) => node.level;
 
   isExpandable = (node: DynamicFlatNode) => node.expandable;
