@@ -21,6 +21,7 @@ import { TemplateConditionsRoutingModule } from './template-conditions-routing.m
 import { TemplateConditionsComponent } from './template-conditions/template-conditions.component';
 import { TemplateConditionDialogComponent } from './template-condition-dialog/template-condition-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { CommitDialogComponent } from './commit-dialog/commit-dialog.component';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
     TemplateConditionsComponent,
     TemplateConditionDialogComponent,
     DeleteDialogComponent,
+    CommitDialogComponent,
   ],
 })
 export class TemplateConditionsModule {}

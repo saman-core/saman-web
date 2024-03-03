@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Commit Message</h2>
+<mat-dialog-content>
+  <p>
+    Please write a message if you really want to persist the condition {{ request.condition }} of
+    {{ request.templateName }} template
+  </p>
+  <mat-form-field>
+    <mat-label>Message</mat-label>
+    <input matInput placeholder="type a message" [formControl]="message" required />
+    @if (message.invalid) {
+      <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()" cdkFocusInitial>Not Persist</button>
+  <button mat-button [mat-dialog-close]="accept()" [disabled]="message.invalid">Confirm</button>
+</mat-dialog-actions>

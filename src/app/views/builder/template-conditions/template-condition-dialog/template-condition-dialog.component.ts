@@ -1,22 +1,28 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TemplateConditionsComponent } from '../template-conditions/template-conditions.component';
 import { DmnEditorComponent } from '@saman-core/common';
+import {
+  CommitDialogComponent,
+  CommitDialogRequest,
+  CommitDialogResponse,
+} from '../commit-dialog/commit-dialog.component';
 
 @Component({
   selector: 'app-template-condition-dialog',
   templateUrl: './template-condition-dialog.component.html',
-  styleUrl: './template-condition-dialog.component.scss'
+  styleUrl: './template-condition-dialog.component.scss',
 })
 export class TemplateConditionDialogComponent {
   @ViewChild('dmneditor') dmnEditor!: DmnEditorComponent;
   data = '';
 
   constructor(
+    private _dialog: MatDialog,
     public dialogRef: MatDialogRef<TemplateConditionsComponent>,
     @Inject(MAT_DIALOG_DATA) public requestData: ConditionDialogRequest,
   ) {
-    this.data =  requestData.data;
+    this.data = requestData.data;
   }
 
   cancel(): void {
@@ -24,8 +30,19 @@ export class TemplateConditionDialogComponent {
   }
 
   accept(): void {
-    this.dmnEditor.getContent().subscribe(data => {
-      this.dialogRef.close({ data: data, accepted: true });
+    const commitDialogRequest: CommitDialogRequest = {
+      templateName: '',
+      condition: '',
+    };
+    const commitDialogRef = this._dialog.open(CommitDialogComponent, {
+      data: commitDialogRequest,
+    });
+    commitDialogRef.afterClosed().subscribe((response: CommitDialogResponse) => {
+      if (response.accepted) {
+        this.dmnEditor.getContent().subscribe((data) => {
+          this.dialogRef.close({ data: data, accepted: true, message: response.message });
+        });
+      }
     });
   }
 }
