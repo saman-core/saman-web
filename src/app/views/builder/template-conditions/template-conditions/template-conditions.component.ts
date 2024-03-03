@@ -94,7 +94,45 @@ export class TemplateConditionsComponent {
     propertyName: string,
     conditionType: ConditionTypeEnum,
   ) {
-    console.log(conditionType);
+    const node: NodeModel = {
+      name: propertyName,
+    };
+    const conditionDialogRequest: ConditionDialogRequest = {
+      data: '',
+    };
+    const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
+      data: conditionDialogRequest,
+      height: '80%',
+      width: '80%',
+    });
+    dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {
+      if (response.accepted) {
+        node.content = response.data;
+        const commitRequest: CommitRequestModel = {
+          message: response.message,
+          data: node,
+        };
+        this._resourceRepository
+          .persistCondition(
+            productName,
+            templateName,
+            propertyName,
+            conditionType,
+            commitRequest,
+          )
+          .subscribe({
+            next: (node) => {
+              this._alertSubscriptor.success(
+                `Template updated successfully. Response Id: ${node.id}`,
+              );
+            },
+            error: (e) => {
+              console.error(e);
+              this._alertSubscriptor.error('Template could not be created');
+            },
+          });
+      }
+    });
   }
 
   public updateDmn(
