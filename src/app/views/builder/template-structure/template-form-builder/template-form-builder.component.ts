@@ -4,6 +4,7 @@ import { AlertSubscriptor } from '@saman-core/core';
 import { CommitRequestModel, NodeModel, ResourceRepository } from '@saman-core/data';
 import { CdeBuilderComponent } from '@saman-core/common';
 import { CommitDialogComponent, CommitDialogResponse } from '../commit-dialog/commit-dialog.component';
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-template-form-builder',
@@ -27,7 +28,7 @@ export class TemplateFormBuilderComponent implements OnInit {
 
   ngOnInit(): void {
     try {
-      this.initialJson = JSON.parse(atob(this.node.content));
+      this.initialJson = JSON.parse(Buffer.from(this.node.content, 'base64').toString('utf-8'));
       this._newJson = this.initialJson;
     } catch (_) {
       console.error('initial node content parser error');
@@ -40,7 +41,7 @@ export class TemplateFormBuilderComponent implements OnInit {
 
   public save(): void {
     this._newJson['properties'] = this.builder.getComponentsKey();
-    this.node.content = btoa(JSON.stringify(this._newJson));
+    this.node.content = Buffer.from(JSON.stringify(this._newJson), 'utf-8').toString('base64');
 
     const dialogRef = this._dialog.open(CommitDialogComponent, {
       data: this.templateName,

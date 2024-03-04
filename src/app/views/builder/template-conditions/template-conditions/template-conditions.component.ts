@@ -23,6 +23,7 @@ import {
   DeleteDialogResponse,
 } from '../delete-dialog/delete-dialog.component';
 import { AlertSubscriptor } from '@saman-core/core';
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-template-conditions',
@@ -244,7 +245,7 @@ export class TemplateConditionsComponent {
   }
 
   private _fillElementData(node: NodeModel, conditions: ConditionsPropertyModel[]): void {
-    const json = JSON.parse(atob(node.content));
+    const json = JSON.parse(Buffer.from(node.content, 'base64').toString('utf-8'));
     const properties: string[] = json['properties'];
     const conditionsWithOutproperty: ConditionNodes[] = [];
     properties.forEach((p) => this.elementData.push(new ConditionNodes(p)));
