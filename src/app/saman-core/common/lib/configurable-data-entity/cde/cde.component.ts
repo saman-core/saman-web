@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormioComponent } from '@formio/angular';
 import {
   ConditionModel,
@@ -8,6 +8,7 @@ import {
   DatasourceConsumer,
   TemplateRepository,
 } from '@saman-core/data';
+import { filter, first } from 'rxjs';
 import { PrismService } from '../prism.service';
 
 @Component({
@@ -15,54 +16,86 @@ import { PrismService } from '../prism.service';
   templateUrl: './cde.component.html',
   styleUrl: './cde.component.scss',
 })
-export class CdeComponent implements AfterViewInit, OnInit {
+export class CdeComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('formio') formComponent!: FormioComponent;
   @Input() productName: string;
   @Input() templateName: string;
   private _consumer: DatasourceConsumer;
   form: object = { components: [] };
+  data: object = {};
 
   constructor(
     public _prism: PrismService,
     private _templateRepository: TemplateRepository,
     private _conditionRepository: ConditionRepository,
-  ) {}
+  ) {
+    this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
+  }
 
   ngOnInit(): void {
-    this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
     this._templateRepository
       .getJson(this.productName, this.templateName)
-      .subscribe((json) => (this.form = json));
+      .subscribe((json) => this._init(json));
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this._prism.init();
+    this.formComponent.change
+      .asObservable()
+      .pipe(filter((f) => typeof f['changed'] !== 'undefined'))
+      .subscribe((ch) => (this.data = ch['data']));
   }
 
-  callConditions(conditionRequest: ConditionRequestModel): void {
+  private _init(json: object): void {
+    this.form = json;
+    this.formComponent.ready
+      .asObservable()
+      .pipe(first())
+      .subscribe((webForm) => {
+        webForm.formio.on(
+          'blur',
+          (c) => {
+            this._callConditions(c.component.key, false);
+          },
+          true,
+        );
+      });
+  }
+
+  private _callConditions(property: string, isInitial: boolean): void {
+    const conditionRequest: ConditionRequestModel = {
+      variables: new Map(Object.entries(this.data)),
+      modifiedProperties: [property],
+      isInitial: isInitial,
+    };
+
     this._conditionRepository
       .eval(this._consumer, conditionRequest)
       .subscribe((conditions: ConditionModel[]) => {
-        conditions.forEach((condition) => {
-          switch (condition.conditionType) {
-            case ConditionTypeEnum.VALUE:
-              this._setValueProperty(condition);
-              break;
-            case ConditionTypeEnum.VISIBLE:
-              this._setVisibleProperty(condition);
-              break;
-            case ConditionTypeEnum.DISABLE:
-              this._setDisableProperty(condition);
-              break;
-            case ConditionTypeEnum.ALERT:
-              this._throwAlertProperty(condition);
-              break;
-            case ConditionTypeEnum.VALIDATE:
-              this._setValidateProperty(condition);
-              break;
-          }
-        });
+        this._setConditions(conditions);
       });
+  }
+
+  private _setConditions(conditions: ConditionModel[]): void {
+    conditions.forEach((condition) => {
+      switch (condition.conditionType) {
+        case ConditionTypeEnum.VALUE:
+          this._setValueProperty(condition);
+          break;
+        case ConditionTypeEnum.VISIBLE:
+          this._setVisibleProperty(condition);
+          break;
+        case ConditionTypeEnum.DISABLE:
+          this._setDisableProperty(condition);
+          break;
+        case ConditionTypeEnum.ALERT:
+          this._throwAlertProperty(condition);
+          break;
+        case ConditionTypeEnum.VALIDATE:
+          this._setValidateProperty(condition);
+          break;
+      }
+    });
   }
 
   private _setValueProperty(condition: ConditionModel): void {
@@ -108,5 +141,9 @@ export class CdeComponent implements AfterViewInit, OnInit {
       true,
     );
     */
+  }
+
+  ngOnDestroy(): void {
+    this.formComponent.formio.off('blur');
   }
 }

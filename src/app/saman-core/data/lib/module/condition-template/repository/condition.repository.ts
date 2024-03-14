@@ -25,6 +25,9 @@ export class ConditionRepository {
     return consumer.saveMethod<ConditionModel[], ConditionRequestModel>(
       'eval',
       conditionRequest,
+      {},
+      true,
+      true
     );
   }
 }
