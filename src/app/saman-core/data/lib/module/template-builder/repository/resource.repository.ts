@@ -11,9 +11,9 @@ import { ConditionsPropertyModel } from '../model/conditions-property.model';
 @Injectable()
 export class ResourceRepository implements Repository {
   datasource: DatasourceConsumer;
-  private _dataformat = 'format1';
-  private _port = '8080';
-  private _server = '';
+  private _dataformat = 'format2';
+  private _port = '';
+  private _server = 'template-builder';
   private _resource = 'products';
 
   constructor(private _datasourceFactory: DatasourceFactory) {
