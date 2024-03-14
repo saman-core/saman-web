@@ -15,7 +15,7 @@ import {
 import { combineLatestWith } from 'rxjs/operators';
 import { MatTable } from '@angular/material/table';
 import { ConditionsPropertyModel } from '@saman-core/data/lib/module/template-builder/model/conditions-property.model';
-import { ConditionTypeEnum } from '@saman-core/data/lib/module/template-builder/model/condition-type.enum';
+import { ConditionTypeEnum } from '@saman-core/data';
 import { MatDialog } from '@angular/material/dialog';
 import {
   DeleteDialogComponent,

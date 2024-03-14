@@ -19,6 +19,8 @@ import { ChartjsModule } from '@coreui/angular-chartjs';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
+import { TemplateModule } from '@saman-core/data';
+import { ConfigurableDataEntityModule } from '@saman-core/common';
 
 @NgModule({
   imports: [
@@ -37,7 +39,9 @@ import { DashboardComponent } from './dashboard.component';
     ButtonGroupModule,
     ChartjsModule,
     AvatarModule,
-    TableModule
+    TableModule,
+    TemplateModule,
+    ConfigurableDataEntityModule,
   ],
   declarations: [DashboardComponent]
 })

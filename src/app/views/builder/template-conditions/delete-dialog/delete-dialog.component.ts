@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { TemplateConditionsComponent } from '../template-conditions/template-conditions.component';
-import { ConditionTypeEnum } from '@saman-core/data/lib/module/template-builder/model/condition-type.enum';
+import { ConditionTypeEnum } from '@saman-core/data';
 
 @Component({
   selector: 'app-delete-dialog',

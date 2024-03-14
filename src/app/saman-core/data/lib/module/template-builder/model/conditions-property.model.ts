@@ -1,4 +1,4 @@
-import { ConditionTypeEnum } from "./condition-type.enum";
+import { ConditionTypeEnum } from "@saman-core/data";
 import { NodeModel } from "./node.model";
 
 export class ConditionsPropertyModel {

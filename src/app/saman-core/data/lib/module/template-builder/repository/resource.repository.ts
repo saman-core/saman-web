@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatasourceConsumer } from '../../../base/datasource/datasource.consumer';
 import { DatasourceFactory } from '../../../base/datasource/datasource.factory';
-import { Repository } from '@saman-core/data/lib/base/datasource/repository';
+import { ConditionTypeEnum, Repository } from '@saman-core/data';
 import { NodeModel } from '../model/node.model';
 import { CommitRequestModel } from '../model/commit-request.model';
 import { ConditionsPropertyModel } from '../model/conditions-property.model';
-import { ConditionTypeEnum } from '../model/condition-type.enum';
 
 
 @Injectable()

@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Formio, FormioModule, Templates } from '@formio/angular';
+import { FormioModule, Templates } from '@formio/angular';
 import { FormioGrid } from '@formio/angular/grid';
 import { FormioResources } from '@formio/angular/resource';
-import { Utils } from '@formio/js';
-import bootstrap4 from '@formio/bootstrap/bootstrap4';
+import { Utils } from 'formiojs';
 
 import { CdeComponent } from './cde/cde.component';
 import { CdeBuilderComponent } from './cde-builder/cde-builder.component';
 import { PrismService } from './prism.service';
 import { HTML } from './builder-edit-form';
 import Evaluator = Utils.Evaluator;
+import { ConditionTemplateModule, TemplateModule } from '@saman-core/data';
 
-Formio.use(bootstrap4);
 
 Templates.current = {
   builderEditForm: {
@@ -83,7 +82,9 @@ Templates.current = {
   imports: [
     CommonModule,
     FormioModule,
-    FormioGrid
+    FormioGrid,
+    TemplateModule,
+    ConditionTemplateModule,
   ],
   providers: [
     PrismService,

@@ -9,7 +9,17 @@ export * from './lib/base/data-base.module';
 
 export * from './lib/module/common/dynamic-flat-node';
 
+export * from './lib/module/common-model/model/condition-type.enum';
+
+export * from './lib/module/condition-template/model/condition-request.model';
+export * from './lib/module/condition-template/model/condition.model';
+export * from './lib/module/condition-template/repository/condition.repository';
+export * from './lib/module/condition-template/condition-template.module';
+
 export * from './lib/module/template-builder/model/commit-request.model';
 export * from './lib/module/template-builder/model/node.model';
 export * from './lib/module/template-builder/repository/resource.repository';
 export * from './lib/module/template-builder/template-builder.module';
+
+export * from './lib/module/template/repository/template.repository';
+export * from './lib/module/template/template.module';

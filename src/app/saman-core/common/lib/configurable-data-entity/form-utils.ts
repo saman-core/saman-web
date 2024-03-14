@@ -1,5 +1,5 @@
 import { FormioComponent, FormioUtils } from '@formio/angular';
-import { Component as Component2 } from '@formio/js/types/components/_classes/component/component';
+import { Component as Component2 } from 'formiojs/types/components/_classes/component/component';
 
 export class FormUtils {
   private _keys: string[] = [];
