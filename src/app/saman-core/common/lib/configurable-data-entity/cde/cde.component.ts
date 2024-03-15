@@ -28,14 +28,13 @@ export class CdeComponent implements AfterViewInit, OnInit, OnDestroy {
     public _prism: PrismService,
     private _templateRepository: TemplateRepository,
     private _conditionRepository: ConditionRepository,
-  ) {
-    this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
-  }
+  ) {}
 
   ngOnInit(): void {
     this._templateRepository
       .getJson(this.productName, this.templateName)
       .subscribe((json) => this._init(json));
+    this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
   }
 
   ngAfterViewInit(): void {
@@ -55,7 +54,7 @@ export class CdeComponent implements AfterViewInit, OnInit, OnDestroy {
         webForm.formio.on(
           'blur',
           (c) => {
-            this._callConditions(c.component.key, false);
+            this._callConditions(c.component.key, true);
           },
           true,
         );
@@ -64,7 +63,7 @@ export class CdeComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private _callConditions(property: string, isInitial: boolean): void {
     const conditionRequest: ConditionRequestModel = {
-      variables: new Map(Object.entries(this.data)),
+      variables: this.data,
       modifiedProperties: [property],
       isInitial: isInitial,
     };

@@ -31,6 +31,7 @@ import { Buffer } from 'buffer';
   styleUrl: './template-conditions.component.scss',
 })
 export class TemplateConditionsComponent {
+  static readonly NAMESPACE = 'saman-core';
   static readonly NOT_FOUND = ' [Not_Found]';
   @ViewChild(MatTable) table: MatTable<unknown>;
   displayedColumns: string[] = ['property', 'value', 'visible', 'disable', 'alert', 'validate'];
@@ -120,6 +121,8 @@ export class TemplateConditionsComponent {
     };
     const conditionDialogRequest: ConditionDialogRequest = {
       data: '',
+      namespace: TemplateConditionsComponent.NAMESPACE,
+      dmnName: this._generateDmnName(propertyName, conditionType),
     };
     const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
       data: conditionDialogRequest,
@@ -168,6 +171,8 @@ export class TemplateConditionsComponent {
       .subscribe((node) => {
         const conditionDialogRequest: ConditionDialogRequest = {
           data: node.content,
+          namespace: TemplateConditionsComponent.NAMESPACE,
+          dmnName: this._generateDmnName(propertyName, conditionType),
         };
         const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
           data: conditionDialogRequest,
@@ -242,6 +247,10 @@ export class TemplateConditionsComponent {
           });
       }
     });
+  }
+
+  private _generateDmnName(templateName: string, conditionType: ConditionTypeEnum): string {
+    return `${templateName}_${conditionType.toLowerCase()}`;
   }
 
   private _fillElementData(node: NodeModel, conditions: ConditionsPropertyModel[]): void {

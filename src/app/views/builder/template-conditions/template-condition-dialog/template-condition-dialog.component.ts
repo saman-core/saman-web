@@ -15,7 +15,9 @@ import {
 })
 export class TemplateConditionDialogComponent {
   @ViewChild('dmneditor') dmnEditor!: DmnEditorComponent;
-  data = '';
+  data: string;
+  dmnName: string;
+  namespace: string;
 
   constructor(
     private _dialog: MatDialog,
@@ -23,6 +25,8 @@ export class TemplateConditionDialogComponent {
     @Inject(MAT_DIALOG_DATA) public requestData: ConditionDialogRequest,
   ) {
     this.data = requestData.data;
+    this.dmnName = requestData.dmnName;
+    this.namespace = requestData.namespace;
   }
 
   cancel(): void {
@@ -49,6 +53,8 @@ export class TemplateConditionDialogComponent {
 
 export interface ConditionDialogRequest {
   data: string;
+  dmnName: string;
+  namespace: string;
 }
 
 export interface ConditionDialogResponse {

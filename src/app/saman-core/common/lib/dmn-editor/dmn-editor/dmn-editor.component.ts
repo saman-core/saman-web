@@ -14,17 +14,31 @@ export class DmnEditorComponent implements OnInit {
   editor: StandaloneEditorApi;
   @Input() dmnData: string = '';
   @Input() readOnly: boolean = false;
+  @Input() dmnName: string = '';
+  @Input() namespace: string = '';
 
   ngOnInit(): void {
     this.editor = DmnEditor.open({
       container: this.dmnDiv.nativeElement,
-      initialContent: Promise.resolve(Buffer.from(this.dmnData, 'base64').toString('utf-8')),
+      initialContent: Promise.resolve(this._replaceBase64ParametersAndCode(this.dmnData)),
       readOnly: this.readOnly,
     });
   }
 
   getContent(): Observable<string> {
-    return from(this.editor.getContent()).pipe(map(xml => Buffer.from(xml, 'utf-8').toString('base64')));
+    return from(this.editor.getContent()).pipe(map((xml) => this._replaceXmlParametersAndCode(xml)));
+  }
+
+  private _replaceXmlParametersAndCode(xml: string): string {
+    xml = xml.replace(/name="\S+"/, `name="${this.dmnName}"`);
+    xml = xml.replace(/namespace="\S+"/, `namespace="${this.namespace}"`);
+    return Buffer.from(xml, 'utf-8').toString('base64');
+  }
+
+  private _replaceBase64ParametersAndCode(base64: string): string {
+    let xml = Buffer.from(base64, 'base64').toString('utf-8')
+    xml = xml.replace(/name="\S+"/, `name="${this.dmnName}"`);
+    return xml.replace(/namespace="\S+"/, `namespace="${this.namespace}"`);
   }
 
   markAsSaved(): void {
