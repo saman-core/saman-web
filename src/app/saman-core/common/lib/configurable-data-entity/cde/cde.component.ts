@@ -76,25 +76,27 @@ export class CdeComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private _setConditions(conditions: ConditionModel[]): void {
-    conditions.forEach((condition) => {
-      switch (condition.conditionType) {
-        case ConditionTypeEnum.VALUE:
-          this._setValueProperty(condition);
-          break;
-        case ConditionTypeEnum.VISIBLE:
-          this._setVisibleProperty(condition);
-          break;
-        case ConditionTypeEnum.DISABLE:
-          this._setDisableProperty(condition);
-          break;
-        case ConditionTypeEnum.ALERT:
-          this._throwAlertProperty(condition);
-          break;
-        case ConditionTypeEnum.VALIDATE:
-          this._setValidateProperty(condition);
-          break;
-      }
-    });
+    conditions
+      .filter((c) => c.value !== null)
+      .forEach((condition) => {
+        switch (condition.conditionType) {
+          case ConditionTypeEnum.VALUE:
+            this._setValueProperty(condition);
+            break;
+          case ConditionTypeEnum.VISIBLE:
+            this._setVisibleProperty(condition);
+            break;
+          case ConditionTypeEnum.DISABLE:
+            this._setDisableProperty(condition);
+            break;
+          case ConditionTypeEnum.ALERT:
+            this._throwAlertProperty(condition);
+            break;
+          case ConditionTypeEnum.VALIDATE:
+            this._setValidateProperty(condition);
+            break;
+        }
+      });
   }
 
   private _setValueProperty(condition: ConditionModel): void {
@@ -121,7 +123,7 @@ export class CdeComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private _getProperty(propertyName: string): any {
-    this.formComponent.formio.getComponent(propertyName);
+    return this.formComponent.formio.getComponent(propertyName);
   }
 
   no(): void {
