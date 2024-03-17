@@ -22,8 +22,8 @@ interface IUser {
   styleUrls: ['dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  templateName='auto1';
-  productName='auto';
+  templateName='vida4';
+  productName='vida';
   constructor(private chartsData: DashboardChartsData) {
   }
 
