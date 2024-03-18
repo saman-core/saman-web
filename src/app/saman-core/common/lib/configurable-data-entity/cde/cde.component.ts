@@ -22,6 +22,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
   @Input() productName: string;
   @Input() templateName: string;
   private _consumer: DatasourceConsumer;
+  private _lastConditionDataEvaluated = {};
   form: object = { components: [] };
 
   constructor(
@@ -46,23 +47,20 @@ export class CdeComponent implements AfterViewInit, OnInit {
     this.formComponent.ready
       .asObservable()
       .pipe(first())
-      .subscribe((webForm) => this._registryAndProcessEvents(webForm));
+      .subscribe((webForm) => {
+        this._lastConditionDataEvaluated = { ...webForm.formio.data };
+        this._registryAndProcessEvents(webForm);
+      });
   }
 
   private _registryAndProcessEvents(webForm: FormioBaseComponent): void {
-    const registry = new Subject<object>();
     const grouping = new Subject<boolean>();
     let groupingInterval: NodeJS.Timeout;
 
     webForm.change
       .asObservable()
-      .pipe(filter((f) => this._filterChangesByEventOrigin(f)))
-      .subscribe((ch) => {
-        registry.next(ch['changed'].component);
-      });
-
-    registry
       .pipe(
+        filter((ch) => this._filterChangesByEventOrigin(ch)),
         tap(() => {
           clearTimeout(groupingInterval);
           groupingInterval = setTimeout(() => grouping.next(true), 250);
@@ -79,6 +77,8 @@ export class CdeComponent implements AfterViewInit, OnInit {
 
   private _filterChangesByEventOrigin(ch: object): boolean {
     if (typeof ch['changed'] === 'undefined') return false;
+    if (this._lastConditionDataEvaluated[ch['changed'].component.key] == ch['changed'].value)
+      return false;
 
     const isFromBlur = ch['flags'].fromBlur;
     const isBlur = ch['changed'].component.validateOn === 'blur' && isFromBlur;
@@ -97,6 +97,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
     this._conditionRepository
       .eval(this._consumer, conditionRequest)
       .subscribe((conditions: ConditionModel[]) => {
+        this._lastConditionDataEvaluated = { ...data };
         this._setConditions(conditions);
       });
   }
