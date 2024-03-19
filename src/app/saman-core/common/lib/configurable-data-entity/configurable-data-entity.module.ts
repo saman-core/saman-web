@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormioModule, Templates } from '@formio/angular';
+import { Formio, FormioModule, Templates } from '@formio/angular';
 import { FormioGrid } from '@formio/angular/grid';
 import { FormioResources } from '@formio/angular/resource';
 import { Utils } from 'formiojs';
@@ -12,6 +12,8 @@ import { HTML } from './builder-edit-form';
 import Evaluator = Utils.Evaluator;
 import { ConditionTemplateModule, TemplateModule } from '@saman-core/data';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Formio as any).icons = 'fontawesome';
 
 Templates.current = {
   builderEditForm: {

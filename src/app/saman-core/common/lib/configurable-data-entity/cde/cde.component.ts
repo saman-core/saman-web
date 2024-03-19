@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormioBaseComponent, FormioComponent } from '@formio/angular';
 import {
   ConditionModel,
@@ -21,6 +21,10 @@ export class CdeComponent implements AfterViewInit, OnInit {
   @ViewChild('formio') formComponent!: FormioComponent;
   @Input() productName: string;
   @Input() templateName: string;
+  @Input() pk: number | undefined;
+  @Input() readOnly: boolean = false;
+  @Output() data = new EventEmitter<object>();
+  @Output() formErrors = new EventEmitter<string[]>();
   private _consumer: DatasourceConsumer;
   private _lastConditionDataEvaluated = {};
   form: object = { components: [] };
@@ -97,8 +101,9 @@ export class CdeComponent implements AfterViewInit, OnInit {
     this._conditionRepository
       .eval(this._consumer, conditionRequest)
       .subscribe((conditions: ConditionModel[]) => {
-        this._lastConditionDataEvaluated = { ...data };
         this._setConditions(conditions);
+        this._lastConditionDataEvaluated = { ...data };
+        this.data.emit(data);
       });
   }
 
