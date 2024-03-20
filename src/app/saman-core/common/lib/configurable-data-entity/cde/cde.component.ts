@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormioBaseComponent, FormioComponent } from '@formio/angular';
 import {
   ConditionModel,
@@ -72,7 +80,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
         bufferWhen(() => grouping),
       )
       .subscribe((components: object[]) => {
-        const properties: string[] = uniq(components.map((c) => c['key']));
+        const properties: string[] = uniq(components.map((c) => c['changed'].component.key));
         const data = webForm.formio.data;
 
         this._callConditions(data, properties, true);
@@ -124,6 +132,9 @@ export class CdeComponent implements AfterViewInit, OnInit {
           break;
         case ConditionTypeEnum.VALIDATE:
           this._setValidateProperty(condition);
+          break;
+        case ConditionTypeEnum.OPTIONS:
+          this._setOptionsProperty(condition);
           break;
       }
     });

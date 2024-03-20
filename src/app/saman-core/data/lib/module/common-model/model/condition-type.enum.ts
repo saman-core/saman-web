@@ -4,5 +4,6 @@ export enum ConditionTypeEnum {
     DISABLE = 'DISABLE',
     ALERT = 'ALERT',
     VALIDATE = 'VALIDATE',
+    OPTIONS = 'OPTIONS',
   }
   
