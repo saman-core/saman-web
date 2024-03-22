@@ -257,6 +257,43 @@
           </mat-cell>
         </ng-container>
 
+<ng-container matColumnDef="options">
+  <mat-header-cell *matHeaderCellDef> Options </mat-header-cell>
+  <mat-cell *matCellDef="let element">
+    @if (isUndefined(element.options)) {
+      <button
+        mat-mini-fab
+        matTooltip="Add DMN"
+        color="accent"
+        (click)="createDmn(productNameSelected, templateNameSelected, element.property, conType.OPTIONS)"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    } @else {
+      <button
+        mat-mini-fab
+        matTooltip="Edit DMN"
+        color="primary"
+        (click)="
+          updateDmn(productNameSelected, templateNameSelected, element.validate.name, conType.OPTIONS)
+        "
+      >
+        <mat-icon>draw</mat-icon>
+      </button>
+      <button
+        mat-mini-fab
+        matTooltip="Delete DMN"
+        color="warn"
+        (click)="
+          deleteDmn(productNameSelected, templateNameSelected, element, conType.OPTIONS)
+        "
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    }
+  </mat-cell>
+</ng-container>
+
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>

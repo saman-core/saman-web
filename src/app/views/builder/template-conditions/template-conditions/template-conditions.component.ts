@@ -34,7 +34,7 @@ export class TemplateConditionsComponent {
   static readonly NAMESPACE = 'saman-core';
   static readonly NOT_FOUND = ' [Not_Found]';
   @ViewChild(MatTable) table: MatTable<unknown>;
-  displayedColumns: string[] = ['property', 'value', 'visible', 'disable', 'alert', 'validate'];
+  displayedColumns: string[] = ['property', 'value', 'visible', 'disable', 'alert', 'validate', 'options'];
   elementData: ConditionNodes[] = [];
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
   dynamicEditorLoader: ViewContainerRef;
@@ -283,6 +283,7 @@ export class TemplateConditionsComponent {
     conditionNodes.disable = conditionsProperty.conditions[ConditionTypeEnum.DISABLE];
     conditionNodes.alert = conditionsProperty.conditions[ConditionTypeEnum.ALERT];
     conditionNodes.validate = conditionsProperty.conditions[ConditionTypeEnum.VALIDATE];
+    conditionNodes.options = conditionsProperty.conditions[ConditionTypeEnum.OPTIONS];
   }
 }
 
@@ -292,6 +293,7 @@ export class ConditionNodes {
   public disable: NodeModel | undefined;
   public alert: NodeModel | undefined;
   public validate: NodeModel | undefined;
+  public options: NodeModel | undefined;
 
   constructor(public property: string) {}
 }

@@ -164,19 +164,19 @@ export class CdeComponent implements AfterViewInit, OnInit {
   }
 
   private _setOptionsProperty(condition: ConditionModel): void {
-    this._getProperty(condition.property).setItems(
-      [
-        {
-          label: 'data11',
-          value: '11',
-        },
-        {
-          label: 'data21',
-          value: '21',
-        },
-      ],
-      true,
-    );
+    const c = this._getProperty(condition.property);
+    const values = [
+      {
+        label: 'data11',
+        value: '11',
+      },
+      {
+        label: 'data21',
+        value: '21',
+      },
+    ];
+    c.component.data.values = values
+    c.setItems(values);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
