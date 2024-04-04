@@ -17,12 +17,14 @@ import {
 import { IconModule } from '@coreui/icons-angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 
-import { DashboardRoutingModule } from './dashboard-routing.module';
-import { DashboardComponent } from './dashboard.component';
+import { PolicyRoutingModule } from './policy-routing.module';
+import { PolicyComponent } from './policy.component';
+import { TemplateModule } from '@saman-core/data';
+import { ConfigurableDataEntityModule } from '@saman-core/common';
 
 @NgModule({
   imports: [
-    DashboardRoutingModule,
+    PolicyRoutingModule,
     CardModule,
     NavModule,
     IconModule,
@@ -38,8 +40,10 @@ import { DashboardComponent } from './dashboard.component';
     ChartjsModule,
     AvatarModule,
     TableModule,
+    TemplateModule,
+    ConfigurableDataEntityModule,
   ],
-  declarations: [DashboardComponent]
+  declarations: [PolicyComponent]
 })
-export class DashboardModule {
+export class PolicyModule {
 }

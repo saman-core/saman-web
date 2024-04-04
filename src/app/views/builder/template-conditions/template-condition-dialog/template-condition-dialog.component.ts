@@ -18,6 +18,7 @@ export class TemplateConditionDialogComponent {
   data: string;
   dmnName: string;
   namespace: string;
+  showFiller = false;
 
   constructor(
     private _dialog: MatDialog,

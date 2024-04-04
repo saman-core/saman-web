@@ -16,6 +16,8 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { AlertModule } from '@saman-core/core';
 import { TemplateConditionsRoutingModule } from './template-conditions-routing.module';
 import { TemplateConditionsComponent } from './template-conditions/template-conditions.component';
@@ -42,6 +44,8 @@ import { CommitDialogComponent } from './commit-dialog/commit-dialog.component';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    MatSidenavModule,
+    MatSelectModule,
   ],
   declarations: [
     TemplateConditionsComponent,

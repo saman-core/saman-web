@@ -13,19 +13,19 @@ export class AppComponent implements OnInit {
   title = 'saman-web';
 
   constructor(
-    private router: Router,
-    private titleService: Title,
-    private iconSetService: IconSetService,
-    private authService: AuthService,
+    private _router: Router,
+    private _titleService: Title,
+    private _iconSetService: IconSetService,
+    private _authService: AuthService,
     private _loader: LoaderSubscriptor,
   ) {
-    this.authService.initConfiguration();
-    titleService.setTitle(this.title);
-    iconSetService.icons = { ...iconSubset };
+    this._authService.initConfiguration();
+    this._titleService.setTitle(this.title);
+    this._iconSetService.icons = { ...iconSubset };
   }
 
   ngOnInit(): void {
-    this.router.events.subscribe((evt) => {
+    this._router.events.subscribe((evt) => {
       if(evt instanceof NavigationStart) {
         this._loader.show(true, true);
       }

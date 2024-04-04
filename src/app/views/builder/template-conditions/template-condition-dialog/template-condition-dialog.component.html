@@ -1,6 +1,29 @@
 <h2 mat-dialog-title>DMN Editor</h2>
+<h3 mat-dialog-title>Condition {{ dmnName }}</h3>
+<div>
+  <button mat-icon-button (click)="drawer.toggle()">
+    <mat-icon aria-hidden="false" aria-label="Info" fontIcon="info"></mat-icon>
+  </button>
+</div>
 <mat-dialog-content>
-  <app-dmn-editor #dmneditor [dmnData]="data" [dmnName]="dmnName" [namespace]="namespace"></app-dmn-editor>
+  <mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer mode="side">
+      <h4>Properties</h4>
+      <ul>
+        <li>njk</li>
+        <li>bui</li>
+        <li>bui</li>
+      </ul>
+    </mat-drawer>
+    <mat-drawer-content>
+      <app-dmn-editor
+        #dmneditor
+        [dmnData]="data"
+        [dmnName]="dmnName"
+        [namespace]="namespace"
+      ></app-dmn-editor>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="cancel()" cdkFocusInitial>Not Edit</button>

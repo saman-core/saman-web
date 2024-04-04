@@ -52,7 +52,7 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Policies',
-        url: '#'
+        url: 'policy'
       },
       {
         name: 'Coinsurances',

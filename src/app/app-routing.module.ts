@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DefaultLayoutComponent } from './containers';
 import { Page404Component } from './views/pages/page404/page404.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -19,8 +20,10 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () =>
-          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
+        component: DashboardComponent,
+        data: {
+          title: 'Dashboard'
+        }
       },
       {
         path: 'template-structure',
@@ -31,6 +34,11 @@ const routes: Routes = [
         path: 'template-conditions',
         loadChildren: () =>
           import('./views/builder/template-conditions/template-conditions.module').then((m) => m.TemplateConditionsModule)
+      },
+      {
+        path: 'policy',
+        loadChildren: () =>
+          import('./views/contracts/policy/policy.module').then((m) => m.PolicyModule)
       },
     ]
   },
