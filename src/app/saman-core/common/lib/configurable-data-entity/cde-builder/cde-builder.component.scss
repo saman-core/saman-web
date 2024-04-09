@@ -1,8 +1,13 @@
-::ng-deep .formcomponent {
+::ng-deep .formcomponents .formcomponent {
   text-align: left;
   padding: 5px 5px 5px 8px;
-  margin-top: 0.2rem;
+  margin-top: .2rem;
   font-size: .8em;
   line-height: 1.2;
-  border-radius: 0.3em;
+  border-radius: .3em;
+}
+
+::ng-deep .btn-block {
+  display: block;
+  width: 100%;
 }
