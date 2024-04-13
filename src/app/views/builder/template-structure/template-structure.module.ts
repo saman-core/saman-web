@@ -39,7 +39,10 @@ import { AlertModule } from '@saman-core/core';
     MatDialogActions,
     MatDialogClose,
     ReactiveFormsModule,
-    ConfigurableDataEntityModule,
+    ConfigurableDataEntityModule.forRoot({
+      baseUrl: 'http://localhost:8080',
+      projectUrl: 'http://localhost:8080',
+    }),
     TemplateBuilderModule,
     AlertModule,
   ],

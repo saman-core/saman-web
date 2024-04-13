@@ -41,7 +41,10 @@ import { ConfigurableDataEntityModule } from '@saman-core/common';
     AvatarModule,
     TableModule,
     TemplateModule,
-    ConfigurableDataEntityModule,
+    ConfigurableDataEntityModule.forRoot({
+      baseUrl: 'http://localhost:8080',
+      projectUrl: 'http://localhost:8080',
+    }),
   ],
   declarations: [PolicyComponent]
 })

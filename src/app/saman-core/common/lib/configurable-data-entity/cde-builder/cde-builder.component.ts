@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormioComponent, FormioRefreshValue } from '@formio/angular';
-import { PrismService } from '../prism.service';
+import { InitService } from '../init.service';
 import { FormUtils } from '../form-utils';
 import { buildOptions } from './options';
 
@@ -16,7 +16,9 @@ export class CdeBuilderComponent implements AfterViewInit {
   @Output() newVal = new EventEmitter<object>();
   public options = buildOptions;
 
-  constructor(public prism: PrismService) {}
+  constructor(private _initService: InitService) {
+    _initService.initConf();
+  }
   
   getComponentsKey(): string[] {
     const util = new FormUtils();
@@ -32,6 +34,6 @@ export class CdeBuilderComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.prism.init();
+    this._initService.initPrism();
   }
 }

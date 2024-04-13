@@ -30,7 +30,6 @@ export const buildOptions = {
           tags: true,
           datetime: true,
           time: true,
-          currency: true,
           signature: true,
         }
       },

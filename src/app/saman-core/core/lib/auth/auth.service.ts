@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
+import { AuthConfig, OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
 import { UserSubscriptor } from '@saman-core/core/lib/auth/user.subscriptor';
 import { AUTH_CONFIG } from './auth.config';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -36,6 +37,10 @@ export class AuthService {
 
   public getToken(): string {
     return this._oauthService.getAccessToken();
+  }
+
+  public events(): Observable<OAuthEvent> {
+    return this._oauthService.events;
   }
 
   public logout(): void {
