@@ -13,6 +13,9 @@ export default [
       if (dataSrc === 'resource') {
         context.instance.root.getComponent('valueProperty').setValue('id');
       }
+      if (dataSrc === 'values') {
+        context.instance.root.getComponent('valueProperty').setValue('');
+      }
     },
   },
   {
