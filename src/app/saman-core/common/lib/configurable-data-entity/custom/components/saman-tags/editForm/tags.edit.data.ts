@@ -1,5 +1,9 @@
 export default [
   {
+    key: 'storeas',
+    ignore: true
+  },
+  {
     key: 'persistent',
     weight: 30,
     overrideEditForm: true,

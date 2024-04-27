@@ -11,7 +11,7 @@ export default class SamanTagsComponent extends Component {
       label: 'Tags',
       key: 'tags',
       delimeter: ',',
-      storeas: 'string',
+      storeas: 'array',
       maxTags: 0
     }, ...extend);
   }
