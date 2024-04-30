@@ -163,7 +163,6 @@ export default [
     },
     delimiter: false,
     requireDecimal: false,
-    encrypted: false,
     defaultValue: 0.3,
     conditional: {
       json: {
@@ -403,7 +402,6 @@ export default [
     },
     delimiter: false,
     requireDecimal: false,
-    encrypted: false,
     defaultValue: 0.3,
     weight: 22,
     tooltip: 'At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match, a threshold of 1.0 would match anything.',
@@ -438,8 +436,7 @@ export default [
   },
   {
     key: 'encrypted',
-    overrideEditForm: true,
-    logic: [],
+    ignore: true
   },
   {
     key: 'customDefaultValuePanel',

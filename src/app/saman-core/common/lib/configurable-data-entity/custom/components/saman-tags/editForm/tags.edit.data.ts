@@ -14,8 +14,7 @@ export default [
   },
   {
     key: 'encrypted',
-    overrideEditForm: true,
-    logic: [],
+    ignore: true
   },
   {
     key: 'multiple',
