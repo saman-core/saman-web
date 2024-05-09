@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formio } from 'formiojs';
 import editForm from './saman-select.form';
+import { PageableModel } from '@saman-core/data';
+import { ServiceProvider } from '../../../service-provider';
 
 const Component = (Formio as any).Components.components.select;
 
 export default class SamanSelectComponent extends Component {
   static schema(...extend) {
     return Component.schema({
+      authenticate: true,
       type: 'samanSelect',
       label: 'Select',
       key: 'Select',
@@ -16,7 +19,7 @@ export default class SamanSelectComponent extends Component {
         json: '',
         url: '',
         resource: '',
-        custom: ''
+        custom: '',
       },
       clearOnRefresh: false,
       limit: 100,
@@ -37,13 +40,13 @@ export default class SamanSelectComponent extends Component {
         threshold: 0.3,
       },
       indexeddb: {
-        filter: {}
+        filter: {},
       },
       customOptions: {},
       useExactSearch: false,
     });
   }
-  
+
   static get builderInfo() {
     return {
       title: 'Select',
@@ -51,12 +54,12 @@ export default class SamanSelectComponent extends Component {
       icon: 'th-list',
       weight: 70,
       documentation: '/userguide/form-building/form-components#select',
-      schema: SamanSelectComponent.schema()
+      schema: SamanSelectComponent.schema(),
     };
   }
 
   static editForm = editForm;
-  
+
   /* eslint-disable max-statements */
   updateItems(searchInput, forceUpdate) {
     if (!this.component.data) {
@@ -65,7 +68,6 @@ export default class SamanSelectComponent extends Component {
       return;
     }
 
-    // Only load the data if it is visible.
     if (!this.visible) {
       this.itemsLoadedResolve();
       return;
@@ -79,27 +81,88 @@ export default class SamanSelectComponent extends Component {
         this.setItems(this.component.data.json);
         break;
       case 'resource': {
-        // If there is no resource, or we are lazyLoading, wait until active.
         if (!this.component.data.resource || (!forceUpdate && !this.active)) {
           this.itemsLoadedResolve();
           return;
         }
 
-        const resourceUrl = this.options.formio ? this.options.formio.formsUrl : `${Formio.getProjectUrl()}/nuevo`;
+        const resourceName = this.component.data.resource;
 
+        console.log(this.additionalResourcesAvailable);
         if (forceUpdate || this.additionalResourcesAvailable || !this.serverCount) {
           try {
-            this.loadItems(resourceUrl, searchInput, this.requestHeaders);
-          }
-          catch (err) {
+            this.loadItems(resourceName, searchInput, this.requestHeaders);
+          } catch (err) {
             console.warn(`Unable to load resources for ${this.key}`);
           }
-        }
-        else {
+        } else {
           this.setItems(this.downloadedResources);
         }
         break;
       }
     }
+  }
+
+  loadItems(resourceName, search, headers) {
+    if (!this.shouldLoad || !this.itemsFromUrl) {
+      this.isScrollLoading = false;
+      this.loading = false;
+      this.itemsLoadedResolve();
+      return;
+    }
+
+    const minSearch = parseInt(this.component.minSearch, 10);
+    if (this.component.searchField && minSearch > 0 && (!search || search.length < minSearch)) {
+      return this.setItems([]);
+    }
+
+    const limit = this.component.limit || 100;
+    const skip = this.isScrollLoading ? this.selectOptions.length : 0;
+
+    const pageableModel = new PageableModel();
+    pageableModel.page = Math.abs(Math.floor(skip / limit));
+    pageableModel.size = limit;
+
+    if (this.component.sort) {
+      pageableModel.sort = this.component.sort;
+    }
+
+    let searchField = '';
+    let searchValue = '';
+    if (this.component.searchField && search) {
+      searchField = this.component.searchField;
+      if (Array.isArray(search)) {
+        searchValue = search.join(',');
+      } else if (typeof search === 'object') {
+        searchValue = JSON.stringify(search);
+      } else {
+        searchValue = search;
+      }
+    }
+
+    let filter = '';
+    if (this.component.filter) {
+      filter = this.interpolate(this.component.filter);
+    }
+
+    this.loading = true;
+    ServiceProvider.genericResourceRepository
+      .loadItems(resourceName, pageableModel, filter, searchField, searchValue)
+      .subscribe({
+        next: (response) => {
+          this.loading = false;
+          this.error = null;
+          this.setItems(response.data, !!search);
+        },
+        error: (err) => {
+          if (this.itemsFromUrl) {
+            this.setItems([]);
+            this.disableInfiniteScroll();
+          }
+
+          this.isScrollLoading = false;
+          this.handleLoadingError(err);
+        },
+      });
   }
 }

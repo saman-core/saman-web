@@ -1,4 +1,4 @@
 export class PageModel<T> {
-  public totalCount!: number;
-  public elements!: T[];
+  public count!: number;
+  public data!: T[];
 }

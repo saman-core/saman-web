@@ -16,6 +16,9 @@ export * from './lib/module/condition-template/model/condition.model';
 export * from './lib/module/condition-template/repository/condition.repository';
 export * from './lib/module/condition-template/condition-template.module';
 
+export * from './lib/module/generic-resources/repository/generic-resources.repository';
+export * from './lib/module/generic-resources/generic-resources.module';
+
 export * from './lib/module/template-builder/model/commit-request.model';
 export * from './lib/module/template-builder/model/node.model';
 export * from './lib/module/template-builder/repository/resource.repository';
