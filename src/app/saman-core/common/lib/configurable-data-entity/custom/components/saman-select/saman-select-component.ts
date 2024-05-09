@@ -88,7 +88,6 @@ export default class SamanSelectComponent extends Component {
 
         const resourceName = this.component.data.resource;
 
-        console.log(this.additionalResourcesAvailable);
         if (forceUpdate || this.additionalResourcesAvailable || !this.serverCount) {
           try {
             this.loadItems(resourceName, searchInput, this.requestHeaders);

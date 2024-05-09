@@ -19,13 +19,13 @@ export class GenericResourceRepository {
     searchField: string,
     searchValue: string,
   ): Observable<PageModel<object>> {
-    console.log(filterParam);
-
-    const params = {};
+    let params = {};
+    try {
+      params = JSON.parse(`{${filterParam}}`);
+    } catch(_) { /* empty */ }
     if (searchField !== '')
       params[searchField] = searchValue; 
 
-    console.log(params);
     return this._getDataSource(resourceName).getPageByMethod<PageModel<object>>(
       resourceName,
       pageableModel,
