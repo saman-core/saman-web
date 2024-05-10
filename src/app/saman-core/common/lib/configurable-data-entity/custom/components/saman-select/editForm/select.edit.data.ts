@@ -12,9 +12,17 @@ export default [
       const dataSrc = context.instance.data.dataSrc;
       if (dataSrc === 'resource') {
         context.instance.root.getComponent('valueProperty').setValue('id');
+        context.instance.data.idPath = 'id';
       }
       if (dataSrc === 'values') {
-        context.instance.root.getComponent('valueProperty').setValue('');
+        context.instance.root.getComponent('valueProperty').setValue('value');
+        context.instance.data.idPath = 'value';
+        context.instance.data.data.resource = null;
+      }
+      if (dataSrc === 'json') {
+        context.instance.root.getComponent('valueProperty').setValue('id');
+        context.instance.data.idPath = 'id';
+        context.instance.data.data.resource = null;
       }
     },
   },
