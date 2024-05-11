@@ -21,9 +21,9 @@ export class DatasourceFactory {
     resource: string,
   ): DatasourceConsumer {
     const format = this._confType[datasourcesFormat];
-    let url = format.replace('{PORT}', port);
-    url = url.replace('{SERVER}', server);
-    url = url.replace('{RESOURCE}', resource);
+    let url = format.replaceAll('{PORT}', port);
+    url = url.replaceAll('{SERVER}', server);
+    url = url.replaceAll('{RESOURCE}', resource);
     return new DatasourceConsumer(this._http, url);
   }
 }

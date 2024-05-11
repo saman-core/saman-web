@@ -27,7 +27,7 @@ export class GenericResourceRepository {
       params[searchField] = searchValue; 
 
     return this._getDataSource(resourceName).getPageByMethod<PageModel<object>>(
-      resourceName,
+      '',
       pageableModel,
       params,
       false,
@@ -36,11 +36,27 @@ export class GenericResourceRepository {
   }
 
   private _getDataSource(resourceName: string): DatasourceConsumer {
+    let dataformat = this._dataformat;
+    let port = this._port;
+    let server = resourceName;
+
+    if (typeof WL[resourceName] !== 'undefined') {
+      dataformat = WL[resourceName].dataformat;
+      port = WL[resourceName].port;
+      server = WL[resourceName].server;
+    }
+
     return this._datasourceFactory.getConsumer(
-      this._dataformat,
-      this._port,
-      resourceName,
+      dataformat,
+      port,
+      server,
       resourceName,
     );
   }
 }
+
+const WL = {
+  state: {dataformat: 'format2', port: '', server: 'location'},
+  municipality: {dataformat: 'format2', port: '', server: 'location'},
+  parish: {dataformat: 'format2', port: '', server: 'location'},
+};
