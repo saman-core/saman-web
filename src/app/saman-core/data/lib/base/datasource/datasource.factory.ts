@@ -20,10 +20,17 @@ export class DatasourceFactory {
     server: string,
     resource: string,
   ): DatasourceConsumer {
+    return new DatasourceConsumer(
+      this._http,
+      this.getUrl(datasourcesFormat, port, server, resource),
+    );
+  }
+
+  public getUrl(datasourcesFormat: string, port: string, server: string, resource: string): string {
     const format = this._confType[datasourcesFormat];
     let url = format.replaceAll('{PORT}', port);
     url = url.replaceAll('{SERVER}', server);
     url = url.replaceAll('{RESOURCE}', resource);
-    return new DatasourceConsumer(this._http, url);
+    return url;
   }
 }

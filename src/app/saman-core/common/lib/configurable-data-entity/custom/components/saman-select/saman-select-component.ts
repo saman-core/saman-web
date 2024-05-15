@@ -3,6 +3,7 @@ import { Formio } from 'formiojs';
 import editForm from './saman-select.form';
 import { PageableModel } from '@saman-core/data';
 import { ServiceProvider } from '../../../service-provider';
+import _ from 'lodash';
 
 const Component = (Formio as any).Components.components.select;
 
@@ -86,11 +87,10 @@ export default class SamanSelectComponent extends Component {
           return;
         }
 
-        const resourceName = this.component.data.resource;
-
         if (forceUpdate || this.additionalResourcesAvailable || !this.serverCount) {
           try {
-            this.loadItems(resourceName, searchInput, this.requestHeaders);
+            const resourceName = this.component.data.resource;
+            this.loadItems(resourceName, searchInput);
           } catch (err) {
             console.warn(`Unable to load resources for ${this.key}`);
           }
@@ -102,7 +102,7 @@ export default class SamanSelectComponent extends Component {
     }
   }
 
-  loadItems(resourceName, search, headers) {
+  loadItems(resourceName: string, search) {
     if (!this.shouldLoad || !this.itemsFromUrl) {
       this.isScrollLoading = false;
       this.loading = false;
@@ -163,5 +163,89 @@ export default class SamanSelectComponent extends Component {
           this.handleLoadingError(err);
         },
       });
+  }
+
+  itemTemplate(data, value) {
+    if (!_.isNumber(data) && _.isEmpty(data)) {
+      return '';
+    }
+
+    // If they wish to show the value in read only mode, then just return the itemValue here.
+    if (this.options.readOnly && this.component.readOnlyValue) {
+      return this.itemValue(data);
+    }
+    // Perform a fast interpretation if we should not use the template.
+    if (data && !this.component.template) {
+      const itemLabel = data.label || data;
+      const value =
+        typeof itemLabel === 'string' ? this.t(itemLabel, { _userInput: true }) : itemLabel;
+      return this.sanitize(value, this.shouldSanitizeValue);
+    }
+
+    if (
+      this.component.multiple && _.isArray(this.dataValue)
+        ? this.dataValue.find((val) => value === val)
+        : this.dataValue === value
+    ) {
+      const selectData = this.selectData;
+      if (selectData) {
+        const templateValue = this.component.reference && value?._id ? value._id.toString() : value;
+        if (!this.templateData || !this.templateData[templateValue]) {
+          this.getOptionTemplate(data, value);
+        }
+        if (this.component.multiple) {
+          if (selectData[templateValue]) {
+            data = selectData[templateValue];
+          }
+        } else {
+          data = selectData;
+        }
+      }
+    }
+
+    if (typeof data === 'string' || typeof data === 'number') {
+      const resourceName = this.component.data.resource;
+
+      let valueFromRepository: string | number;
+      try {
+        const response = ServiceProvider.genericResourceRepository.getByIdSync(resourceName, data);
+        const options = {
+          noeval: true,
+          data: {},
+        };
+        valueFromRepository = this.sanitize(
+          this.component.template
+            ? this.interpolate(this.component.template, { item: response }, options)
+            : response['label'],
+          this.shouldSanitizeValue,
+        );
+      } catch (_) {
+        console.warn(`Can't not fetch ${resourceName} by id ${data}`);
+        valueFromRepository = data;
+      }
+
+      return this.sanitize(
+        this.t(valueFromRepository, { _userInput: true }),
+        this.shouldSanitizeValue,
+      );
+    }
+    if (Array.isArray(data)) {
+      return data.map((val) => {
+        if (typeof val === 'string' || typeof val === 'number') {
+          return this.sanitize(this.t(val, { _userInput: true }), this.shouldSanitizeValue);
+        }
+        return val;
+      });
+    }
+
+    if (data.data) {
+      // checking additional fields in the template for the selected Entire Object option
+      const hasNestedFields = /item\.data\.\w*/g.test(this.component.template);
+      data.data =
+        this.isEntireObjectDisplay() && _.isObject(data.data) && !hasNestedFields
+          ? JSON.stringify(data.data)
+          : data.data;
+    }
+    return super.itemTemplate(data, value);
   }
 }

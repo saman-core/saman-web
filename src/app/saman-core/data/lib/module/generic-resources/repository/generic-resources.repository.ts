@@ -3,14 +3,17 @@ import { Observable } from 'rxjs';
 import { DatasourceConsumer } from '../../../base/datasource/datasource.consumer';
 import { DatasourceFactory } from '../../../base/datasource/datasource.factory';
 import { PageModel, PageableModel } from '@saman-core/data';
+import { AuthService } from '@saman-core/core';
 
 @Injectable()
 export class GenericResourceRepository {
   private _dataformat = 'resources1';
   private _port = '';
 
-  constructor(private _datasourceFactory: DatasourceFactory) {
-  }
+  constructor(
+    private _datasourceFactory: DatasourceFactory,
+    private _authService: AuthService,
+  ) {}
 
   public loadItems(
     resourceName: string,
@@ -22,9 +25,10 @@ export class GenericResourceRepository {
     let params = {};
     try {
       params = JSON.parse(`{${filterParam}}`);
-    } catch(_) { /* empty */ }
-    if (searchField !== '')
-      params[searchField] = searchValue; 
+    } catch (_) {
+      /* empty */
+    }
+    if (searchField !== '') params[searchField] = searchValue;
 
     return this._getDataSource(resourceName).getPageByMethod<PageModel<object>>(
       '',
@@ -35,7 +39,36 @@ export class GenericResourceRepository {
     );
   }
 
+  public getByIdSync(resourceName: string, id: number | string): object {
+    const { dataformat, port, server } = this._getParams(resourceName);
+    const url = this._datasourceFactory.getUrl(dataformat, port, server, resourceName);
+    const token = this._authService.getToken();
+
+    let result: object;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${url}/${id}`, false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+    xhr.send();
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      result = JSON.parse(xhr.response);
+    } else {
+      throw new Error('not found or error');
+    }
+    return result;
+  }
+
+  public getAllByIds(resourceName: string, ids: number[] | string[]): Observable<object> {
+    return this._getDataSource(resourceName).getByMethod<object>(`${ids}`, {}, false, true);
+  }
+
   private _getDataSource(resourceName: string): DatasourceConsumer {
+    const { dataformat, port, server } = this._getParams(resourceName);
+    return this._datasourceFactory.getConsumer(dataformat, port, server, resourceName);
+  }
+
+  private _getParams(resourceName: string): { dataformat: string; port: string; server: string } {
     let dataformat = this._dataformat;
     let port = this._port;
     let server = resourceName;
@@ -45,18 +78,12 @@ export class GenericResourceRepository {
       port = WL[resourceName].port;
       server = WL[resourceName].server;
     }
-
-    return this._datasourceFactory.getConsumer(
-      dataformat,
-      port,
-      server,
-      resourceName,
-    );
+    return { dataformat, port, server };
   }
 }
 
 const WL = {
-  state: {dataformat: 'format2', port: '', server: 'location'},
-  municipality: {dataformat: 'format2', port: '', server: 'location'},
-  parish: {dataformat: 'format2', port: '', server: 'location'},
+  state: { dataformat: 'format2', port: '', server: 'location' },
+  municipality: { dataformat: 'format2', port: '', server: 'location' },
+  parish: { dataformat: 'format2', port: '', server: 'location' },
 };
