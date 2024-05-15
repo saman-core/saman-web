@@ -40,27 +40,11 @@ export class GenericResourceRepository {
   }
 
   public getByIdSync(resourceName: string, id: number | string): object {
-    const { dataformat, port, server } = this._getParams(resourceName);
-    const url = this._datasourceFactory.getUrl(dataformat, port, server, resourceName);
-    const token = this._authService.getToken();
-
-    let result: object;
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${url}/${id}`, false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Accept', 'application/json');
-    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-    xhr.send();
-    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      result = JSON.parse(xhr.response);
-    } else {
-      throw new Error('not found or error');
-    }
-    return result;
+    return this._sendXMLHttpSyncRequest(resourceName, id);
   }
 
-  public getAllByIds(resourceName: string, ids: number[] | string[]): Observable<object> {
-    return this._getDataSource(resourceName).getByMethod<object>(`${ids}`, {}, false, true);
+  public getAllByIdsSync(resourceName: string, ids: number[] | string[]): object[] {
+    return this._sendXMLHttpSyncRequest(resourceName, `?ids=${ids}`);
   }
 
   private _getDataSource(resourceName: string): DatasourceConsumer {
@@ -79,6 +63,27 @@ export class GenericResourceRepository {
       server = WL[resourceName].server;
     }
     return { dataformat, port, server };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private _sendXMLHttpSyncRequest(resourceName: string, filter: number | string): any {
+    const { dataformat, port, server } = this._getParams(resourceName);
+    const url = this._datasourceFactory.getUrl(dataformat, port, server, resourceName);
+    const token = this._authService.getToken();
+
+    let result;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${url}/${filter}`, false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+    xhr.send();
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      result = JSON.parse(xhr.response);
+    } else {
+      throw new Error('not found or error');
+    }
+    return result;
   }
 }
 

@@ -8,6 +8,7 @@ import _ from 'lodash';
 const Component = (Formio as any).Components.components.select;
 
 export default class SamanSelectComponent extends Component {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static schema(...extend) {
     return Component.schema({
       authenticate: true,
@@ -230,12 +231,33 @@ export default class SamanSelectComponent extends Component {
       );
     }
     if (Array.isArray(data)) {
-      return data.map((val) => {
-        if (typeof val === 'string' || typeof val === 'number') {
-          return this.sanitize(this.t(val, { _userInput: true }), this.shouldSanitizeValue);
-        }
-        return val;
-      });
+      try {
+        const resourceName = this.component.data.resource;
+        const response = ServiceProvider.genericResourceRepository.getAllByIdsSync(
+          resourceName,
+          data,
+        );
+        const founds = response.map((val) => {
+          const options = {
+            noeval: true,
+            data: {},
+          };
+          const valueFromRepository = this.sanitize(
+            this.component.template
+              ? this.interpolate(this.component.template, { item: val }, options)
+              : response['label'],
+            this.shouldSanitizeValue,
+          );
+          return this.sanitize(
+            this.t(valueFromRepository, { _userInput: true }),
+            this.shouldSanitizeValue,
+          );
+        });
+        const notFounds = _.difference(data, response.map((f) => f['id']));
+        return _.union(founds, notFounds);
+      } catch (_) {
+        return data;
+      }
     }
 
     if (data.data) {
