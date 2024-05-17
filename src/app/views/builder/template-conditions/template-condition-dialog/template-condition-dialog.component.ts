@@ -19,6 +19,7 @@ export class TemplateConditionDialogComponent {
   dmnName: string;
   namespace: string;
   showFiller = false;
+  properties: string[];
 
   constructor(
     private _dialog: MatDialog,
@@ -28,6 +29,7 @@ export class TemplateConditionDialogComponent {
     this.data = requestData.data;
     this.dmnName = requestData.dmnName;
     this.namespace = requestData.namespace;
+    this.properties = requestData.template['properties'];
   }
 
   cancel(): void {
@@ -56,6 +58,7 @@ export interface ConditionDialogRequest {
   data: string;
   dmnName: string;
   namespace: string;
+  template: object;
 }
 
 export interface ConditionDialogResponse {

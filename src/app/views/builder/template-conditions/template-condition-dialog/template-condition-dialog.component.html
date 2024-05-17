@@ -10,9 +10,9 @@
     <mat-drawer #drawer mode="side">
       <h4>Properties</h4>
       <ul>
-        <li>njk</li>
-        <li>bui</li>
-        <li>bui</li>
+      @for (property of properties; track property) {
+        <li>{{ property }}</li>
+      }
       </ul>
     </mat-drawer>
     <mat-drawer-content>

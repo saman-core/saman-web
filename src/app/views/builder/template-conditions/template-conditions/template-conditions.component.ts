@@ -5,6 +5,7 @@ import {
   DynamicFlatNode,
   NodeModel,
   ResourceRepository,
+  ConditionTypeEnum,
 } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
 import {
@@ -15,7 +16,6 @@ import {
 import { combineLatestWith } from 'rxjs/operators';
 import { MatTable } from '@angular/material/table';
 import { ConditionsPropertyModel } from '@saman-core/data/lib/module/template-builder/model/conditions-property.model';
-import { ConditionTypeEnum } from '@saman-core/data';
 import { MatDialog } from '@angular/material/dialog';
 import {
   DeleteDialogComponent,
@@ -45,6 +45,7 @@ export class TemplateConditionsComponent {
   templateNameSelected = '';
   productNameSelected = '';
   conType = ConditionTypeEnum;
+  template: object = {};
 
   constructor(
     private _resourceRepository: ResourceRepository,
@@ -65,7 +66,7 @@ export class TemplateConditionsComponent {
     });
   }
 
-  refreshConditionsTable() {
+  refreshConditionsTable(): void {
     this.elementData = [];
     this.table.renderRows();
     const templateObservable = this._resourceRepository.getTemplate(this.productNameSelected, this.templateNameSelected);
@@ -123,6 +124,7 @@ export class TemplateConditionsComponent {
       data: '',
       namespace: TemplateConditionsComponent.NAMESPACE,
       dmnName: this._generateDmnName(propertyName, conditionType),
+      template: this.template,
     };
     const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
       data: conditionDialogRequest,
@@ -173,6 +175,7 @@ export class TemplateConditionsComponent {
           data: node.content,
           namespace: TemplateConditionsComponent.NAMESPACE,
           dmnName: this._generateDmnName(propertyName, conditionType),
+          template: this.template,
         };
         const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
           data: conditionDialogRequest,
@@ -255,6 +258,7 @@ export class TemplateConditionsComponent {
 
   private _fillElementData(node: NodeModel, conditions: ConditionsPropertyModel[]): void {
     const json = JSON.parse(Buffer.from(node.content, 'base64').toString('utf-8'));
+    this.template = json;
     const properties: string[] = json['properties'];
     const conditionsWithOutproperty: ConditionNodes[] = [];
     properties.forEach((p) => this.elementData.push(new ConditionNodes(p)));
