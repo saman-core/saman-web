@@ -130,6 +130,7 @@ export class TemplateConditionsComponent {
       data: conditionDialogRequest,
       height: '80%',
       width: '80%',
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {
       if (response.accepted) {
@@ -181,6 +182,7 @@ export class TemplateConditionsComponent {
           data: conditionDialogRequest,
           height: '80%',
           width: '80%',
+          disableClose: true,
         });
         dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {
           if (response.accepted) {
