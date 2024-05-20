@@ -4,6 +4,7 @@ import EditData from './editForm/url.edit.data';
 import EditDisplay from './editForm/url.edit.display';
 import EditValidation from './editForm/url.edit.validation';
 import EditLayout from './editForm/url.edit.layout';
+import CommonApi from '../../common-component.edit.api';
 
 const componentForm = (Formio as any).Components.components.url.editForm;
 
@@ -24,6 +25,10 @@ export default function(...extend) {
     {
       key: 'layout',
       components: EditLayout
+    },
+    {
+      key: 'api',
+      components: CommonApi
     },
     {
       key: 'logic',

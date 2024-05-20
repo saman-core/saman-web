@@ -4,6 +4,7 @@ import EditData from './editForm/radio.edit.data';
 import EditDisplay from './editForm/radio.edit.display';
 import EditValidation from './editForm/radio.edit.validation';
 import EditLayout from './editForm/radio.edit.layout';
+import CommonApi from '../../common-component.edit.api';
 
 const componentForm = (Formio as any).Components.components.radio.editForm;
 
@@ -24,6 +25,10 @@ export default function(...extend) {
     {
       key: 'layout',
       components: EditLayout
+    },
+    {
+      key: 'api',
+      components: CommonApi
     },
     {
       key: 'logic',

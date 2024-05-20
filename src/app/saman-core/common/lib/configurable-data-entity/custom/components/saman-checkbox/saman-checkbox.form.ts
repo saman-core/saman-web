@@ -4,6 +4,7 @@ import EditData from './editForm/checkbox.edit.data';
 import EditDisplay from './editForm/checkbox.edit.display';
 import EditValidation from './editForm/checkbox.edit.validation';
 import EditLayout from './editForm/checkbox.edit.layout';
+import CommonApi from '../../common-component.edit.api';
 
 const componentForm = (Formio as any).Components.components.checkbox.editForm;
 
@@ -24,6 +25,10 @@ export default function(...extend) {
     {
       key: 'layout',
       components: EditLayout
+    },
+    {
+      key: 'api',
+      components: CommonApi
     },
     {
       key: 'logic',

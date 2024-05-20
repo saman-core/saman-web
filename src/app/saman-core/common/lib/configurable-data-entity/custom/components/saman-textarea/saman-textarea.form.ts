@@ -4,6 +4,7 @@ import EditData from './editForm/textarea.edit.data';
 import EditDisplay from './editForm/textarea.edit.display';
 import EditValidation from './editForm/textarea.edit.validation';
 import EditLayout from './editForm/textarea.edit.layout';
+import CommonApi from '../../common-component.edit.api';
 
 const componentForm = (Formio as any).Components.components.textarea.editForm;
 
@@ -24,6 +25,10 @@ export default function(...extend) {
     {
       key: 'layout',
       components: EditLayout
+    },
+    {
+      key: 'api',
+      components: CommonApi
     },
     {
       key: 'logic',
