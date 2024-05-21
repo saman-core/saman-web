@@ -20,6 +20,7 @@ export * from './lib/module/generic-resources/repository/generic-resources.repos
 export * from './lib/module/generic-resources/generic-resources.module';
 
 export * from './lib/module/template-builder/model/commit-request.model';
+export * from './lib/module/template-builder/model/conditions-property.model';
 export * from './lib/module/template-builder/model/node.model';
 export * from './lib/module/template-builder/repository/resource.repository';
 export * from './lib/module/template-builder/template-builder.module';

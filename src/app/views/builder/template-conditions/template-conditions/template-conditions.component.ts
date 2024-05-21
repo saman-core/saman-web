@@ -6,6 +6,7 @@ import {
   NodeModel,
   ResourceRepository,
   ConditionTypeEnum,
+  ConditionsPropertyModel,
 } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
 import {
@@ -15,7 +16,6 @@ import {
 } from '../template-condition-dialog/template-condition-dialog.component';
 import { combineLatestWith } from 'rxjs/operators';
 import { MatTable } from '@angular/material/table';
-import { ConditionsPropertyModel } from '@saman-core/data/lib/module/template-builder/model/conditions-property.model';
 import { MatDialog } from '@angular/material/dialog';
 import {
   DeleteDialogComponent,
