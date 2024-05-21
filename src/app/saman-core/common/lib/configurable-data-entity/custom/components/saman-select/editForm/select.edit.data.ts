@@ -208,7 +208,7 @@ export default [
     label: 'Filter Query',
     weight: 18,
     description: 'The filter query for results.',
-    tooltip: 'Use this to provide additional filtering using query parameters.',
+    tooltip: 'Use this to provide additional filtering using query parameters. For Dependent Select Box you can use &quot;parent_id&quot;: &quot;{&nbsp;{ row.parent }&nbsp;}&quot;',
     conditional: {
       json: {
         in: [
