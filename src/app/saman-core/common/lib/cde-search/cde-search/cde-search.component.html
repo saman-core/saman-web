@@ -4,7 +4,8 @@
 </mat-form-field>
 
 <div class="mat-elevation-z8">
-  <mat-table
+  <table
+    mat-table
     [dataSource]="data"
     aria-describedby="datatable"
     matSort
@@ -40,19 +41,20 @@
       <td *matCellDef="let element" mat-cell>{{ element[column] }}</td>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-    <mat-row
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr
+      mat-row
       *matRowDef="let row; columns: columnsToDisplay"
       matRipple
       [class.row-is-selected]="selection.isSelected(row)"
       (click)="onClickModel(row)"
-    ></mat-row>
+    ></tr>
 
     <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
       <td class="mat-cell" colspan="4">No data matching</td>
     </tr>
-  </mat-table>
+  </table>
 
   <mat-paginator
     [length]="resultsLength"

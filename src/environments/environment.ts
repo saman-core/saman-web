@@ -2,6 +2,7 @@ export const environment = {
   datasourcesFormat: {
     format1: 'http://localhost:{PORT}/{RESOURCE}',
     format2: 'https://{SERVER}.sige3.link/{RESOURCE}',
+    resources1: 'https://{RESOURCE}.sige3.link/{RESOURCE}',
   },
   authConfig: {
     // Url of the Identity Provider
