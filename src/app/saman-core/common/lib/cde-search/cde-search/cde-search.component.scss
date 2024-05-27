@@ -7,11 +7,6 @@ table {
   width: 100%;
 }
 
-td,
-th {
-  width: 25%;
-}
-
 .mat-mdc-row .mat-mdc-cell {
   border-bottom: 1px solid transparent;
   border-top: 1px solid transparent;
@@ -24,4 +19,16 @@ th {
 
 .row-is-selected {
   font-weight: bold;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
 }

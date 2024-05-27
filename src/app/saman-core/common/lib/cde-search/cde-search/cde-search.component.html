@@ -46,8 +46,9 @@
       mat-row
       *matRowDef="let row; columns: columnsToDisplay"
       matRipple
+      class="example-element-row"
       [class.row-is-selected]="selection.isSelected(row)"
-      (click)="onClickModel(row)"
+      (click)="onChangeModel(row)"
     ></tr>
 
     <!-- Row shown when there is no matching data. -->

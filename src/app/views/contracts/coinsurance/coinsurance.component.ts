@@ -7,6 +7,10 @@ import { Component } from '@angular/core';
 export class CoinsuranceComponent {
   productName = 'auto';
   templateName = 'auto1';
-  isMultipleSelection = true;
+  isMultipleSelection = false;
   displayedColumns = ['cedula', 'nombre', 'ocupacion'];
+
+  onEmitt(event: object[]): void {
+    console.log(event);
+  }
 }

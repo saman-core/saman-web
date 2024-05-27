@@ -70,7 +70,6 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
     this.selection = new SelectionModel<object>(this.isMultipleSelection);
     this._templateRepository.getJson(this.productName, this.templateName).subscribe((formJson) => {
       const flatProperties = this._formUtilService.getFlatInputComponents(formJson);
-      console.log(flatProperties);
       this.displayedColumns.forEach((colum) => {
         const componentLabel = flatProperties['components'].find(
           (element) => element['key'] === colum,
@@ -122,12 +121,14 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
         );
       }),
       map((data) => {
-        this.resultsLength = data.count;
         this.selection.clear();
+        this.resultsLength = data.count;
         return data.data;
       }),
       catchError((err) => {
         console.error(err);
+        this.selection.clear();
+        this.resultsLength = 0;
         return of([]);
       }),
     );
@@ -136,13 +137,6 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   onChangeModel(row: object): void {
     this.selection.toggle(row);
     this.modelEmitter.emit(this.selection.selected);
-  }
-
-  onClickModel(row: object): void {
-    this.selection.toggle(row);
-    if (!this.isMultipleSelection && this.selection.isSelected(row)) {
-      this.modelEmitter.emit(this.selection.selected);
-    }
   }
 
   masterToggle(): void {
