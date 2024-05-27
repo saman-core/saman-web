@@ -40,6 +40,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/contracts/policy/policy.module').then((m) => m.PolicyModule)
       },
+      {
+        path: 'coinsurance',
+        loadChildren: () =>
+          import('./views/contracts/coinsurance/coinsurance.module').then((m) => m.CoinsuranceModule)
+      },
     ]
   },
   {

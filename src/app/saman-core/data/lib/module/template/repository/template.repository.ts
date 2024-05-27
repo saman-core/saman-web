@@ -9,7 +9,7 @@ import { Repository } from '@saman-core/data';
 export class TemplateRepository implements Repository {
   datasource: DatasourceConsumer;
   private _dataformat = 'format2';
-  private _port = '';
+  private _port = '9081';
   private _server = 'template';
   private _resource = 'templates';
 

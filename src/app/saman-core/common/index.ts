@@ -1,3 +1,6 @@
+export * from './lib/cde-search/cde-search.module';
+export * from './lib/cde-search/cde-search/cde-search.component';
+
 export * from './lib/dmn-editor/dmn-editor.module';
 export * from './lib/dmn-editor/dmn-editor/dmn-editor.component';
 
@@ -6,3 +9,6 @@ export * from './lib/configurable-data-entity/cde.config'
 export * from './lib/configurable-data-entity/cde/cde.component';
 export * from './lib/configurable-data-entity/cde-builder/cde-builder.component';
 export * from './lib/configurable-data-entity/form-utils';
+
+export * from './lib/form-util/form-util.service';
+export * from './lib/form-util/form-util.module';

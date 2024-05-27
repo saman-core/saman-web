@@ -9,6 +9,9 @@ export * from './lib/base/data-base.module';
 
 export * from './lib/module/common/dynamic-flat-node';
 
+export * from './lib/module/cde/repository/cde.repository';
+export * from './lib/module/cde/cde.module';
+
 export * from './lib/module/common-model/model/condition-type.enum';
 
 export * from './lib/module/condition-template/model/condition-request.model';

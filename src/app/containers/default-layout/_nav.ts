@@ -56,7 +56,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Coinsurances',
-        url: '#'
+        url: 'coinsurance'
       },
       {
         name: 'Reinsurances',
