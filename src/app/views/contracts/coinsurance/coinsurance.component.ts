@@ -13,4 +13,8 @@ export class CoinsuranceComponent {
   onEmitt(event: object[]): void {
     console.log(event);
   }
+
+  onAction(event): void {
+    console.log(event);
+  }
 }

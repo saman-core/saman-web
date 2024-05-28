@@ -41,15 +41,14 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() productName: string = '';
   @Input() templateName: string = '';
   @Input() isMultipleSelection: boolean = false;
+  @Input() viewAction: boolean = true;
   @Input() editAction: boolean = true;
   @Input() deleteAction: boolean = true;
-  @Input() updateAction: boolean = true;
-  @Input() insertAction: boolean = true;
   @Input() avancedSearch: boolean = true;
   @Input() displayedColumns: string[] = [];
 
   @Output() modelEmitter = new EventEmitter<object[]>();
-  @Output() actionSelected = new EventEmitter<'view' | 'edit' | 'delete' | 'update' | 'insert'>();
+  @Output() actionSelected = new EventEmitter<{ action: string; id: number }>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -61,6 +60,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   columnsToDisplay: string[] = [];
   columnsHeader: { [column: string]: string } = {};
   filterFormJson: object = {};
+  hasMenu = false;
 
   constructor(
     private _templateRepository: TemplateRepository,
@@ -86,6 +86,10 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
     this.columnsToDisplay = this.displayedColumns;
     if (this.isMultipleSelection) {
       this.columnsToDisplay = ['_select', ...this.columnsToDisplay];
+    }
+    if (this.viewAction || this.editAction || this.deleteAction) {
+      this.hasMenu = true;
+      this.columnsToDisplay = [...this.columnsToDisplay, '_menu'];
     }
   }
 
@@ -139,6 +143,10 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   onChangeModel(row: object): void {
     this.selection.toggle(row);
     this.modelEmitter.emit(this.selection.selected);
+  }
+
+  onActionEvent(action: string, id: number): void {
+    this.actionSelected.emit({ action: action, id: id });
   }
 
   masterToggle(): void {

@@ -52,6 +52,21 @@
       <mat-cell *matCellDef="let element">{{ element[column] }}</mat-cell>
     </ng-container>
 
+    <!-- Menu Column -->
+    <ng-container matColumnDef="_menu" stickyEnd *ngIf="hasMenu">
+      <mat-header-cell *matHeaderCellDef scope="col"></mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          [matMenuTriggerData]="element"
+          aria-label="action menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
     <mat-row
       *matRowDef="let row; columns: columnsToDisplay"
@@ -71,4 +86,21 @@
     [pageSizeOptions]="[5, 10, 25, 100]"
     aria-label="Select page of users"
   ></mat-paginator>
+
+  <mat-menu #menu="matMenu">
+    <ng-template matMenuContent let-id="id">
+      <button mat-menu-item (click)="onActionEvent('view', id)" *ngIf="viewAction">
+        <mat-icon>visibility</mat-icon>
+        <span>View</span>
+      </button>
+      <button mat-menu-item (click)="onActionEvent('edit', id)" *ngIf="editAction">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button mat-menu-item (click)="onActionEvent('delete', id)" *ngIf="deleteAction">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </ng-template>
+  </mat-menu>
 </div>
