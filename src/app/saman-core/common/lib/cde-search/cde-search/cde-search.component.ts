@@ -25,6 +25,7 @@ import {
   takeUntil,
 } from 'rxjs';
 import { FormUtilService } from '../../form-util/form-util.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-cde-search',
@@ -53,6 +54,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  basicFormControl = new FormControl('');
   selection = new SelectionModel<object>(false);
   resultsLength = 0;
   data: object[] = [];
@@ -152,11 +154,11 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
     return numSelected === numRows;
   }
 
-  applyFilter(event: Event): void {
+  applyFilter(): void {
     if (!this._isRequestStarted) this._startRequests();
-    const filterValue = (event.target as HTMLInputElement).value.trim();
     this.paginator.pageIndex = 0;
     const paramns = {};
+    const filterValue = this.basicFormControl.value;
     if (filterValue !== '') paramns[this.searchProperty] = filterValue;
     this._filterData.next(paramns);
   }

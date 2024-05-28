@@ -3,7 +3,7 @@ table {
 }
 
 .mat-mdc-form-field {
-  width: 100%;
+  width: calc(100% - 50px);
 }
 
 .mat-mdc-row .mat-mdc-cell {
@@ -11,9 +11,24 @@ table {
 }
 
 .row-is-selected {
-  background: whitesmoke;
+  background: #e0e0e0;
 }
 
 .mat-mdc-row:not(.row-is-selected):hover {
   background: whitesmoke;
+}
+
+.section-search {
+  display: flex;
+  flex-direction: row;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 50px;
+}
+
+.not-data-cell {
+  padding-left: 24px;
 }
