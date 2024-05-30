@@ -11,9 +11,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { CdeSearchComponent } from './cde-search/cde-search.component';
 import { TemplateModule, CdeModule } from '@saman-core/data';
 import { FormUtilModule } from '../form-util/form-util.module';
+import { FormioModule } from '@formio/angular';
 
 @NgModule({
   declarations: [CdeSearchComponent],
@@ -31,9 +33,11 @@ import { FormUtilModule } from '../form-util/form-util.module';
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
+    MatExpansionModule,
     TemplateModule,
     CdeModule,
     FormUtilModule,
+    FormioModule,
   ],
   providers: [],
   exports: [CdeSearchComponent],

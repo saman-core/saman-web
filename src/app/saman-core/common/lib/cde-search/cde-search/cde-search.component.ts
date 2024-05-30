@@ -24,8 +24,10 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
+import { FormioComponent } from '@formio/angular';
 import { FormUtilService } from '../../form-util/form-util.service';
 import { FormControl } from '@angular/forms';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-cde-search',
@@ -52,6 +54,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('formio') formComponent!: FormioComponent;  
 
   basicFormControl = new FormControl('');
   selection = new SelectionModel<object>(false);
@@ -61,6 +64,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   columnsHeader: { [column: string]: string } = {};
   filterFormJson: object = {};
   hasMenu = false;
+  step = 1;
 
   constructor(
     private _templateRepository: TemplateRepository,
@@ -82,6 +86,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
       this.filterFormJson = this._formUtilService.getFlatInputComponents(flatProperties, {
         dbIndex: true,
       });
+      console.log(this.filterFormJson);
     });
     this.columnsToDisplay = this.displayedColumns;
     if (this.isMultipleSelection) {
@@ -167,8 +172,37 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
     this.paginator.pageIndex = 0;
     const paramns = {};
     const filterValue = this.basicFormControl.value;
-    if (filterValue !== '') paramns[this.searchProperty] = filterValue;
+    if (filterValue.trim() !== '') paramns[this.searchProperty] = filterValue;
     this._filterData.next(paramns);
+  }
+
+  applyAvancedFilter(): void {
+    if (!this._isRequestStarted) this._startRequests();
+    this.paginator.pageIndex = 0;
+    const paramns = this.formComponent.formio.data;
+    Object.keys(paramns).forEach((k) => {
+      if (this._isEmpty(paramns[k])) {
+        delete paramns[k];
+      }
+    });
+    this._filterData.next(paramns);
+  }
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  _isEmpty(value): boolean {
+    if (_.isNil(value)) {
+      return true;
+    }
+    if (Array.isArray(value) && value.length === 0) {
+      return true;
+    }
+    if (typeof value === 'string' && value.trim() === '') {
+      return true;
+    }
+    return false;
   }
 
   ngOnDestroy(): void {

@@ -12,7 +12,7 @@ import { ConditionsPropertyModel } from '../model/conditions-property.model';
 export class ResourceRepository implements Repository {
   datasource: DatasourceConsumer;
   private _dataformat = 'format2';
-  private _port = '';
+  private _port = '9083';
   private _server = 'template-builder';
   private _resource = 'products';
 

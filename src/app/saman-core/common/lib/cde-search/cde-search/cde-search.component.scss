@@ -32,3 +32,20 @@ table {
 .not-data-cell {
   padding-left: 24px;
 }
+
+.example-button-row {
+  display: table-cell;
+  max-width: 600px;
+}
+
+.search-form {
+  width: 100%;
+}
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+}
