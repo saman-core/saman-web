@@ -41,6 +41,11 @@ table {
 .search-form {
   width: 100%;
 }
+
+.example-headers-align {
+  width: 100%;
+}
+
 .example-headers-align .mat-expansion-panel-header-description {
   justify-content: space-between;
   align-items: center;
@@ -48,4 +53,11 @@ table {
 
 .example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
   margin-left: 8px;
+}
+
+.div-search {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
 }

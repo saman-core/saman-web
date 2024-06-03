@@ -18,7 +18,7 @@ import {
 } from '@saman-core/data';
 import { Subject, bufferWhen, filter, first, tap } from 'rxjs';
 import uniq from 'lodash-es/uniq';
-import { InitService } from '../init.service';
+import { InitCdeService } from '../init.service';
 
 @Component({
   selector: 'app-cde',
@@ -38,11 +38,11 @@ export class CdeComponent implements AfterViewInit, OnInit {
   form: object = { components: [] };
 
   constructor(
-    private _initService: InitService,
+    private _initCdeService: InitCdeService,
     private _templateRepository: TemplateRepository,
     private _conditionRepository: ConditionRepository,
   ) {
-    _initService.initConf();
+    _initCdeService.initConf();
   }
 
   ngOnInit(): void {
@@ -53,7 +53,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this._initService.initPrism();
+    this._initCdeService.initPrism();
   }
 
   private _init(json: object): void {

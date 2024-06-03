@@ -28,6 +28,7 @@ import { FormioComponent } from '@formio/angular';
 import { FormUtilService } from '../../form-util/form-util.service';
 import { FormControl } from '@angular/forms';
 import _ from 'lodash';
+import { InitCdeService } from '@saman-core/common/lib/configurable-data-entity/init.service';
 
 @Component({
   selector: 'app-cde-search',
@@ -67,10 +68,13 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   step = 1;
 
   constructor(
+    private _initCdeService: InitCdeService,
     private _templateRepository: TemplateRepository,
     private _cdeRepository: CdeRepository,
     private _formUtilService: FormUtilService,
-  ) {}
+  ) {
+    _initCdeService.initConf();
+  }
 
   ngOnInit(): void {
     this.selection = new SelectionModel<object>(this.isMultipleSelection);

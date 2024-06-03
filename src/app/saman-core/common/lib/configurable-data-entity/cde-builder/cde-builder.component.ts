@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormioComponent, FormioRefreshValue } from '@formio/angular';
-import { InitService } from '../init.service';
+import { InitCdeService } from '../init.service';
 import { FormUtils } from '../form-utils';
 import { buildOptions } from './options';
 
@@ -16,7 +16,7 @@ export class CdeBuilderComponent implements AfterViewInit {
   @Output() newVal = new EventEmitter<object>();
   public options = buildOptions;
 
-  constructor(private _initService: InitService) {
+  constructor(private _initService: InitCdeService) {
     _initService.initConf();
   }
   

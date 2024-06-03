@@ -10,7 +10,6 @@ import { Title } from '@angular/platform-browser';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icon-subset';
 import { AuthService, LoaderSubscriptor } from '@saman-core/core';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +25,6 @@ export class AppComponent implements OnInit {
     private _authService: AuthService,
     private _loader: LoaderSubscriptor,
   ) {
-    this._storeShareToken();
     this._authService.initConfiguration();
     this._titleService.setTitle(this.title);
     this._iconSetService.icons = { ...iconSubset };
@@ -44,13 +42,5 @@ export class AppComponent implements OnInit {
         this._loader.hide(true, true);
       }
     });
-  }
-
-  private _storeShareToken(): void {
-    localStorage.setItem('useSessionToken', 'true');
-    this._authService
-      .events()
-      .pipe(filter((ev) => ev.type === 'token_received' || ev.type === 'user_profile_loaded'))
-      .subscribe(() => sessionStorage.setItem('formioToken', 'Bearer ' + this._authService.getToken()));
   }
 }

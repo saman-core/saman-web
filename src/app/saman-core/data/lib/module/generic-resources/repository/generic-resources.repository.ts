@@ -88,7 +88,8 @@ export class GenericResourceRepository {
 }
 
 const WL = {
-  state: { dataformat: 'format2', port: '', server: 'location' },
-  municipality: { dataformat: 'format2', port: '', server: 'location' },
-  parish: { dataformat: 'format2', port: '', server: 'location' },
+  occupation: { dataformat: 'format2', port: '9084', server: 'localhost' },
+  state: { dataformat: 'format2', port: '9085', server: 'localhost' },
+  municipality: { dataformat: 'format2', port: '9085', server: 'localhost' },
+  parish: { dataformat: 'format2', port: '9085', server: 'localhost' },
 };

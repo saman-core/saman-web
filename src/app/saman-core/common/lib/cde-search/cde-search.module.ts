@@ -16,6 +16,7 @@ import { CdeSearchComponent } from './cde-search/cde-search.component';
 import { TemplateModule, CdeModule } from '@saman-core/data';
 import { FormUtilModule } from '../form-util/form-util.module';
 import { FormioModule } from '@formio/angular';
+import { ConfigurableDataEntityModule } from '@saman-core/common';
 
 @NgModule({
   declarations: [CdeSearchComponent],
@@ -38,6 +39,7 @@ import { FormioModule } from '@formio/angular';
     CdeModule,
     FormUtilModule,
     FormioModule,
+    ConfigurableDataEntityModule,
   ],
   providers: [],
   exports: [CdeSearchComponent],

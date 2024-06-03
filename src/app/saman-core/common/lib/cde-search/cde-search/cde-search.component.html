@@ -1,54 +1,50 @@
-<mat-accordion class="example-headers-align">
-  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
-    <mat-expansion-panel-header>
-      <mat-panel-title> Avanced Search </mat-panel-title>
-      <mat-panel-description>
-        <mat-icon>account_circle</mat-icon>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
+<div class="div-search">
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" (closed)="setStep(1)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Avanced Search</mat-panel-title>
+      </mat-expansion-panel-header>
 
-    <formio class="search-form" #formio [form]="filterFormJson"></formio>
+      <formio class="search-form" #formio [form]="filterFormJson"></formio>
 
-    <mat-action-row>
-      <div class="example-button-row">
-        <button mat-flat-button (click)="applyAvancedFilter()" color="primary">Search</button>
-        <button mat-flat-button color="warn">Clean</button>
-      </div>
-    </mat-action-row>
-  </mat-expansion-panel>
+      <mat-action-row>
+        <div class="example-button-row">
+          <button mat-flat-button (click)="applyAvancedFilter()" color="primary">Search</button>
+          <button mat-flat-button color="warn">Clean</button>
+        </div>
+      </mat-action-row>
+    </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-      @if (step !== 1) {
-        <span>Basic Search</span>
-      }
-      @else {
-        <span></span>
-      }
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" (closed)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          @if (step !== 1) {
+            <span>Basic Search</span>
+          } @else {
+            <span></span>
+          }
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-    <section class="section-search">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          [formControl]="basicFormControl"
-          (keyup.enter)="applyFilter()"
-          placeholder="Search by {{ searchProperty }}"
-        />
-      </mat-form-field>
-      <div class="button-container">
-        <button mat-icon-button (click)="applyFilter()" aria-label="search">
-          <mat-icon>search</mat-icon>
-        </button>
-      </div>
-    </section>
-  </mat-expansion-panel>
-</mat-accordion>
-
-<hr/>
+      <section class="section-search">
+        <mat-form-field>
+          <mat-label>Search</mat-label>
+          <input
+            matInput
+            [formControl]="basicFormControl"
+            (keyup.enter)="applyFilter()"
+            placeholder="Search by {{ searchProperty }}"
+          />
+        </mat-form-field>
+        <div class="button-container">
+          <button mat-icon-button (click)="applyFilter()" aria-label="search">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+      </section>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
 
 <div class="mat-elevation-z8">
   <mat-table
