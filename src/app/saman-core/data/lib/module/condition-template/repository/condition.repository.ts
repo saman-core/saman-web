@@ -11,7 +11,7 @@ export class ConditionRepository {
 
   public getConsumer(productName: string, templateName: string): DatasourceConsumer {
     const dataformat = 'format2';
-    const port = '';
+    const port = '9086';
     const server = `conditions-${productName}-${templateName}`;
     const resource = 'conditions';
 
