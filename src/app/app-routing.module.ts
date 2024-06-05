@@ -45,6 +45,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/contracts/coinsurance/coinsurance.module').then((m) => m.CoinsuranceModule)
       },
+      {
+        path: 'reinsurance',
+        loadChildren: () =>
+          import('./views/cde-crud/cde-crud.module').then((m) => m.CdeCrudModule)
+      },
     ]
   },
   {
