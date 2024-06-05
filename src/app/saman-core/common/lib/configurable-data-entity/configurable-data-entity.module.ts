@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Formio, FormioModule, Templates } from '@formio/angular';
 import { FormioGrid } from '@formio/angular/grid';
 import { FormioResources } from '@formio/angular/resource';
-import { ConditionTemplateModule, GenericResourcesModule, TemplateModule } from '@saman-core/data';
+import { CdeModule, ConditionTemplateModule, GenericResourcesModule, TemplateModule } from '@saman-core/data';
 import { CdeComponent } from './cde/cde.component';
 import { CdeBuilderComponent } from './cde-builder/cde-builder.component';
 import { InitCdeService } from './init.service';
@@ -22,6 +22,7 @@ Templates.current = template;
     TemplateModule,
     ConditionTemplateModule,
     GenericResourcesModule,
+    CdeModule,
   ],
   providers: [InitCdeService, FormioResources],
   exports: [CdeComponent, CdeBuilderComponent],

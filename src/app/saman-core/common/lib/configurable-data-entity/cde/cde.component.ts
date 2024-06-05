@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormioBaseComponent, FormioComponent } from '@formio/angular';
 import {
+  CdeRepository,
   ConditionModel,
   ConditionRepository,
   ConditionRequestModel,
@@ -36,11 +37,13 @@ export class CdeComponent implements AfterViewInit, OnInit {
   private _consumer: DatasourceConsumer;
   private _lastConditionDataEvaluated = {};
   form: object = { components: [] };
+  formData = { data: {} };
 
   constructor(
     private _initCdeService: InitCdeService,
     private _templateRepository: TemplateRepository,
     private _conditionRepository: ConditionRepository,
+    private _cdeRepository: CdeRepository,
   ) {
     _initCdeService.initConf();
   }
@@ -50,6 +53,11 @@ export class CdeComponent implements AfterViewInit, OnInit {
       .getJson(this.productName, this.templateName)
       .subscribe((json) => this._init(json));
     this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
+    if (typeof this.pk !== 'undefined') {
+      this._cdeRepository
+        .getById(this.productName, this.templateName, this.pk)
+        .subscribe((data) => (this.formData.data = data));
+    }
   }
 
   ngAfterViewInit(): void {
@@ -177,7 +185,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
         value: '21',
       },
     ];
-    c.component.data.values = values
+    c.component.data.values = values;
     c.setItems(values);
   }
 

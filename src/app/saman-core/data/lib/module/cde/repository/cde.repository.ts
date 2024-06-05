@@ -26,4 +26,13 @@ export class CdeRepository {
     const consumer = this.getConsumer(productName, templateName);
     return consumer.getPageByMethod<object>('', pageableModel, params, true, true);
   }
+
+  public getById(
+    productName: string,
+    templateName: string,
+    id: number
+  ): Observable<object> {
+    const consumer = this.getConsumer(productName, templateName);
+    return consumer.getByMethod<object>(`${id}`, {}, true, true);
+  }
 }
