@@ -35,7 +35,7 @@ const routes: Routes = [
     }
   },
   {
-    path: ':pk',
+    path: ':id',
     component: CdeEditComponent,
     data: {
       title: $localize`CDE`,

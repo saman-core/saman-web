@@ -10,7 +10,7 @@ export class CdeEditComponent  implements OnInit {
   productName: string = '';
   templateName: string = '';
   routeBase = '';
-  pk = 0;
+  id = 0;
 
   constructor(
     private _router: Router,
@@ -18,8 +18,8 @@ export class CdeEditComponent  implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pk = parseInt(this._activatedRoute.snapshot.params['pk']);
-    console.log(this.pk);
+    this.id = parseInt(this._activatedRoute.snapshot.params['id']);
+    console.log(this.id);
     this._activatedRoute.data.subscribe((data) => {
       this.productName = data.productName;
       this.templateName = data.templateName;

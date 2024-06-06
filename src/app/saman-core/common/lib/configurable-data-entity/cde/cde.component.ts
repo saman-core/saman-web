@@ -30,7 +30,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
   @ViewChild('formio') formComponent!: FormioComponent;
   @Input() productName: string;
   @Input() templateName: string;
-  @Input() pk: number | undefined;
+  @Input() id: number | undefined;
   @Input() readOnly: boolean = false;
   @Output() data = new EventEmitter<object>();
   @Output() formErrors = new EventEmitter<string[]>();
@@ -53,9 +53,9 @@ export class CdeComponent implements AfterViewInit, OnInit {
       .getJson(this.productName, this.templateName)
       .subscribe((json) => this._init(json));
     this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
-    if (typeof this.pk !== 'undefined') {
+    if (typeof this.id !== 'undefined') {
       this._cdeRepository
-        .getById(this.productName, this.templateName, this.pk)
+        .getById(this.productName, this.templateName, this.id)
         .subscribe((data) => (this.formData.data = data));
     }
   }
