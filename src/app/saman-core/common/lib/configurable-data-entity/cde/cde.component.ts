@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormioBaseComponent, FormioComponent } from '@formio/angular';
+import { FormioComponent } from '@formio/angular';
 import {
   CdeRepository,
   ConditionModel,
@@ -17,9 +17,10 @@ import {
   DatasourceConsumer,
   TemplateRepository,
 } from '@saman-core/data';
-import { Subject, bufferWhen, filter, first, tap } from 'rxjs';
+import { Subject, bufferWhen, combineLatestWith, filter, take, tap } from 'rxjs';
 import uniq from 'lodash-es/uniq';
 import { InitCdeService } from '../init.service';
+import { FormUtilService } from '@saman-core/common';
 
 @Component({
   selector: 'app-cde',
@@ -36,7 +37,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
   @Output() formErrors = new EventEmitter<string[]>();
   private _consumer: DatasourceConsumer;
   private _lastConditionDataEvaluated = {};
-  form: object = { components: [] };
+  formJson: object = { components: [] };
   formData = { data: {} };
 
   constructor(
@@ -44,19 +45,29 @@ export class CdeComponent implements AfterViewInit, OnInit {
     private _templateRepository: TemplateRepository,
     private _conditionRepository: ConditionRepository,
     private _cdeRepository: CdeRepository,
+    private _formUtilService: FormUtilService,
   ) {
     _initCdeService.initConf();
   }
 
   ngOnInit(): void {
-    this._templateRepository
-      .getJson(this.productName, this.templateName)
-      .subscribe((json) => this._init(json));
     this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
-    if (typeof this.id !== 'undefined') {
-      this._cdeRepository
-        .getById(this.productName, this.templateName, this.id)
-        .subscribe((data) => (this.formData.data = data));
+
+    const templateObserver = this._templateRepository.getJson(this.productName, this.templateName);
+    if (typeof this.id === 'undefined') {
+      templateObserver.subscribe((templateJson) => {
+        const data = this._formUtilService.getDefaultValues(templateJson);
+        this._init(templateJson, data);
+      });
+    } else {
+      const dataObserver = this._cdeRepository.getById(
+        this.productName,
+        this.templateName,
+        this.id,
+      );
+      templateObserver
+        .pipe(combineLatestWith(dataObserver))
+        .subscribe(([templateJson, data]) => this._init(templateJson, data));
     }
   }
 
@@ -64,34 +75,43 @@ export class CdeComponent implements AfterViewInit, OnInit {
     this._initCdeService.initPrism();
   }
 
-  private _init(json: object): void {
-    this.form = json;
-    this.formComponent.ready
-      .asObservable()
-      .pipe(first())
-      .subscribe((webForm) => {
-        this._lastConditionDataEvaluated = { ...webForm.formio.data };
-        this._registryAndProcessEvents(webForm);
-      });
+  private _init(templateJson: object, data: object): void {
+    const conditionRequest: ConditionRequestModel = {
+      variables: data,
+      modifiedProperties: [],
+      isInitial: true,
+    };
+    this._conditionRepository.eval(this._consumer, conditionRequest).subscribe((conditions) => {
+      this.formJson = templateJson;
+      this.formData.data = data;
+      this.formComponent.ready
+        .asObservable()
+        .pipe(take(1))
+        .subscribe(() => {
+          this._applyConditions(conditions);
+          this._registryNewData();
+          this._registryAndProcessEvents();
+        });
+    });
   }
 
-  private _registryAndProcessEvents(webForm: FormioBaseComponent): void {
+  private _registryAndProcessEvents(): void {
     const grouping = new Subject<boolean>();
     let groupingInterval: NodeJS.Timeout;
 
-    webForm.change
+    this.formComponent.change
       .asObservable()
       .pipe(
         filter((ch) => this._filterChangesByEventOrigin(ch)),
         tap(() => {
           clearTimeout(groupingInterval);
-          groupingInterval = setTimeout(() => grouping.next(true), 250);
+          groupingInterval = setTimeout(() => grouping.next(true), 350);
         }),
         bufferWhen(() => grouping),
       )
       .subscribe((components: object[]) => {
         const properties: string[] = uniq(components.map((c) => c['changed'].component.key));
-        const data = webForm.formio.data;
+        const data = this.formComponent.formio.data;
 
         this._callConditions(data, properties, true);
       });
@@ -119,35 +139,46 @@ export class CdeComponent implements AfterViewInit, OnInit {
     this._conditionRepository
       .eval(this._consumer, conditionRequest)
       .subscribe((conditions: ConditionModel[]) => {
-        this._setConditions(conditions);
-        this._lastConditionDataEvaluated = { ...data };
-        this.data.emit(data);
+        this._applyConditions(conditions);
+        this._registryNewData();
       });
   }
 
-  private _setConditions(conditions: ConditionModel[]): void {
+  private _applyConditions(conditions: ConditionModel[]): void {
     conditions.forEach((condition) => {
-      switch (condition.conditionType) {
-        case ConditionTypeEnum.VALUE:
-          this._setValueProperty(condition);
-          break;
-        case ConditionTypeEnum.VISIBLE:
-          this._setVisibleProperty(condition);
-          break;
-        case ConditionTypeEnum.DISABLE:
-          this._setDisableProperty(condition);
-          break;
-        case ConditionTypeEnum.ALERT:
-          this._throwAlertProperty(condition);
-          break;
-        case ConditionTypeEnum.VALIDATE:
-          this._setValidateProperty(condition);
-          break;
-        case ConditionTypeEnum.OPTIONS:
-          this._setOptionsProperty(condition);
-          break;
+      try {
+        switch (condition.conditionType) {
+          case ConditionTypeEnum.VALUE:
+            this._setValueProperty(condition);
+            break;
+          case ConditionTypeEnum.VISIBLE:
+            this._setVisibleProperty(condition);
+            break;
+          case ConditionTypeEnum.DISABLE:
+            this._setDisableProperty(condition);
+            break;
+          case ConditionTypeEnum.ALERT:
+            this._throwAlertProperty(condition);
+            break;
+          case ConditionTypeEnum.VALIDATE:
+            this._setValidateProperty(condition);
+            break;
+          case ConditionTypeEnum.OPTIONS:
+            this._setOptionsProperty(condition);
+            break;
+        }
+      } catch (e) {
+        console.warn(`condition cannot be applied: ${JSON.stringify(condition)}`);
       }
     });
+  }
+
+  private _registryNewData(): void {
+    const newData = this.formComponent.formio.data;
+    this._lastConditionDataEvaluated = { ...newData };
+    this.formComponent.formio.checkValidity(newData, true);
+    this.formErrors.emit(this.formComponent.formio.errors);
+    this.data.emit(newData);
   }
 
   private _setValueProperty(condition: ConditionModel): void {
@@ -155,13 +186,14 @@ export class CdeComponent implements AfterViewInit, OnInit {
   }
 
   private _setVisibleProperty(condition: ConditionModel): void {
-    this._getProperty(condition.property).visible = condition.value;
+    this._getProperty(condition.property).component.hidden = !condition.value;
+    this._getProperty(condition.property).visible = !!condition.value;
   }
 
   private _setDisableProperty(condition: ConditionModel): void {
     const c = this._getProperty(condition.property);
-    c.component.disabled = condition.value;
-    c.disabled = condition.value;
+    c.component.disabled = !!condition.value;
+    c.disabled = !!condition.value;
     c.redraw();
   }
 

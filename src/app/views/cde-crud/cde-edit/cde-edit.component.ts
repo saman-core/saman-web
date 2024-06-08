@@ -19,11 +19,18 @@ export class CdeEditComponent  implements OnInit {
 
   ngOnInit() {
     this.id = parseInt(this._activatedRoute.snapshot.params['id']);
-    console.log(this.id);
     this._activatedRoute.data.subscribe((data) => {
       this.productName = data.productName;
       this.templateName = data.templateName;
       this.routeBase = data.routeBase;
     });
+  }
+
+  onChangeData(data: object): void {
+    console.log(data);
+  }
+
+  onFormErrors(errors: string[]): void {
+    console.log(errors);
   }
 }

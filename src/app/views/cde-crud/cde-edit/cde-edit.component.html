@@ -1,1 +1,7 @@
-<app-cde [productName]="productName" [templateName]="templateName" [id]="id"></app-cde>
+<app-cde
+  [id]="id"
+  [productName]="productName"
+  [templateName]="templateName"
+  (data)="onChangeData($event)"
+  (formErrors)="onFormErrors($event)"
+></app-cde>

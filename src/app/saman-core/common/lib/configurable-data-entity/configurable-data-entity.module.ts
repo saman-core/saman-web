@@ -8,6 +8,7 @@ import { CdeComponent } from './cde/cde.component';
 import { CdeBuilderComponent } from './cde-builder/cde-builder.component';
 import { InitCdeService } from './init.service';
 import { template } from './template';
+import { FormUtilModule } from '@saman-core/common';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Formio as any).icons = 'fontawesome';
@@ -23,6 +24,7 @@ Templates.current = template;
     ConditionTemplateModule,
     GenericResourcesModule,
     CdeModule,
+    FormUtilModule,
   ],
   providers: [InitCdeService, FormioResources],
   exports: [CdeComponent, CdeBuilderComponent],

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class FormUtilService {
@@ -41,6 +41,16 @@ export class FormUtilService {
     'time',
     'url',
   ];
+
+  public getDefaultValues(formJson: object): object {
+    const components = formJson['components'];
+    const flatComponets = this.filterComponents(components, {});
+    const defaultValues = {};
+    flatComponets
+      .filter((c) => typeof c['defaultValue'] !== 'undefined')
+      .forEach((c) => (defaultValues[c['key']] = c['defaultValue']));
+    return defaultValues;
+  }
 
   public getFlatInputComponents(formJson: object, filter: { [key: string]: any } = {}): object {
     const components = formJson['components'];

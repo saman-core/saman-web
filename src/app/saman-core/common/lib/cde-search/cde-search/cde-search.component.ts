@@ -73,7 +73,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
     private _cdeRepository: CdeRepository,
     private _formUtilService: FormUtilService,
   ) {
-    _initCdeService.initConf();
+    this._initCdeService.initConf();
   }
 
   ngOnInit(): void {
@@ -90,7 +90,6 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
       this.filterFormJson = this._formUtilService.getFlatInputComponents(flatProperties, {
         dbIndex: true,
       });
-      console.log(this.filterFormJson);
     });
     this.columnsToDisplay = this.displayedColumns;
     if (this.isMultipleSelection) {
@@ -190,6 +189,10 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
     this._filterData.next(paramns);
+  }
+
+  cleanFilter(): void {
+    this.formComponent.formio.emit('resetForm');
   }
 
   setStep(index: number) {
