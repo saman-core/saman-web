@@ -44,11 +44,14 @@ export class FormUtilService {
 
   public getDefaultValues(formJson: object): object {
     const components = formJson['components'];
+    console.log(components);
     const flatComponets = this.filterComponents(components, {});
+    console.log(flatComponets);
     const defaultValues = {};
     flatComponets
       .filter((c) => typeof c['defaultValue'] !== 'undefined')
       .forEach((c) => (defaultValues[c['key']] = c['defaultValue']));
+    console.log(defaultValues);
     return defaultValues;
   }
 
@@ -102,7 +105,7 @@ export class FormUtilService {
       const columns = component['columns'];
       columns.forEach((colum) => {
         if (colum['components'] !== null) {
-          components.push(colum['components']);
+          components.push(...colum['components']);
         }
       });
     } else if (typeof component['rows'] !== 'undefined') {
@@ -110,7 +113,7 @@ export class FormUtilService {
       rows.forEach((row) => {
         row.forEach((colum) => {
           if (colum !== null) {
-            components.push(colum['components']);
+            components.push(...colum['components']);
           }
         });
       });
