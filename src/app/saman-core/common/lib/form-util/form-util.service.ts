@@ -44,14 +44,11 @@ export class FormUtilService {
 
   public getDefaultValues(formJson: object): object {
     const components = formJson['components'];
-    console.log(components);
     const flatComponets = this.filterComponents(components, {});
-    console.log(flatComponets);
     const defaultValues = {};
     flatComponets
       .filter((c) => typeof c['defaultValue'] !== 'undefined')
       .forEach((c) => (defaultValues[c['key']] = c['defaultValue']));
-    console.log(defaultValues);
     return defaultValues;
   }
 
