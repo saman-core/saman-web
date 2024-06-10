@@ -1,27 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CdeCrudComponent } from './cde-crud/cde-crud.component';
-import { ConfigurableDataEntityModule, CdeSearchModule } from '@saman-core/common';
-import { CdeEditComponent } from './cde-edit/cde-edit.component';
+import { CdeCrudModule as CdeCrudModule2 } from '@saman-core/common';
 import { CdeCrudRoutingModule } from './cde-crud-routing.module';
-import { CdeModule } from '@saman-core/data';
 
 @NgModule({
-  declarations: [
-    CdeCrudComponent,
-    CdeEditComponent,
-  ],
+  declarations: [],
   imports: [
     CdeCrudRoutingModule,
-    CommonModule,
-    ConfigurableDataEntityModule,
-    CdeSearchModule,
-    CdeModule,
+    CdeCrudModule2,
   ],
   providers: [],
-  exports: [
-    CdeCrudComponent,
-    CdeEditComponent,
-  ],
+  exports: [],
 })
 export class CdeCrudModule {}

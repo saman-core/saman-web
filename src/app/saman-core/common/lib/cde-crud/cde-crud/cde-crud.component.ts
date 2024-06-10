@@ -31,17 +31,12 @@ export class CdeCrudComponent implements OnInit {
       this.routeBase = data.routeBase;
       this.initializedRequests = data.initializedRequests;
       this.searchProperty = data.searchProperty;
-      this.isMultipleSelection = data.isMultipleSelection;
       this.viewAction = data.viewAction;
       this.editAction = data.editAction;
       this.deleteAction = data.deleteAction;
       this.avancedSearch = data.avancedSearch;
       this.displayedColumns = data.displayedColumns;
     });
-  }
-
-  onEmitt(event: object[]): void {
-    console.log(event);
   }
 
   onAction(event): void {

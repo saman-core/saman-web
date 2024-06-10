@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CdeCrudComponent } from './cde-crud/cde-crud.component';
-import { CdeEditComponent } from './cde-edit/cde-edit.component';
+import { CdeCrudComponent, CdeEditComponent } from '@saman-core/common';
 
 const productName = 'auto';
 const templateName = 'auto1';
 const routeBase = 'reinsurance';
 const initializedRequests = true;
 const searchProperty: string = 'id';
-const isMultipleSelection: boolean = false;
 const viewAction: boolean = true;
 const editAction: boolean = true;
 const deleteAction: boolean = true;
@@ -26,7 +24,6 @@ const routes: Routes = [
       routeBase: routeBase,
       initializedRequests: initializedRequests,
       searchProperty: searchProperty,
-      isMultipleSelection: isMultipleSelection,
       viewAction: viewAction,
       editAction: editAction,
       deleteAction: deleteAction,
