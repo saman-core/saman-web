@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CdeRepository } from '@saman-core/data';
 
 @Component({
   selector: 'app-cde-edit',
@@ -11,10 +12,13 @@ export class CdeEditComponent  implements OnInit {
   templateName: string = '';
   routeBase = '';
   id = 0;
+  errors: string[] = [];
+  data: object = {};
 
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
+    private _cdeRepository: CdeRepository,
   ) {}
 
   ngOnInit() {
@@ -27,10 +31,22 @@ export class CdeEditComponent  implements OnInit {
   }
 
   onChangeData(data: object): void {
-    console.log(data);
+    this.data = data;
   }
 
   onFormErrors(errors: string[]): void {
-    console.log(errors);
+    this.errors = errors;
+  }
+
+  saveEdit(): void {
+    if (this.errors.length === 0) {
+      this._cdeRepository.update(this.productName, this.templateName, this.data).subscribe(response => {
+        console.log(response);
+      });
+    }
+  }
+
+  cancelEdit(): void {
+    this._router.navigate([this.routeBase]);
   }
 }

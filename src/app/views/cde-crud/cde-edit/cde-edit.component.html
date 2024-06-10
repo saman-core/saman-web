@@ -5,3 +5,9 @@
   (data)="onChangeData($event)"
   (formErrors)="onFormErrors($event)"
 ></app-cde>
+
+
+<div class="button-row">
+  <button mat-flat-button (click)="saveEdit()" [disabled]="errors.length > 0" color="primary">Save</button>
+  <button mat-flat-button (click)="cancelEdit()" color="warn">Cancel</button>
+</div>

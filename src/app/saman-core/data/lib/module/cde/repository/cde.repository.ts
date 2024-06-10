@@ -35,4 +35,22 @@ export class CdeRepository {
     const consumer = this.getConsumer(productName, templateName);
     return consumer.getByMethod<object>(`${id}`, {}, true, true);
   }
+
+  public create(
+    productName: string,
+    templateName: string,
+    data: object
+  ): Observable<object> {
+    const consumer = this.getConsumer(productName, templateName);
+    return consumer.saveMethod<object, object>('', data, {}, true, true);
+  }
+
+  public update(
+    productName: string,
+    templateName: string,
+    data: object
+  ): Observable<object> {
+    const consumer = this.getConsumer(productName, templateName);
+    return consumer.updateMethod<object, object>('', data, {}, true, true);
+  }
 }

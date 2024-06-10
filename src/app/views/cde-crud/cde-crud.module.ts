@@ -4,6 +4,7 @@ import { CdeCrudComponent } from './cde-crud/cde-crud.component';
 import { ConfigurableDataEntityModule, CdeSearchModule } from '@saman-core/common';
 import { CdeEditComponent } from './cde-edit/cde-edit.component';
 import { CdeCrudRoutingModule } from './cde-crud-routing.module';
+import { CdeModule } from '@saman-core/data';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { CdeCrudRoutingModule } from './cde-crud-routing.module';
     CommonModule,
     ConfigurableDataEntityModule,
     CdeSearchModule,
+    CdeModule,
   ],
   providers: [],
   exports: [
