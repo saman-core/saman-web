@@ -40,10 +40,13 @@ export class CdeCrudComponent implements OnInit {
   }
 
   onAction(event): void {
-    console.log(event);
     if (event.action === 'edit') {
       const id = event.id;
       this._router.navigate([this.routeBase, id]);
     }
+  }
+
+  create(): void {
+    this._router.navigate([this.routeBase, 'create']);
   }
 }

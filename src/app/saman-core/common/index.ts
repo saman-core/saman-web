@@ -1,3 +1,4 @@
+export * from './lib/cde-crud/cde-create/cde-create.component';
 export * from './lib/cde-crud/cde-crud/cde-crud.component';
 export * from './lib/cde-crud/cde-edit/cde-edit.component';
 export * from './lib/cde-crud/cde-crud.module';

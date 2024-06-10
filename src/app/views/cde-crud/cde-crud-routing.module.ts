@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CdeCrudComponent, CdeEditComponent } from '@saman-core/common';
+import { CdeCreateComponent, CdeCrudComponent, CdeEditComponent } from '@saman-core/common';
 
 const productName = 'auto';
 const templateName = 'auto1';
@@ -29,7 +29,7 @@ const routes: Routes = [
       deleteAction: deleteAction,
       avancedSearch: avancedSearch,
       displayedColumns: displayedColumns,
-    }
+    },
   },
   {
     path: ':id',
@@ -39,13 +39,22 @@ const routes: Routes = [
       productName: productName,
       templateName: templateName,
       routeBase: routeBase,
-    }
+    },
+  },
+  {
+    path: 'create',
+    component: CdeCreateComponent,
+    data: {
+      title: $localize`CDE`,
+      productName: productName,
+      templateName: templateName,
+      routeBase: routeBase,
+    },
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class CdeCrudRoutingModule {
-}
+export class CdeCrudRoutingModule {}

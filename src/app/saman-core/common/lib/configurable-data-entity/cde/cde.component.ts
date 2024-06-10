@@ -54,7 +54,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
     this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
 
     const templateObserver = this._templateRepository.getJson(this.productName, this.templateName);
-    if (typeof this.id === 'undefined') {
+    if (!Number.isInteger(this.id)) {
       templateObserver.subscribe((templateJson) => {
         const data = this._formUtilService.getDefaultValues(templateJson);
         this._init(templateJson, data);
