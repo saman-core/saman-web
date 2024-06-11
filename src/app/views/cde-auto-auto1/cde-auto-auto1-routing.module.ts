@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CdeCreateComponent, CdeCrudComponent, CdeEditComponent } from '@saman-core/common';
+import {
+  CdeCreateComponent,
+  CdeCrudComponent,
+  CdeEditComponent,
+  CdeViewComponent,
+} from '@saman-core/common';
 
 const productName = 'auto';
 const templateName = 'auto1';
-const routeBase = 'reinsurance';
+const routeBase = 'cde-auto-auto1';
 const initializedRequests = true;
 const searchProperty: string = 'id';
 const viewAction: boolean = true;
@@ -32,7 +37,7 @@ const routes: Routes = [
     },
   },
   {
-    path: ':id',
+    path: 'edit/:id',
     component: CdeEditComponent,
     data: {
       title: $localize`CDE`,
@@ -51,10 +56,20 @@ const routes: Routes = [
       routeBase: routeBase,
     },
   },
+  {
+    path: 'view/:id',
+    component: CdeViewComponent,
+    data: {
+      title: $localize`CDE`,
+      productName: productName,
+      templateName: templateName,
+      routeBase: routeBase,
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CdeCrudRoutingModule {}
+export class CdeAutoAuto1RoutingModule {}

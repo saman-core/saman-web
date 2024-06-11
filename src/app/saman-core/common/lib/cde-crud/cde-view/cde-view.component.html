@@ -1,0 +1,13 @@
+<app-cde
+  [id]="id"
+  [productName]="productName"
+  [templateName]="templateName"
+  [readOnly]="true"
+  (data)="onChangeData($event)"
+  (formErrors)="onFormErrors($event)"
+></app-cde>
+
+
+<div class="button-row">
+  <button mat-flat-button (click)="cancelEdit()" color="warn">Cancel</button>
+</div>

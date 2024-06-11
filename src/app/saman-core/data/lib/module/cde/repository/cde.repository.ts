@@ -53,4 +53,13 @@ export class CdeRepository {
     const consumer = this.getConsumer(productName, templateName);
     return consumer.updateMethod<object, object>('', data, {}, true, true);
   }
+
+  public delete(
+    productName: string,
+    templateName: string,
+    id: number
+  ): Observable<object> {
+    const consumer = this.getConsumer(productName, templateName);
+    return consumer.deleteMethod<object>(`${id}`, {}, true, true);
+  }
 }

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { DefaultLayoutComponent } from './containers';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
@@ -46,9 +45,9 @@ const routes: Routes = [
           import('./views/contracts/coinsurance/coinsurance.module').then((m) => m.CoinsuranceModule)
       },
       {
-        path: 'reinsurance',
+        path: 'cde-auto-auto1',
         loadChildren: () =>
-          import('./views/cde-crud/cde-crud.module').then((m) => m.CdeCrudModule)
+          import('./views/cde-auto-auto1/cde-auto-auto1.module').then((m) => m.CdeAutoAuto1Module)
       },
     ]
   },

@@ -60,7 +60,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Reinsurances',
-        url: 'reinsurance'
+        url: '#'
       },
       {
         name: 'Agreements',
@@ -214,6 +214,25 @@ export const navItems: INavData[] = [
       {
         name: 'Condition',
         url: 'template-conditions'
+      },
+    ]
+  },
+  {
+    name: 'DEMOS',
+    title: true
+  },
+  {
+    name: 'CDE Auto-Auto1',
+    url: '#',
+    iconComponent: { name: 'cilLibraryAdd' },
+    children: [
+      {
+        name: 'Search and Edit',
+        url: 'cde-auto-auto1'
+      },
+      {
+        name: 'Create',
+        url: 'cde-auto-auto1/create'
       },
     ]
   },

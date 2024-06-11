@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CdeRepository } from '@saman-core/data';
 
 @Component({
   selector: 'app-cde-crud',
@@ -22,6 +23,7 @@ export class CdeCrudComponent implements OnInit {
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
+    private _cdeRepository: CdeRepository,
   ) {}
 
   ngOnInit() {
@@ -40,9 +42,15 @@ export class CdeCrudComponent implements OnInit {
   }
 
   onAction(event): void {
+    const id = event.id;
     if (event.action === 'edit') {
-      const id = event.id;
-      this._router.navigate([this.routeBase, id]);
+      this._router.navigate([this.routeBase, 'edit', id]);
+    } else if (event.action === 'view') {
+      this._router.navigate([this.routeBase, 'view', id]);
+    } else if (event.action === 'delete') {
+      this._cdeRepository
+        .delete(this.productName, this.templateName, id)
+        .subscribe((response) => console.log(response));
     }
   }
 
