@@ -1,11 +1,3 @@
-<section>
-  <div class="example-label">Create new Registry</div>
-  <div class="example-button-row">
-    <button mat-button (click)="create()" >Create</button>
-  </div>
-</section>
-
-<hr/>
 
 <app-cde-search
   [initializedRequests]="initializedRequests"
@@ -21,3 +13,14 @@
   (actionSelected)="onAction($event)"
 >
 </app-cde-search>
+
+<hr />
+
+<div class="card">
+  <div class="card-body">
+    <div class="example-label">Create new Registry</div>
+    <div class="example-button-row">
+      <button mat-button (click)="create()">Create</button>
+    </div>
+  </div>
+</div>
