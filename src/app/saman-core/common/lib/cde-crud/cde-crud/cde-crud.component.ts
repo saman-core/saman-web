@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdeRepository } from '@saman-core/data';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-cde-crud',
   templateUrl: './cde-crud.component.html',
   styleUrl: './cde-crud.component.scss',
 })
-export class CdeCrudComponent implements OnInit {
+export class CdeCrudComponent implements OnInit, OnDestroy {
   initializedRequests = true;
   searchProperty: string = 'id';
   isMultipleSelection: boolean = false;
@@ -19,6 +20,7 @@ export class CdeCrudComponent implements OnInit {
   productName = '';
   templateName = '';
   routeBase = '';
+  refreshTable = new Subject<boolean>();
 
   constructor(
     private _router: Router,
@@ -50,11 +52,17 @@ export class CdeCrudComponent implements OnInit {
     } else if (event.action === 'delete') {
       this._cdeRepository
         .delete(this.productName, this.templateName, id)
-        .subscribe((response) => console.log(response));
+        .subscribe(() => {
+          this.refreshTable.next(true);
+        });
     }
   }
 
   create(): void {
     this._router.navigate([this.routeBase, 'create']);
+  }
+
+  ngOnDestroy(): void {
+    this.refreshTable.complete();
   }
 }

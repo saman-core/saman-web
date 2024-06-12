@@ -11,7 +11,10 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
+import { FormControl } from '@angular/forms';
+import { FormioComponent } from '@formio/angular';
 import { CdeRepository, PageableModel, TemplateRepository } from '@saman-core/data';
+import { InitCdeService } from '@saman-core/common/lib/configurable-data-entity/init.service';
 import {
   BehaviorSubject,
   Observable,
@@ -24,11 +27,8 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { FormioComponent } from '@formio/angular';
-import { FormUtilService } from '../../form-util/form-util.service';
-import { FormControl } from '@angular/forms';
 import _ from 'lodash';
-import { InitCdeService } from '@saman-core/common/lib/configurable-data-entity/init.service';
+import { FormUtilService } from '../../form-util/form-util.service';
 
 @Component({
   selector: 'app-cde-search',
@@ -49,13 +49,14 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() deleteAction: boolean = true;
   @Input() avancedSearch: boolean = true;
   @Input() displayedColumns: string[] = [];
+  @Input() refreshTable: Observable<boolean> = new Observable<boolean>();
 
   @Output() modelEmitter = new EventEmitter<object[]>();
   @Output() actionSelected = new EventEmitter<{ action: string; id: number }>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('formio') formComponent!: FormioComponent;  
+  @ViewChild('formio') formComponent!: FormioComponent;
 
   basicFormControl = new FormControl('');
   selection = new SelectionModel<object>(false);
@@ -118,7 +119,12 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   _fetchData(): Observable<object[]> {
-    return merge(this.sort.sortChange, this.paginator.page, this._filterData.asObservable()).pipe(
+    return merge(
+      this.sort.sortChange,
+      this.paginator.page,
+      this._filterData.asObservable(),
+      this.refreshTable,
+    ).pipe(
       takeUntil(this._unsubscribe),
       startWith({}),
       switchMap(() => {
