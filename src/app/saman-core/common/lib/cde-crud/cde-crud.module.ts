@@ -6,6 +6,7 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfigurableDataEntityModule, CdeSearchModule } from '@saman-core/common';
 import { AlertModule } from '@saman-core/core';
@@ -39,6 +40,7 @@ import { EditConfirmDialogComponent } from './edit-confirm-dialog/edit-confirm-d
     MatDialogActions,
     MatDialogClose,
     MatButtonModule,
+    MatIconModule,
   ],
   providers: [],
   exports: [CdeCreateComponent, CdeCrudComponent, CdeEditComponent, CdeViewComponent],
