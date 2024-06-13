@@ -1,13 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdeRepository } from '@saman-core/data';
+import { AlertSubscriptor } from '@saman-core/core';
+import {
+  CreateConfirmDialogComponent,
+  CreateConfirmDialogResponse,
+} from '../create-confirm-dialog/create-confirm-dialog.component';
 
 @Component({
   selector: 'app-cde-create',
   templateUrl: './cde-create.component.html',
   styleUrl: './cde-create.component.scss',
 })
-export class CdeCreateComponent  implements OnInit {
+export class CdeCreateComponent implements OnInit {
   productName: string = '';
   templateName: string = '';
   routeBase = '';
@@ -17,6 +23,8 @@ export class CdeCreateComponent  implements OnInit {
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
+    private _dialog: MatDialog,
+    private _alert: AlertSubscriptor,
     private _cdeRepository: CdeRepository,
   ) {}
 
@@ -38,13 +46,24 @@ export class CdeCreateComponent  implements OnInit {
 
   create(): void {
     if (this.errors.length === 0) {
-      this._cdeRepository.create(this.productName, this.templateName, this.data).subscribe(response => {
-        console.log(response);
+      const dialogRef = this._dialog.open(CreateConfirmDialogComponent, {
+        data: { name: 'registry' },
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe((response: CreateConfirmDialogResponse) => {
+        if (response.accepted) {
+          this._cdeRepository
+            .create(this.productName, this.templateName, this.data)
+            .subscribe((response) => {
+              this._alert.success(`Data saved successfully by ID: ${response['id']}`);
+              this._router.navigate([this.routeBase]);
+            });
+        }
       });
     }
   }
 
-  cancelEdit(): void {
+  cancel(): void {
     this._router.navigate([this.routeBase]);
   }
 }

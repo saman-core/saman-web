@@ -1,7 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdeRepository } from '@saman-core/data';
+import { AlertSubscriptor } from '@saman-core/core';
 import { Subject } from 'rxjs';
+import {
+  DeleteConfirmDialogComponent,
+  DeleteConfirmDialogResponse,
+} from '../delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Component({
   selector: 'app-cde-crud',
@@ -25,6 +31,8 @@ export class CdeCrudComponent implements OnInit, OnDestroy {
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
+    private _dialog: MatDialog,
+    private _alert: AlertSubscriptor,
     private _cdeRepository: CdeRepository,
   ) {}
 
@@ -50,11 +58,20 @@ export class CdeCrudComponent implements OnInit, OnDestroy {
     } else if (event.action === 'view') {
       this._router.navigate([this.routeBase, 'view', id]);
     } else if (event.action === 'delete') {
-      this._cdeRepository
-        .delete(this.productName, this.templateName, id)
-        .subscribe(() => {
-          this.refreshTable.next(true);
-        });
+      const dialogRef = this._dialog.open(DeleteConfirmDialogComponent, {
+        data: { name: 'registry' },
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe((response: DeleteConfirmDialogResponse) => {
+        if (response.accepted) {
+          this._cdeRepository.delete(this.productName, this.templateName, id).subscribe((response) => {
+            if (response) {
+              this._alert.success(`Data deleted successfully, ID: ${id}`);
+              this.refreshTable.next(true);
+            }
+          });
+        }
+      });
     }
   }
 

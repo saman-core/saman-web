@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertSubscriptor } from '@saman-core/core';
 import { CdeRepository } from '@saman-core/data';
+import { EditConfirmDialogComponent, EditConfirmDialogResponse } from '../edit-confirm-dialog/edit-confirm-dialog.component';
 
 @Component({
   selector: 'app-cde-edit',
@@ -18,6 +21,8 @@ export class CdeEditComponent  implements OnInit {
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
+    private _dialog: MatDialog,
+    private _alert: AlertSubscriptor,
     private _cdeRepository: CdeRepository,
   ) {}
 
@@ -40,8 +45,18 @@ export class CdeEditComponent  implements OnInit {
 
   saveEdit(): void {
     if (this.errors.length === 0) {
-      this._cdeRepository.update(this.productName, this.templateName, this.data).subscribe(response => {
-        console.log(response);
+      const dialogRef = this._dialog.open(EditConfirmDialogComponent, {
+        data: { name: 'registry' },
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe((response: EditConfirmDialogResponse) => {
+        if (response.accepted) {
+
+      this._cdeRepository.update(this.productName, this.templateName, this.data).subscribe(() => {
+        this._alert.success('Data updated successfully');
+        this._router.navigate([this.routeBase]);
+      });
+        }
       });
     }
   }

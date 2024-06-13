@@ -36,7 +36,7 @@ export class CdeViewComponent  implements OnInit {
     this.errors = errors;
   }
 
-  cancelEdit(): void {
+  return(): void {
     this._router.navigate([this.routeBase]);
   }
 }
