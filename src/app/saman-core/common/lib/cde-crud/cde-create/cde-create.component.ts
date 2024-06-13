@@ -17,7 +17,7 @@ export class CdeCreateComponent implements OnInit {
   productName: string = '';
   templateName: string = '';
   routeBase = '';
-  errors: string[] = [];
+  formValid = false;
   data: object = {};
 
   constructor(
@@ -40,12 +40,12 @@ export class CdeCreateComponent implements OnInit {
     this.data = data;
   }
 
-  onFormErrors(errors: string[]): void {
-    this.errors = errors;
+  onFormErrors(formValid: boolean): void {
+    this.formValid = formValid;
   }
 
   create(): void {
-    if (this.errors.length === 0) {
+    if (this.formValid) {
       const dialogRef = this._dialog.open(CreateConfirmDialogComponent, {
         data: { name: 'registry' },
         disableClose: true,

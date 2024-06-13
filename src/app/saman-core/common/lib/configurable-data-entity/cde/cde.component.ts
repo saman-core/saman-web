@@ -34,7 +34,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
   @Input() id: number | undefined;
   @Input() readOnly: boolean = false;
   @Output() data = new EventEmitter<object>();
-  @Output() formErrors = new EventEmitter<string[]>();
+  @Output() formErrors = new EventEmitter<boolean>();
   private _consumer: DatasourceConsumer;
   private _lastConditionDataEvaluated = {};
   formJson: object = { components: [] };
@@ -54,7 +54,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
     this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
 
     const templateObserver = this._templateRepository.getJson(this.productName, this.templateName);
-    if (!Number.isInteger(this.id)) {
+    if (this._isNewRegistry()) {
       templateObserver.subscribe((templateJson) => {
         const data = this._formUtilService.getDefaultValues(templateJson);
         this._init(templateJson, data);
@@ -176,9 +176,15 @@ export class CdeComponent implements AfterViewInit, OnInit {
   private _registryNewData(): void {
     const newData = this.formComponent.formio.data;
     this._lastConditionDataEvaluated = { ...newData };
-    this.formComponent.formio.checkValidity(newData, true);
-    this.formErrors.emit(this.formComponent.formio.errors);
+    if (!this._isNewRegistry()) {
+      this.formComponent.formio.checkValidity(newData, true);
+    }
+    this.formErrors.emit(this.formComponent.formio.checkValidity(newData, true, newData, true));
     this.data.emit(newData);
+  }
+
+  private _isNewRegistry(): boolean {
+    return !Number.isInteger(this.id);
   }
 
   private _setValueProperty(condition: ConditionModel): void {

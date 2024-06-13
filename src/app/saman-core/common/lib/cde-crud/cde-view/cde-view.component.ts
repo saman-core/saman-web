@@ -11,8 +11,6 @@ export class CdeViewComponent  implements OnInit {
   templateName: string = '';
   routeBase = '';
   id = 0;
-  errors: string[] = [];
-  data: object = {};
 
   constructor(
     private _router: Router,
@@ -26,14 +24,6 @@ export class CdeViewComponent  implements OnInit {
       this.templateName = data.templateName;
       this.routeBase = data.routeBase;
     });
-  }
-
-  onChangeData(data: object): void {
-    this.data = data;
-  }
-
-  onFormErrors(errors: string[]): void {
-    this.errors = errors;
   }
 
   return(): void {

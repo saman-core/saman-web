@@ -15,7 +15,7 @@ export class CdeEditComponent  implements OnInit {
   templateName: string = '';
   routeBase = '';
   id = 0;
-  errors: string[] = [];
+  formValid = false;
   data: object = {};
 
   constructor(
@@ -39,12 +39,12 @@ export class CdeEditComponent  implements OnInit {
     this.data = data;
   }
 
-  onFormErrors(errors: string[]): void {
-    this.errors = errors;
+  onFormErrors(formValid: boolean): void {
+    this.formValid = formValid;
   }
 
   saveEdit(): void {
-    if (this.errors.length === 0) {
+    if (this.formValid) {
       const dialogRef = this._dialog.open(EditConfirmDialogComponent, {
         data: { name: 'registry' },
         disableClose: true,
