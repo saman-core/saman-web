@@ -16,7 +16,7 @@ const viewAction: boolean = true;
 const editAction: boolean = true;
 const deleteAction: boolean = true;
 const avancedSearch: boolean = true;
-const displayedColumns: string[] = ['cedula', 'nombre', 'ocupacion'];
+const displayedColumns: string[] = ['cedula', 'nombre', 'ocupacion', 'cloudServer', 'sexo'];
 
 const routes: Routes = [
   {

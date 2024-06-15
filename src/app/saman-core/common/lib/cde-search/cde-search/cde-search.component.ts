@@ -14,21 +14,24 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { FormioComponent } from '@formio/angular';
 import { CdeRepository, PageableModel, TemplateRepository } from '@saman-core/data';
+import { FormUtilService, MapperTableRow } from '@saman-core/common';
 import { InitCdeService } from '@saman-core/common/lib/configurable-data-entity/init.service';
 import {
   BehaviorSubject,
   Observable,
   Subject,
   catchError,
+  from,
+  last,
   map,
   merge,
+  mergeAll,
   of,
   startWith,
   switchMap,
   takeUntil,
 } from 'rxjs';
 import _ from 'lodash';
-import { FormUtilService } from '../../form-util/form-util.service';
 
 @Component({
   selector: 'app-cde-search',
@@ -64,6 +67,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   data: object[] = [];
   columnsToDisplay: string[] = [];
   columnsHeader: { [column: string]: string } = {};
+  mappers: MapperTableRow[] = [];
   filterFormJson: object = {};
   hasMenu = false;
   step = 1;
@@ -91,6 +95,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
       this.filterFormJson = this._formUtilService.getFlatInputComponents(flatProperties, {
         dbIndex: true,
       });
+      this.mappers = this._formUtilService.getListMappers(formJson, this.displayedColumns);
     });
     this.columnsToDisplay = this.displayedColumns;
     if (this.isMultipleSelection) {
@@ -140,11 +145,12 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
           this._filterData.getValue(),
         );
       }),
-      map((data) => {
+      map((page) => {
         this.selection.clear();
-        this.resultsLength = data.count;
-        return data.data;
+        this.resultsLength = page.count;
+        return page.data;
       }),
+      switchMap((rows) => from(this.mappers.map((m) => m(rows))).pipe(mergeAll(), last())),
       catchError((err) => {
         console.error(err);
         this.selection.clear();

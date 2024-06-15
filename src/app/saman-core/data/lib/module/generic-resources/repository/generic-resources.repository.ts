@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { DatasourceConsumer } from '../../../base/datasource/datasource.consumer';
 import { DatasourceFactory } from '../../../base/datasource/datasource.factory';
 import { PageModel, PageableModel } from '@saman-core/data';
@@ -39,12 +39,18 @@ export class GenericResourceRepository {
     );
   }
 
+  public getAllByIds(resourceName: string, ids: number[] | string[]): Observable<object[]> {
+    return this._getDataSource(resourceName)
+      .getPageByMethod<PageModel<object>>(`?ids=${ids}`, null, {}, false, false, true)
+      .pipe(map((page) => page.data));
+  }
+
   public getByIdSync(resourceName: string, id: number | string): object {
     return this._sendXMLHttpSyncRequest(resourceName, id);
   }
 
   public getAllByIdsSync(resourceName: string, ids: number[] | string[]): object[] {
-    return this._sendXMLHttpSyncRequest(resourceName, `?ids=${ids}`);
+    return this._sendXMLHttpSyncRequest(resourceName, `?ids=${ids}`)['data'];
   }
 
   private _getDataSource(resourceName: string): DatasourceConsumer {

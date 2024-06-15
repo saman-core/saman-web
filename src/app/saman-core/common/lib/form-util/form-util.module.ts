@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { FormUtilService } from './form-util.service';
+import { GenericResourcesModule } from '@saman-core/data';
 
 @NgModule({
   declarations: [],
-  imports: [],
+  imports: [GenericResourcesModule],
   providers: [FormUtilService],
   exports: [],
 })

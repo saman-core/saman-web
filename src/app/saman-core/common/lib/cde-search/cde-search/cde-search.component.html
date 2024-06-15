@@ -80,7 +80,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
         {{ columnsHeader[column] }}
       </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element[column] }}</mat-cell>
+      <mat-cell *matCellDef="let element" [innerHTML]="element[column]"></mat-cell>
     </ng-container>
 
     <!-- Menu Column -->

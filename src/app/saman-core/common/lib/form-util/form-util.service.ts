@@ -1,46 +1,125 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
+import { FormioUtils } from '@formio/angular';
+import { GenericResourceRepository } from '@saman-core/data';
+import { Observable, catchError, map, of } from 'rxjs';
+import _ from 'lodash';
+import { VALID_TYPES } from './valid-types';
+
+export type MapperTableRow = (rows: object[]) => Observable<object[]>;
 
 @Injectable()
 export class FormUtilService {
-  static readonly VALID_TYPES = [
-    'samanCheckbox',
-    'samanDatetime',
-    'samanEmail',
-    'samanFile',
-    'samanHidden',
-    'samanNumber',
-    'samanPassword',
-    'samanPhoneNumber',
-    'samanRadio',
-    'samanSelect',
-    'samanSelectboxes',
-    'samanSignature',
-    'samanSurvey',
-    'samanTags',
-    'samanTextarea',
-    'samanTextfield',
-    'samanTime',
-    'samanUrl',
-    'checkbox',
-    'datetime',
-    'email',
-    'file',
-    'hidden',
-    'number',
-    'password',
-    'phoneNumber',
-    'radio',
-    'select',
-    'selectboxes',
-    'signature',
-    'survey',
-    'tags',
-    'textarea',
-    'textfield',
-    'time',
-    'url',
-  ];
+  static readonly VALID_TYPES = VALID_TYPES;
+
+  constructor(private _resourceRepository: GenericResourceRepository) {}
+
+  public getListMappers(formJson: object, keys: string[] = []): MapperTableRow[] {
+    const selectTypeComponents = (componentType: string) => {
+      const listTypes = ['samanSelect', 'samanRadio', 'select', 'radio'];
+      return !!listTypes.find((t) => t === componentType);
+    };
+    const filters = { type: selectTypeComponents };
+    if (keys.length > 0) {
+      filters['key'] = (key: string) => {
+        return !!keys.find((k) => k === key);
+      };
+    }
+
+    const flatComponets = this.filterComponents(formJson['components'], filters);
+    return flatComponets.map((c) => {
+      let mapper: MapperTableRow;
+      const label = this._getListLabel(c);
+      const key = c['key'];
+
+      if (c['dataSrc'] === 'json') {
+        const id = c['valueProperty'];
+        const items = c['data']['json'];
+        mapper = this._generateMapper(id, label, key, items);
+      } else if (c['dataSrc'] === 'resource') {
+        const id = 'id';
+        const resourceName = c['data']['resource'];
+        mapper = this._generateMapperResource(id, label, key, resourceName);
+      } else {
+        const id = c['idPath'];
+        const items = c['data']['values'];
+        mapper = this._generateMapper(id, label, key, items);
+      }
+      return mapper;
+    });
+  }
+
+  private _generateMapper(id: string, label: string, key: string, items: object[]): MapperTableRow {
+    return (rows: object[]) => {
+      let newRows: object[];
+      try {
+        newRows = rows.map((row) => {
+          const value = row[key];
+          const item = this._findItem(items, id, value);
+          if (typeof item !== 'undefined') {
+            const newValue = FormioUtils.interpolate(label, { item: item });
+            row[key] = newValue;
+          }
+          return row;
+        });
+      } catch (e) {
+        console.warn(`can not Mapper rows: ${e}`);
+        newRows = rows;
+      }
+      return of(newRows);
+    };
+  }
+
+  private _generateMapperResource(
+    id: string,
+    label: string,
+    key: string,
+    resourceName: string,
+  ): MapperTableRow {
+    return (rows: object[]) => {
+      const ids = this._getRowsIds(rows, key);
+      return this._resourceRepository.getAllByIds(resourceName, ids).pipe(
+        map((items) => {
+          const newRows = rows.map((data) => {
+            const value = data[key];
+            const item = this._findItem(items, id, value);
+            if (typeof item !== 'undefined') {
+              const newValue = FormioUtils.interpolate(label, { item: item });
+              data[key] = newValue;
+            }
+            return data;
+          });
+          return newRows;
+        }),
+        catchError((e) => {
+          console.warn(`can not Mapper rows: ${e}`);
+          return of(rows);
+        }),
+      );
+    };
+  }
+
+  private _getRowsIds(rows: object[], key: string): number[] | string[] {
+    let ids: number[] | string[];
+    try {
+      ids = _.uniq(rows.map((r) => r[key]));
+    } catch (e) {
+      console.warn(`can not get rows Ids: ${e}`);
+      ids = [];
+    }
+    return ids;
+  }
+
+  private _findItem(items: object[], id: string, value: any): object | undefined {
+    return items.find((i) => i[id] == value);
+  }
+
+  private _getListLabel(c): string {
+    if (typeof c['template'] === 'undefined') {
+      return '<span>{{ item.label }}</span>';
+    }
+    return c['template'];
+  }
 
   public getDefaultValues(formJson: object): object {
     const components = formJson['components'];
@@ -88,9 +167,13 @@ export class FormUtilService {
     }
     const validArray = keys.filter((key) => {
       const value = filter[key];
-      return component[key] === value;
+      if (typeof value === 'function') {
+        return value(component[key]);
+      } else {
+        return component[key] === value;
+      }
     });
-    return validArray.length !== 0;
+    return validArray.length === keys.length;
   }
 
   private getSubComponents(component: object): object[] {
