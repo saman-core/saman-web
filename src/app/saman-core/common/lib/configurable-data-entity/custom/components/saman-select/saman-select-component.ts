@@ -206,6 +206,9 @@ export default class SamanSelectComponent extends Component {
 
     if (typeof data === 'string' || typeof data === 'number') {
       const resourceName = this.component.data.resource;
+      if (resourceName === null || resourceName === '') {
+        return this.sanitize(this.t(data, { _userInput: true }), this.shouldSanitizeValue);
+      }
 
       let valueFromRepository: string | number;
       try {
@@ -233,6 +236,15 @@ export default class SamanSelectComponent extends Component {
     if (Array.isArray(data)) {
       try {
         const resourceName = this.component.data.resource;
+        if (resourceName === null || resourceName === '') {
+          return data.map((val) => {
+            if (typeof val === 'string' || typeof val === 'number') {
+              return this.sanitize(this.t(val, { _userInput: true }), this.shouldSanitizeValue);
+            }
+            return val;
+          });
+        }
+
         const response = ServiceProvider.genericResourceRepository.getAllByIdsSync(
           resourceName,
           data,
