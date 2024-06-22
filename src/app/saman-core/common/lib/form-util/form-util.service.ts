@@ -78,6 +78,9 @@ export class FormUtilService {
   ): MapperTableRow {
     return (rows: object[]) => {
       const ids = this._getRowsIds(rows, key);
+      if (ids.length === 0) {
+        return of([]);
+      }
       return this._resourceRepository.getAllByIds(resourceName, ids).pipe(
         map((items) => {
           const newRows = rows.map((data) => {
@@ -102,12 +105,16 @@ export class FormUtilService {
   private _getRowsIds(rows: object[], key: string): number[] | string[] {
     let ids: number[] | string[];
     try {
-      ids = _.uniq(rows.map((r) => r[key]));
+      ids = _.uniq(rows.map((r) => r[key]).filter(k => this._isKeyType(k)));
     } catch (e) {
       console.warn(`can not get rows Ids: ${e}`);
       ids = [];
     }
     return ids;
+  }
+
+  private _isKeyType(k: any): boolean {
+    return typeof k === "string" || (!isNaN(parseFloat(k)) && isFinite(k));
   }
 
   private _findItem(items: object[], id: string, value: any): object | undefined {

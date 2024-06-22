@@ -9,7 +9,7 @@ export class CdeRepository {
   constructor(private _datasourceFactory: DatasourceFactory) {}
 
   public getConsumer(productName: string, templateName: string): DatasourceConsumer {
-    const dataformat = 'format1';
+    const dataformat = 'cde1';
     const port = '9082';
     const server = `cde-${productName}-${templateName}`;
     const resource = '';

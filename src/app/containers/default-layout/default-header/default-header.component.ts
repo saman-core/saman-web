@@ -27,7 +27,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   ngOnInit(): void {
     this._userSubscriptor.getObserver().subscribe((user) => {
       this.picture = user['info'].picture;
-      this.username = user['info'].username;
+      this.username = user['info'].username || user['info'].preferred_username;
     });
   }
 

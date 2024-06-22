@@ -27,7 +27,6 @@ import {
   merge,
   mergeAll,
   of,
-  startWith,
   switchMap,
   takeUntil,
 } from 'rxjs';
@@ -131,7 +130,6 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
       this.refreshTable,
     ).pipe(
       takeUntil(this._unsubscribe),
-      startWith({}),
       switchMap(() => {
         const pageableModel = new PageableModel();
         pageableModel.page = this.paginator.pageIndex;

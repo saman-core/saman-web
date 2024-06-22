@@ -20,14 +20,14 @@
 
     <c-header-nav class="d-none d-lg-flex">
       <c-nav-item>
-        <a routerLink="./" cNavLink>
-          <svg cIcon name="cilBell" size="lg"></svg>
-        </a>
+        <button mat-icon-button aria-label="Exit" (click)="logout()" >
+          <mat-icon>notifications</mat-icon>
+        </button>
       </c-nav-item>
       <c-nav-item>
-        <a routerLink="./" (click)="logout()" cNavLink cTooltip="Logout">
-          <svg cIcon name="cilExitToApp" size="lg" alt="logout"></svg>
-        </a>
+        <button mat-icon-button aria-label="Exit" (click)="logout()" >
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
       </c-nav-item>
     </c-header-nav>
     <c-header-nav class="ms-3">
@@ -38,6 +38,7 @@
   <c-header-divider></c-header-divider>
   <c-container [fluid]="true">
     <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>
+    <button mat-flat-button color="warn">workspace: main</button>
   </c-container>
 </ng-container>
 <!--</c-header>-->

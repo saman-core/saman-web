@@ -37,11 +37,12 @@ import {
   TooltipModule,
   UtilitiesModule,
 } from '@coreui/angular';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { DataBaseModule } from '@saman-core/data';
 import { AlertModule, AuthModule, LoaderModule } from '@saman-core/core';
-import { environment } from '../environments/environment';
+import { environment } from '../environments/environment.development';
 import { DashboardModule } from './views/dashboard/dashboard.module';
 
 const APP_CONTAINERS = [
@@ -56,6 +57,8 @@ const APP_CONTAINERS = [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    MatButtonModule,
+    MatIconModule,
     AvatarModule,
     BreadcrumbModule,
     FooterModule,
