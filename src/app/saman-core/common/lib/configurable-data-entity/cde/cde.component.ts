@@ -79,7 +79,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
     const conditionRequest: ConditionRequestModel = {
       variables: data,
       modifiedProperties: [],
-      isInitial: true,
+      evalAll: true,
     };
     this._conditionRepository.eval(this._consumer, conditionRequest).subscribe((conditions) => {
       this.formJson = templateJson;
@@ -129,11 +129,11 @@ export class CdeComponent implements AfterViewInit, OnInit {
     return isBlur || isChange;
   }
 
-  private _callConditions(data: object, properties: string[], isInitial: boolean): void {
+  private _callConditions(data: object, properties: string[], evalAll: boolean): void {
     const conditionRequest: ConditionRequestModel = {
       variables: data,
       modifiedProperties: properties,
-      isInitial: isInitial,
+      evalAll: evalAll,
     };
 
     this._conditionRepository
