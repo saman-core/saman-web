@@ -198,7 +198,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Workflow',
-        url: '#'
+        url: 'workflow'
       },
     ]
   },

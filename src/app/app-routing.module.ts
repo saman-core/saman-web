@@ -35,6 +35,11 @@ const routes: Routes = [
           import('./views/builder/template-conditions/template-conditions.module').then((m) => m.TemplateConditionsModule)
       },
       {
+        path: 'workflow',
+        loadChildren: () =>
+          import('./views/product-workflow/product-workflow.module').then((m) => m.ProductWorkflowModule)
+      },
+      {
         path: 'policy',
         loadChildren: () =>
           import('./views/contracts/policy/policy.module').then((m) => m.PolicyModule)

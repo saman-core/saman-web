@@ -33,6 +33,7 @@
     "@coreui/utils": "^2.0.2",
     "@formio/angular": "^7.0.0",
     "@formio/bootstrap": "^3.0.0-rc.23",
+    "@joint/core": "^4.0.4",
     "@kie-tools/kie-editors-standalone": "^0.32.0",
     "angular-oauth2-oidc": "^17.0.2",
     "bootstrap": "^5.3.3",
