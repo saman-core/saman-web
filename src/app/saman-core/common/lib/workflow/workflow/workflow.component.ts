@@ -29,47 +29,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       frozen: true,
     });
 
-    const graph = this.graph;
-    const paper = this.paper;
-
-    this.paper.on('element:label:pointerdown', function (_view, evt) {
-      evt.stopPropagation();
-    });
-
-    this.paper.on('cell:pointerdown blank:pointerdown', function () {
-      graph.getElements().forEach(v => v.findView(paper).removeTools());
-      graph.getLinks().forEach(v => v.findView(paper).removeTools());
-      if (window.getSelection) {
-        window.getSelection().removeAllRanges();
-      } else if (this.document.selection) {
-        this.document.selection.empty();
-      }
-    });
-
-    const linkToolsView = this._linksToolsView();
-    this.paper.on('link:contextmenu', function (linkView) {
-      if (linkView.hasTools()) 
-        linkView.removeTools();
-      else {
-        graph.getElements().forEach(v => v.findView(paper).removeTools());
-        graph.getLinks().forEach(v => v.findView(paper).removeTools());
-        linkView.addTools(linkToolsView);
-      }
-    });
-
-    const elementToolsView = this._elementToolsView();
-    this.paper.on('element:contextmenu', function (elementView) {
-      if (elementView.model.attributes['isImmutable'] === true)
-        return;
-
-      if (elementView.hasTools()) 
-        elementView.removeTools();
-      else {
-        graph.getElements().forEach(v => v.findView(paper).removeTools());
-        graph.getLinks().forEach(v => v.findView(paper).removeTools());
-        elementView.addTools(elementToolsView);
-      }
-    });
+    this._addToolsToView(this.paper, this.graph);
   }
 
   public ngAfterViewInit(): void {
@@ -124,7 +84,48 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     this._createState(30, 30, 'excluded', 'excluded');
   }
 
-  private _createState(x: number, y: number, label: string, type: string) {
+  private _addToolsToView(paper: dia.Paper, graph: dia.Graph): void {
+    this.paper.on('element:label:pointerdown', function (_view, evt) {
+      evt.stopPropagation();
+    });
+
+    this.paper.on('cell:pointerdown blank:pointerdown', function () {
+      graph.getElements().forEach(v => v.findView(paper).removeTools());
+      graph.getLinks().forEach(v => v.findView(paper).removeTools());
+      if (window.getSelection) {
+        window.getSelection().removeAllRanges();
+      } else if (this.document.selection) {
+        this.document.selection.empty();
+      }
+    });
+
+    const linkToolsView = this._linksToolsView();
+    this.paper.on('link:contextmenu', function (linkView) {
+      if (linkView.hasTools()) 
+        linkView.removeTools();
+      else {
+        graph.getElements().forEach(v => v.findView(paper).removeTools());
+        graph.getLinks().forEach(v => v.findView(paper).removeTools());
+        linkView.addTools(linkToolsView);
+      }
+    });
+
+    const elementToolsView = this._elementToolsView();
+    this.paper.on('element:contextmenu', function (elementView) {
+      if (elementView.model.attributes['isImmutable'] === true)
+        return;
+
+      if (elementView.hasTools()) 
+        elementView.removeTools();
+      else {
+        graph.getElements().forEach(v => v.findView(paper).removeTools());
+        graph.getLinks().forEach(v => v.findView(paper).removeTools());
+        elementView.addTools(elementToolsView);
+      }
+    });
+  }
+
+  private _createState(x: number, y: number, label: string, type: string): dia.Element {
     const bodyColor = StateTypeProperties[type].bodyColor;
     const lineColor = StateTypeProperties[type].lineColor;
     const state = new shapes.standard.Rectangle({
@@ -160,7 +161,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     return state.addTo(this.graph);
   }
 
-  private _initState(x: number, y: number) {
+  private _initState(x: number, y: number): dia.Element {
     const start = new shapes.standard.Circle({
       position: { x: x, y: y },
       size: { width: 60, height: 60 },
@@ -189,7 +190,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     return start.addTo(this.graph);
   }
 
-  private _createLink(source, target, label, vertices = []) {
+  private _createLink(source: dia.Element, target: dia.Element, label: string, vertices = []): void {
     const link = new shapes.standard.Link({
       source: { id: source.id },
       target: { id: target.id },
@@ -303,7 +304,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
               y: 0
           },
           rotate: true,
-          action: function(evt) {
+          action: function() {
               alert('View id: ' + this.id + '\n' + 'Model id: ' + this.model.id);
           }
       }
