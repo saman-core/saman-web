@@ -1,6 +1,7 @@
 import { AfterViewInit, OnInit, Component, ElementRef, ViewChild, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { dia, shapes, linkTools } from '@joint/core';
+import { dia, shapes, linkTools, elementTools } from '@joint/core';
+import { StateTypeProperties } from '../state-type.properties';
 
 @Component({
   selector: 'app-workflow',
@@ -28,12 +29,16 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       frozen: true,
     });
 
+    const graph = this.graph;
+    const paper = this.paper;
+
     this.paper.on('element:label:pointerdown', function (_view, evt) {
-      // Prevent user from moving the element when interacting with the label element
       evt.stopPropagation();
     });
 
     this.paper.on('cell:pointerdown blank:pointerdown', function () {
+      graph.getElements().forEach(v => v.findView(paper).removeTools());
+      graph.getLinks().forEach(v => v.findView(paper).removeTools());
       if (window.getSelection) {
         window.getSelection().removeAllRanges();
       } else if (this.document.selection) {
@@ -41,43 +46,59 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       }
     });
 
-    const linkToolsView = this.getLinkToolsView();
-    this.paper.on('link:mouseenter', function (linkView) {
-      linkView.addTools(linkToolsView);
+    const linkToolsView = this._linksToolsView();
+    this.paper.on('link:contextmenu', function (linkView) {
+      if (linkView.hasTools()) 
+        linkView.removeTools();
+      else {
+        graph.getElements().forEach(v => v.findView(paper).removeTools());
+        graph.getLinks().forEach(v => v.findView(paper).removeTools());
+        linkView.addTools(linkToolsView);
+      }
     });
 
-    this.paper.on('link:mouseleave', function (linkView) {
-      linkView.removeTools();
+    const elementToolsView = this._elementToolsView();
+    this.paper.on('element:contextmenu', function (elementView) {
+      if (elementView.model.attributes['isImmutable'] === true)
+        return;
+
+      if (elementView.hasTools()) 
+        elementView.removeTools();
+      else {
+        graph.getElements().forEach(v => v.findView(paper).removeTools());
+        graph.getLinks().forEach(v => v.findView(paper).removeTools());
+        elementView.addTools(elementToolsView);
+      }
     });
   }
 
   public ngAfterViewInit(): void {
     this.canvas.nativeElement.appendChild(this.paper.el);
-    const start = this.initState(50, 530);
-    const code = this.state(180, 390, 'code');
-    const slash = this.state(340, 220, 'slash');
-    const star = this.state(600, 400, 'star');
-    const line = this.state(190, 100, 'line');
-    const block = this.state(560, 140, 'block');
+    const start = this._initState(50, 200);
+    const code = this._createState(180, 390, 'code', 'completed');
+    const slash = this._createState(340, 220, 'slash', 'completed');
+    const star = this._createState(600, 400, 'star', 'completed');
+    const line = this._createState(190, 100, 'line', 'completed');
+    const block = this._createState(560, 140, 'block', 'completed');
 
-    this.link(start, code, 'start');
-    this.link(code, slash, '/');
-    this.link(slash, code, 'other', [{ x: 270, y: 300 }]);
-    this.link(slash, line, '/');
-    this.link(line, code, 'new\n line');
-    this.link(slash, block, '*');
-    this.link(block, star, '*');
-    this.link(star, block, 'other', [{ x: 650, y: 290 }]);
-    this.link(star, code, 'C', [{ x: 490, y: 310 }]);
-    this.link(line, line, 'other', [
+    this._createLink(start, code, 'start');
+    this._createLink(code, slash, '/');
+    this._createLink(slash, code, 'other', [{ x: 270, y: 300 }]);
+    this._createLink(slash, line, '/');
+    this._createLink(line, code, 'new\n line');
+    this._createLink(slash, block, '*');
+    this._createLink(block, star, '*');
+    this._createLink(star, block, 'other', [{ x: 650, y: 290 }]);
+    this._createLink(star, code, 'C', [{ x: 490, y: 310 }]);
+    this._createLink(line, line, 'other', [
       { x: 115, y: 100 },
       { x: 250, y: 50 },
     ]);
-    this.link(block, block, 'other', [
+    this._createLink(block, block, 'other', [
       { x: 485, y: 140 },
       { x: 620, y: 90 },
     ]);
-    this.link(code, code, 'other', [
+    this._createLink(code, code, 'other', [
       { x: 180, y: 500 },
       { x: 305, y: 450 },
     ]);
@@ -87,55 +108,103 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     console.log(this.graph.toJSON());
   }
 
-  state(x, y, label) {
-    const circle = new shapes.standard.Circle({
+  createPendingState() {
+    this._createState(30, 30, 'pending', 'pending');
+  }
+
+  createInProgressState() {
+    this._createState(30, 30, 'inProgress', 'inProgress');
+  }
+
+  createCompletedState() {
+    this._createState(30, 30, 'completed', 'completed');
+  }
+
+  createExcludedState() {
+    this._createState(30, 30, 'excluded', 'excluded');
+  }
+
+  private _createState(x: number, y: number, label: string, type: string) {
+    const bodyColor = StateTypeProperties[type].bodyColor;
+    const lineColor = StateTypeProperties[type].lineColor;
+    const state = new shapes.standard.Rectangle({
       position: { x: x, y: y },
-      size: { width: 60, height: 60 },
+      size: { width: 110, height: 40 },
       attrs: {
         label: {
           text: label,
           event: 'element:label:pointerdown',
           fontWeight: 'bold',
-          cursor: 'text',
+          fill: '#333333',
           style: {
             userSelect: 'text',
           },
         },
         body: {
-          strokeWidth: 3,
+          rx: 20,
+          ry: 20,
+          fill: bodyColor,
+          stroke: lineColor,
+          strokeWidth: 2,
+          filter: {
+            name: 'dropShadow',
+            args: {
+              dx: 2,
+              dy: 2,
+              blur: 3,
+            },
+          },
         },
       },
     });
-    return circle.addTo(this.graph);
+    return state.addTo(this.graph);
   }
 
-  initState(x, y) {
+  private _initState(x: number, y: number) {
     const start = new shapes.standard.Circle({
       position: { x: x, y: y },
-      size: { width: 20, height: 20 },
+      size: { width: 60, height: 60 },
       attrs: {
         body: {
-          fill: '#333333',
+          fill: '#647687',
+          filter: {
+              name: 'highlight',
+              args: {
+                  color: '#314354',
+                  width: 2,
+                  opacity: 0.8,
+                  blur: 4,
+              }
+          },
+        },
+        label: {
+          text: 'START',
+          fill: 'white',
+          event: 'element:label:pointerdown',
+          fontWeight: 'bold',
         },
       },
     });
+    start.set('isImmutable', true);
     return start.addTo(this.graph);
   }
 
-  link(source, target, label, vertices = []) {
+  private _createLink(source, target, label, vertices = []) {
     const link = new shapes.standard.Link({
       source: { id: source.id },
       target: { id: target.id },
       attrs: {
         line: {
           strokeWidth: 2,
+          stroke: '#999999',
+          strokeDasharray: '9,2',
         },
       },
       labels: [
         {
           position: {
             distance: 0.5,
-            offset: label.indexOf('\n') > -1 || label.length === 1 ? 0 : 10,
+            offset: 0,
             args: {
               keepGradient: true,
               ensureLegibility: true,
@@ -149,16 +218,13 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
           },
         },
       ],
-      vertices: vertices || [],
+      vertices: vertices,
     });
     link.addTo(this.graph);
   }
 
-  getLinkToolsView(): dia.ToolsView {
+  private _linksToolsView(): dia.ToolsView {
     const verticesTool = new linkTools.Vertices();
-    const segmentsTool = new linkTools.Segments();
-    const sourceArrowheadTool = new linkTools.SourceArrowhead();
-    const targetArrowheadTool = new linkTools.TargetArrowhead();
     const sourceAnchorTool = new linkTools.SourceAnchor();
     const targetAnchorTool = new linkTools.TargetAnchor();
     const boundaryTool = new linkTools.Boundary();
@@ -197,14 +263,54 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       tools: [
         infoButton,
         verticesTool,
-        segmentsTool,
-        sourceArrowheadTool,
-        targetArrowheadTool,
         sourceAnchorTool,
         targetAnchorTool,
         boundaryTool,
         removeButton,
       ],
+    });
+  }
+
+  private _elementToolsView(): dia.ToolsView {
+    const boundaryTool = new elementTools.Boundary();
+    const removeButton = new elementTools.Remove();
+    const infoButton = new elementTools.Button({
+      name: 'info-button',
+      options: {
+          markup: [{
+              tagName: 'circle',
+              selector: 'button',
+              attributes: {
+                  'r': 7,
+                  'fill': '#001DFF',
+                  'cursor': 'pointer'
+              }
+          }, {
+              tagName: 'path',
+              selector: 'icon',
+              attributes: {
+                  'd': 'M -2 4 2 4 M 0 3 0 0 M -2 -1 1 -1 M -1 -4 1 -4',
+                  'fill': 'none',
+                  'stroke': '#FFFFFF',
+                  'stroke-width': 2,
+                  'pointer-events': 'none'
+              }
+          }],
+          x: '100%',
+          y: '100%',
+          offset: {
+              x: 0,
+              y: 0
+          },
+          rotate: true,
+          action: function(evt) {
+              alert('View id: ' + this.id + '\n' + 'Model id: ' + this.model.id);
+          }
+      }
+  });
+
+    return new dia.ToolsView({
+      tools: [infoButton, boundaryTool, removeButton],
     });
   }
 }
