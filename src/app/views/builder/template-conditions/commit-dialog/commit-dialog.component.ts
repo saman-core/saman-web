@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
-import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { TemplateConditionDialogComponent } from '../template-condition-dialog/template-condition-dialog.component';
 
 export interface CommitDialogResponse {
   message: string;
@@ -27,7 +27,7 @@ export class CommitDialogComponent {
   data: CommitDialogResponse;
 
   constructor(
-    public dialogRef: MatDialogRef<DeleteDialogComponent>,
+    public dialogRef: MatDialogRef<TemplateConditionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public request: CommitDialogRequest,
   ) {}
 
