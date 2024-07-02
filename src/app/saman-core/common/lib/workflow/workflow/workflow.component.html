@@ -1,11 +1,8 @@
 <h2>Workflow</h2>
 <section>
   <div class="graph-button-row">
-    <button mat-raised-button class="pending-button" (click)="createPendingState()">Pending state</button>
-    <button mat-raised-button class="in-progress-button" (click)="createInProgressState()">In Progress state</button>
-    <button mat-raised-button class="completed-button" (click)="createCompletedState()">Completed state</button>
-    <button mat-raised-button class="excluded-button" (click)="createExcludedState()">Excluded state</button>
-    <button mat-raised-button>Transition</button>
+    <button mat-raised-button (click)="createState()">Create state</button>
+    <button mat-raised-button (click)="createTransition()">Transition</button>
   </div>
 </section>
 <hr/>

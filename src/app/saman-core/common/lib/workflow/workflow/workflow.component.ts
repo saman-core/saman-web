@@ -2,6 +2,16 @@ import { AfterViewInit, OnInit, Component, ElementRef, ViewChild, Inject } from 
 import { DOCUMENT } from '@angular/common';
 import { dia, shapes, linkTools, elementTools } from '@joint/core';
 import { StateTypeProperties } from '../state-type.properties';
+import { StateTypeEnum } from '../state-type.enum';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  CreateStateDialogComponent,
+  CreateStateDialogResponse,
+} from '../create-state-dialog/create-state-dialog.component';
+import {
+  CreateTransitionDialogComponent,
+  CreateTransitionDialogResponse,
+} from '../create-transition-dialog/create-transition-dialog.component';
 
 @Component({
   selector: 'app-workflow',
@@ -14,7 +24,10 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
   private graph: dia.Graph;
   private paper: dia.Paper;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(
+    private _dialog: MatDialog,
+    @Inject(DOCUMENT) private document: Document,
+  ) {}
 
   public ngOnInit(): void {
     this.graph = new dia.Graph({}, { cellNamespace: shapes });
@@ -35,11 +48,11 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     this.canvas.nativeElement.appendChild(this.paper.el);
     const start = this._initState(50, 200);
-    const code = this._createState(180, 390, 'code', 'completed');
-    const slash = this._createState(340, 220, 'slash', 'completed');
-    const star = this._createState(600, 400, 'star', 'completed');
-    const line = this._createState(190, 100, 'line', 'completed');
-    const block = this._createState(560, 140, 'block', 'completed');
+    const code = this._createState(180, 390, 'code', StateTypeEnum.IN_PROGRESS);
+    const slash = this._createState(340, 220, 'slash', StateTypeEnum.COMPLETED);
+    const star = this._createState(600, 400, 'star', StateTypeEnum.PENDING);
+    const line = this._createState(190, 100, 'line', StateTypeEnum.COMPLETED);
+    const block = this._createState(560, 140, 'block', StateTypeEnum.EXCLUDED);
 
     this._createLink(start, code, 'start');
     this._createLink(code, slash, '/');
@@ -68,20 +81,32 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     console.log(this.graph.toJSON());
   }
 
-  createPendingState() {
-    this._createState(30, 30, 'pending', 'pending');
+  createState() {
+    const dialogRef = this._dialog.open(CreateStateDialogComponent, {
+      data: { productName: 'Auto' },
+      height: '80%',
+      width: '80%',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((response: CreateStateDialogResponse) => {
+      if (response.accepted) {
+        this._createState(30, 30, response.name, response.stateType);
+      }
+    });
   }
 
-  createInProgressState() {
-    this._createState(30, 30, 'inProgress', 'inProgress');
-  }
-
-  createCompletedState() {
-    this._createState(30, 30, 'completed', 'completed');
-  }
-
-  createExcludedState() {
-    this._createState(30, 30, 'excluded', 'excluded');
+  createTransition() {
+    const dialogRef = this._dialog.open(CreateTransitionDialogComponent, {
+      data: { productName: 'Auto' },
+      height: '80%',
+      width: '80%',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((response: CreateTransitionDialogResponse) => {
+      if (response.accepted) {
+        this._createState(30, 30, response.name, response.stateType);
+      }
+    });
   }
 
   private _addToolsToView(paper: dia.Paper, graph: dia.Graph): void {
@@ -90,8 +115,8 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     });
 
     this.paper.on('cell:pointerdown blank:pointerdown', function () {
-      graph.getElements().forEach(v => v.findView(paper).removeTools());
-      graph.getLinks().forEach(v => v.findView(paper).removeTools());
+      graph.getElements().forEach((v) => v.findView(paper).removeTools());
+      graph.getLinks().forEach((v) => v.findView(paper).removeTools());
       if (window.getSelection) {
         window.getSelection().removeAllRanges();
       } else if (this.document.selection) {
@@ -101,31 +126,28 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
 
     const linkToolsView = this._linksToolsView();
     this.paper.on('link:contextmenu', function (linkView) {
-      if (linkView.hasTools()) 
-        linkView.removeTools();
+      if (linkView.hasTools()) linkView.removeTools();
       else {
-        graph.getElements().forEach(v => v.findView(paper).removeTools());
-        graph.getLinks().forEach(v => v.findView(paper).removeTools());
+        graph.getElements().forEach((v) => v.findView(paper).removeTools());
+        graph.getLinks().forEach((v) => v.findView(paper).removeTools());
         linkView.addTools(linkToolsView);
       }
     });
 
     const elementToolsView = this._elementToolsView();
     this.paper.on('element:contextmenu', function (elementView) {
-      if (elementView.model.attributes['isImmutable'] === true)
-        return;
+      if (elementView.model.attributes['isImmutable'] === true) return;
 
-      if (elementView.hasTools()) 
-        elementView.removeTools();
+      if (elementView.hasTools()) elementView.removeTools();
       else {
-        graph.getElements().forEach(v => v.findView(paper).removeTools());
-        graph.getLinks().forEach(v => v.findView(paper).removeTools());
+        graph.getElements().forEach((v) => v.findView(paper).removeTools());
+        graph.getLinks().forEach((v) => v.findView(paper).removeTools());
         elementView.addTools(elementToolsView);
       }
     });
   }
 
-  private _createState(x: number, y: number, label: string, type: string): dia.Element {
+  private _createState(x: number, y: number, label: string, type: StateTypeEnum): dia.Element {
     const bodyColor = StateTypeProperties[type].bodyColor;
     const lineColor = StateTypeProperties[type].lineColor;
     const state = new shapes.standard.Rectangle({
@@ -169,13 +191,13 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
         body: {
           fill: '#647687',
           filter: {
-              name: 'highlight',
-              args: {
-                  color: '#314354',
-                  width: 2,
-                  opacity: 0.8,
-                  blur: 4,
-              }
+            name: 'highlight',
+            args: {
+              color: '#314354',
+              width: 2,
+              opacity: 0.8,
+              blur: 4,
+            },
           },
         },
         label: {
@@ -190,7 +212,12 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     return start.addTo(this.graph);
   }
 
-  private _createLink(source: dia.Element, target: dia.Element, label: string, vertices = []): void {
+  private _createLink(
+    source: dia.Element,
+    target: dia.Element,
+    label: string,
+    vertices = [],
+  ): void {
     const link = new shapes.standard.Link({
       source: { id: source.id },
       target: { id: target.id },
@@ -278,37 +305,40 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     const infoButton = new elementTools.Button({
       name: 'info-button',
       options: {
-          markup: [{
-              tagName: 'circle',
-              selector: 'button',
-              attributes: {
-                  'r': 7,
-                  'fill': '#001DFF',
-                  'cursor': 'pointer'
-              }
-          }, {
-              tagName: 'path',
-              selector: 'icon',
-              attributes: {
-                  'd': 'M -2 4 2 4 M 0 3 0 0 M -2 -1 1 -1 M -1 -4 1 -4',
-                  'fill': 'none',
-                  'stroke': '#FFFFFF',
-                  'stroke-width': 2,
-                  'pointer-events': 'none'
-              }
-          }],
-          x: '100%',
-          y: '100%',
-          offset: {
-              x: 0,
-              y: 0
+        markup: [
+          {
+            tagName: 'circle',
+            selector: 'button',
+            attributes: {
+              r: 7,
+              fill: '#001DFF',
+              cursor: 'pointer',
+            },
           },
-          rotate: true,
-          action: function() {
-              alert('View id: ' + this.id + '\n' + 'Model id: ' + this.model.id);
-          }
-      }
-  });
+          {
+            tagName: 'path',
+            selector: 'icon',
+            attributes: {
+              d: 'M -2 4 2 4 M 0 3 0 0 M -2 -1 1 -1 M -1 -4 1 -4',
+              fill: 'none',
+              stroke: '#FFFFFF',
+              'stroke-width': 2,
+              'pointer-events': 'none',
+            },
+          },
+        ],
+        x: '100%',
+        y: '100%',
+        offset: {
+          x: 0,
+          y: 0,
+        },
+        rotate: true,
+        action: function () {
+          alert('View id: ' + this.id + '\n' + 'Model id: ' + this.model.id);
+        },
+      },
+    });
 
     return new dia.ToolsView({
       tools: [infoButton, boundaryTool, removeButton],
