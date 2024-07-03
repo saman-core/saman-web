@@ -83,7 +83,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
 
   createState() {
     const dialogRef = this._dialog.open(CreateStateDialogComponent, {
-      data: { productName: 'Auto' },
+      data: { productName: 'Auto', states: this.graph.getElements() },
       height: '80%',
       width: '80%',
       disableClose: true,
@@ -97,14 +97,14 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
 
   createTransition() {
     const dialogRef = this._dialog.open(CreateTransitionDialogComponent, {
-      data: { productName: 'Auto' },
+      data: { productName: 'Auto', states: this.graph.getElements(), links: this.graph.getLinks() },
       height: '80%',
       width: '80%',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((response: CreateTransitionDialogResponse) => {
       if (response.accepted) {
-        this._createState(30, 30, response.name, response.stateType);
+        this._createLink(response.sourceState, response.targetState, response.name);
       }
     });
   }
@@ -180,10 +180,12 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
         },
       },
     });
+    state.set('name', label);
     return state.addTo(this.graph);
   }
 
   private _initState(x: number, y: number): dia.Element {
+    const name = 'START';
     const start = new shapes.standard.Circle({
       position: { x: x, y: y },
       size: { width: 60, height: 60 },
@@ -201,7 +203,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
           },
         },
         label: {
-          text: 'START',
+          text: name,
           fill: 'white',
           event: 'element:label:pointerdown',
           fontWeight: 'bold',
@@ -209,6 +211,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       },
     });
     start.set('isImmutable', true);
+    start.set('name', name);
     return start.addTo(this.graph);
   }
 
@@ -248,6 +251,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       ],
       vertices: vertices,
     });
+    link.set('name', label);
     link.addTo(this.graph);
   }
 

@@ -5,27 +5,35 @@
     <mat-label>Name</mat-label>
     <input matInput placeholder="type a name" [formControl]="nameControl" required />
     @if (nameControl.invalid) {
-      <mat-error>{{ getErrorMessage() }}</mat-error>
+      <mat-error>{{ nameErrorMessage() }}</mat-error>
     }
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>State Type</mat-label>
-    <mat-select [formControl]="stateTypeControl">
-      <mat-option>None</mat-option>
-      @for (st of stateTypes; track st) {
-        <mat-option [value]="st">{{ st }}</mat-option>
+    <mat-label>Source State</mat-label>
+    <mat-select [formControl]="sourceStateControl">
+      @for (st of states; track st) {
+        <mat-option [value]="st">{{ st.get('name') }}</mat-option>
       }
     </mat-select>
+    @if (sourceStateControl.invalid) {
+      <mat-error>{{ sourceStateErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Target State</mat-label>
+    <mat-select [formControl]="targetStateControl">
+      @for (st of states; track st) {
+        <mat-option [value]="st">{{ st.get('name') }}</mat-option>
+      }
+    </mat-select>
+    @if (targetStateControl.invalid) {
+      <mat-error>{{ targetStateErrorMessage() }}</mat-error>
+    }
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
-  <button
-    mat-button
-    [mat-dialog-close]="accept()"
-    [disabled]="nameControl.invalid || stateTypeControl.invalid"
-  >
-    Create
-  </button>
+  <button mat-button [mat-dialog-close]="accept()" [disabled]="form.invalid">Create</button>
 </mat-dialog-actions>
