@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { StateTypeEnum } from '../state-type.enum';
 import _ from 'lodash';
 import { dia } from '@joint/core';
+import { duplicateNameValidator, nameFormatValidator } from '../validator';
 
 export interface CreateStateDialogResponse {
   name: string;
@@ -38,7 +39,8 @@ export class CreateStateDialogComponent {
     this.nameControl = new FormControl('', [
       Validators.required,
       Validators.maxLength(256),
-      duplicateStateNameValidator(this.statesLabels),
+      duplicateNameValidator(this.statesLabels),
+      nameFormatValidator(),
     ]);
     this.stateTypeControl = new FormControl<StateTypeEnum>(StateTypeEnum.PENDING, [
       Validators.required,
@@ -61,18 +63,14 @@ export class CreateStateDialogComponent {
     if (this.nameControl.hasError('required')) {
       return 'You must enter a message';
     }
-    if (this.nameControl.hasError('duplicateLinkName')) {
+    if (this.nameControl.hasError('duplicateName')) {
       return 'Name must not be duplicated';
+    }
+    if (this.nameControl.hasError('nameFormat')) {
+      return 'Name must begin with a lowercase letter and contain only alphanumeric characters';
     }
     return this.nameControl.hasError('minlength') || this.nameControl.hasError('maxlength')
       ? 'The name must not be longer than 256 characters'
       : '';
   }
-}
-
-export function duplicateStateNameValidator(linkLabels: string[]): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const found = linkLabels.find((l: string) => l === control.value);
-    return typeof found !== 'undefined' ? { duplicateLinkName: { value: control.value } } : null;
-  };
 }

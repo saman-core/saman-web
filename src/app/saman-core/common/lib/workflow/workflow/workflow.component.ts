@@ -164,19 +164,11 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
           },
         },
         body: {
-          rx: 20,
-          ry: 20,
+          rx: 13,
+          ry: 13,
           fill: bodyColor,
           stroke: lineColor,
           strokeWidth: 2,
-          filter: {
-            name: 'dropShadow',
-            args: {
-              dx: 2,
-              dy: 2,
-              blur: 3,
-            },
-          },
         },
       },
     });
@@ -305,7 +297,42 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
 
   private _elementToolsView(): dia.ToolsView {
     const boundaryTool = new elementTools.Boundary();
-    const removeButton = new elementTools.Remove();
+    const removeButton = new elementTools.Remove({ offset: { x: -5, y: -5 } });
+    const ResizeTool = elementTools.Control.extend({
+      children: [
+        {
+          tagName: 'image',
+          selector: 'handle',
+          attributes: {
+            cursor: 'pointer',
+            width: 20,
+            height: 20,
+            'xlink:href': 'https://assets.codepen.io/7589991/8725981_image_resize_square_icon.svg',
+          },
+        },
+        {
+          tagName: 'rect',
+          selector: 'extras',
+          attributes: {
+            'pointer-events': 'none',
+            fill: 'none',
+            stroke: '#33334F',
+            'stroke-dasharray': '2,4',
+            rx: 5,
+            ry: 5,
+          },
+        },
+      ],
+      getPosition: function (view) {
+        const model = view.model;
+        const { width, height } = model.size();
+        return { x: width, y: height };
+      },
+      setPosition: function (view, coordinates) {
+        const model = view.model;
+        model.resize(Math.max(coordinates.x - 10, 1), Math.max(coordinates.y - 10, 1));
+      },
+    });
     const infoButton = new elementTools.Button({
       name: 'info-button',
       options: {
@@ -345,7 +372,14 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     });
 
     return new dia.ToolsView({
-      tools: [infoButton, boundaryTool, removeButton],
+      tools: [
+        infoButton,
+        boundaryTool,
+        removeButton,
+        new ResizeTool({
+          selector: 'body',
+        }),
+      ],
     });
   }
 }

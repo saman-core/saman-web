@@ -1,15 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { dia } from '@joint/core';
 import { WorkflowComponent } from '../workflow/workflow.component';
+import { duplicateNameValidator, forbiddenTargetStateValidator, nameFormatValidator } from '../validator';
 
 export interface CreateTransitionDialogResponse {
   name: string;
@@ -47,7 +45,8 @@ export class CreateTransitionDialogComponent {
     this.nameControl = new FormControl('', [
       Validators.required,
       Validators.maxLength(256),
-      duplicateLinkNameValidator(this.linksLabels),
+      duplicateNameValidator(this.linksLabels),
+      nameFormatValidator(),
     ]);
     this.sourceStateControl = new FormControl<dia.Element>(null, [Validators.required]);
     this.targetStateControl = new FormControl<dia.Element>(null, [
@@ -78,8 +77,11 @@ export class CreateTransitionDialogComponent {
     if (this.nameControl.hasError('required')) {
       return 'You must enter a Name';
     }
-    if (this.nameControl.hasError('duplicateLinkName')) {
+    if (this.nameControl.hasError('duplicateName')) {
       return 'Name must not be duplicated';
+    }
+    if (this.nameControl.hasError('nameFormat')) {
+      return 'Name must begin with a lowercase letter and contain only alphanumeric characters';
     }
     return this.nameControl.hasError('minlength') || this.nameControl.hasError('maxlength')
       ? 'Name must not be longer than 256 characters'
@@ -102,19 +104,4 @@ export class CreateTransitionDialogComponent {
       ? 'Target State cannot be START'
       : '';
   }
-}
-
-export function forbiddenTargetStateValidator(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    if (control.value === null) return null;
-    const labelName = control.value.get('name');
-    return labelName === 'START' ? { forbiddenTargetState: { value: control.value } } : null;
-  };
-}
-
-export function duplicateLinkNameValidator(linkLabels: string[]): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const found = linkLabels.find((l: string) => l === control.value);
-    return typeof found !== 'undefined' ? { duplicateLinkName: { value: control.value } } : null;
-  };
 }
