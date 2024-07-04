@@ -1,6 +1,6 @@
 import { AfterViewInit, OnInit, Component, ElementRef, ViewChild, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { dia, shapes, linkTools, elementTools } from '@joint/core';
+import { dia, shapes, linkTools, elementTools, util } from '@joint/core';
 import { StateTypeProperties } from '../state-type.properties';
 import { StateTypeEnum } from '../state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import {
   CreateTransitionDialogComponent,
   CreateTransitionDialogResponse,
 } from '../create-transition-dialog/create-transition-dialog.component';
+import { COLORS, FA } from '../utils/icons.constants';
 
 @Component({
   selector: 'app-workflow',
@@ -252,40 +253,32 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     const sourceAnchorTool = new linkTools.SourceAnchor();
     const targetAnchorTool = new linkTools.TargetAnchor();
     const boundaryTool = new linkTools.Boundary();
-    const removeButton = new linkTools.Remove();
-    const infoButton = new linkTools.Button({
-      markup: [
-        {
-          tagName: 'circle',
-          selector: 'button',
-          attributes: {
-            r: 7,
-            fill: '#001DFF',
-            cursor: 'pointer',
-          },
-        },
-        {
-          tagName: 'path',
-          selector: 'icon',
-          attributes: {
-            d: 'M -2 4 2 4 M 0 3 0 0 M -2 -1 1 -1 M -1 -4 1 -4',
-            fill: 'none',
-            stroke: '#FFFFFF',
-            'stroke-width': 2,
-            'pointer-events': 'none',
-          },
-        },
-      ],
-      distance: 90,
-      offset: 10,
-      action: function () {
-        alert('View id: ' + this.id + '\n' + 'Model id: ' + this.model.id);
+    const removeButton = new linkTools.Remove({
+      distance: '55%',
+      offset: -25,
+    });
+    const fn = () => this.createState();
+    const InfoButton = linkTools.Button.extend({
+      attributes: {
+        cursor: 'pointer',
+        class: 'fa-small-button',
       },
+      children: util.svg`
+            <circle fill="${COLORS.red}" r="12" />
+            <text fill="${COLORS.light}" font-size="14" font-family="FontAwesome" font-weight="400" text-anchor="middle" x="0" y="5">${FA.heart}</text>
+        `,
     });
 
     return new dia.ToolsView({
       tools: [
-        infoButton,
+        new InfoButton({
+          distance: '45%',
+          offset: 25,
+          action() {
+            console.log(this.model);
+            fn();
+          }
+        }),
         verticesTool,
         sourceAnchorTool,
         targetAnchorTool,

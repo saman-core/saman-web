@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { dia } from '@joint/core';
 import { WorkflowComponent } from '../workflow/workflow.component';
-import { duplicateNameValidator, forbiddenTargetStateValidator, nameFormatValidator } from '../validator';
+import { duplicateNameValidator, forbiddenTargetStateValidator, nameFormatValidator } from '../utils/validator';
 
 export interface CreateTransitionDialogResponse {
   name: string;

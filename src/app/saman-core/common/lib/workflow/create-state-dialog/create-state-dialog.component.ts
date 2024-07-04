@@ -5,7 +5,7 @@ import { WorkflowComponent } from '../workflow/workflow.component';
 import { StateTypeEnum } from '../state-type.enum';
 import _ from 'lodash';
 import { dia } from '@joint/core';
-import { duplicateNameValidator, nameFormatValidator } from '../validator';
+import { duplicateNameValidator, nameFormatValidator } from '../utils/validator';
 
 export interface CreateStateDialogResponse {
   name: string;
