@@ -259,7 +259,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
         class: 'fa-small-button',
       },
       children: util.svg`
-            <text fill="${COLORS.dark}" font-size="20" font-family="FontAwesome" font-weight="400" text-anchor="middle" x="-13" y="0">${FA.trash}</text>
+            <text fill="${COLORS.dark}" font-size="20" font-family="FontAwesome" font-weight="400" text-anchor="middle" x="-13" y="0">${FA['chain-broken']}</text>
         `,
     });
     const InfoButton = linkTools.Button.extend({
@@ -300,17 +300,31 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
 
   private _elementToolsView(): dia.ToolsView {
     const boundaryTool = new elementTools.Boundary();
-    const removeButton = new elementTools.Remove({ offset: { x: -5, y: -5 } });
+    const RemoveButton = elementTools.Button.extend({
+      attributes: {
+        cursor: 'pointer',
+        class: 'fa-small-button',
+      },
+      children: util.svg`
+            <text fill="${COLORS.dark}" font-size="20" font-family="FontAwesome" font-weight="400" text-anchor="middle" x="-13" y="0">${FA.trash}</text>
+        `,
+    });
     const ResizeTool = elementTools.Control.extend({
       children: [
         {
-          tagName: 'image',
+          tagName: 'text',
+          children: [FA.expand],
           selector: 'handle',
+          namespaceURI: 'http://www.w3.org/2000/svg',
           attributes: {
             cursor: 'pointer',
-            width: 20,
-            height: 20,
-            'xlink:href': 'https://assets.codepen.io/7589991/8725981_image_resize_square_icon.svg',
+            fill: COLORS.dark,
+            'font-size': '20',
+            'font-family': 'FontAwesome',
+            'font-weight': '400',
+            'text-anchor': 'middle',
+            x: 13,
+            y: 13,
           },
         },
         {
@@ -336,49 +350,35 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
         model.resize(Math.max(coordinates.x - 10, 1), Math.max(coordinates.y - 10, 1));
       },
     });
-    const infoButton = new elementTools.Button({
-      name: 'info-button',
-      options: {
-        markup: [
-          {
-            tagName: 'circle',
-            selector: 'button',
-            attributes: {
-              r: 7,
-              fill: '#001DFF',
-              cursor: 'pointer',
-            },
-          },
-          {
-            tagName: 'path',
-            selector: 'icon',
-            attributes: {
-              d: 'M -2 4 2 4 M 0 3 0 0 M -2 -1 1 -1 M -1 -4 1 -4',
-              fill: 'none',
-              stroke: '#FFFFFF',
-              'stroke-width': 2,
-              'pointer-events': 'none',
-            },
-          },
-        ],
-        x: '100%',
-        y: '100%',
-        offset: {
-          x: 0,
-          y: 0,
-        },
-        rotate: true,
-        action: function () {
-          alert('View id: ' + this.id + '\n' + 'Model id: ' + this.model.id);
-        },
+    const InfoButton = elementTools.Button.extend({
+      attributes: {
+        cursor: 'pointer',
+        class: 'fa-small-button',
       },
+      children: util.svg`
+            <text fill="${COLORS.dark}" font-size="20" font-family="FontAwesome" font-weight="400" text-anchor="middle" x="13" y="0">${FA['pencil-square-o']}</text>
+        `,
     });
 
     return new dia.ToolsView({
       tools: [
-        infoButton,
+        new InfoButton({
+          x: '100%',
+          y: '0',
+          offset: 0,
+          action() {
+            console.log(this.model);
+          }
+        }),
         boundaryTool,
-        removeButton,
+        new RemoveButton({
+          x: '0',
+          y: '0',
+          offset: 0,
+          action() {
+            this.model.remove();
+          }
+        }),
         new ResizeTool({
           selector: 'body',
         }),
