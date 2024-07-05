@@ -253,37 +253,47 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     const sourceAnchorTool = new linkTools.SourceAnchor();
     const targetAnchorTool = new linkTools.TargetAnchor();
     const boundaryTool = new linkTools.Boundary();
-    const removeButton = new linkTools.Remove({
-      distance: '55%',
-      offset: -25,
+    const RemoveButton = linkTools.Button.extend({
+      attributes: {
+        cursor: 'pointer',
+        class: 'fa-small-button',
+      },
+      children: util.svg`
+            <text fill="${COLORS.dark}" font-size="20" font-family="FontAwesome" font-weight="400" text-anchor="middle" x="-13" y="0">${FA.trash}</text>
+        `,
     });
-    const fn = () => this.createState();
     const InfoButton = linkTools.Button.extend({
       attributes: {
         cursor: 'pointer',
         class: 'fa-small-button',
       },
       children: util.svg`
-            <circle fill="${COLORS.red}" r="12" />
-            <text fill="${COLORS.light}" font-size="14" font-family="FontAwesome" font-weight="400" text-anchor="middle" x="0" y="5">${FA.heart}</text>
+            <text fill="${COLORS.dark}" font-size="20" font-family="FontAwesome" font-weight="400" text-anchor="middle" x="13" y="0">${FA['pencil-square-o']}</text>
         `,
     });
 
+    const fn = () => this.createState();
     return new dia.ToolsView({
       tools: [
         new InfoButton({
-          distance: '45%',
-          offset: 25,
+          distance: '50%',
+          offset: -30,
           action() {
             console.log(this.model);
             fn();
+          }
+        }),
+        new RemoveButton({
+          distance: '50%',
+          offset: -30,
+          action() {
+            this.model.remove();
           }
         }),
         verticesTool,
         sourceAnchorTool,
         targetAnchorTool,
         boundaryTool,
-        removeButton,
       ],
     });
   }
