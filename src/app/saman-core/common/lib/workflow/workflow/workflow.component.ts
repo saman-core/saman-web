@@ -153,7 +153,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     const lineColor = StateTypeProperties[type].lineColor;
     const state = new shapes.standard.Rectangle({
       position: { x: x, y: y },
-      size: { width: 110, height: 40 },
+      size: { width: 130, height: 50 },
       attrs: {
         label: {
           text: label,
@@ -179,9 +179,13 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
 
   private _initState(x: number, y: number): dia.Element {
     const name = 'START';
+    let label = name;
+    //TODO for message icons
+    if (false)
+      label = `${name} ${FA.envelope}`;
     const start = new shapes.standard.Circle({
       position: { x: x, y: y },
-      size: { width: 60, height: 60 },
+      size: { width: 70, height: 70 },
       attrs: {
         body: {
           fill: '#647687',
@@ -196,10 +200,21 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
           },
         },
         label: {
-          text: name,
+          text: label,
           fill: 'white',
           event: 'element:label:pointerdown',
           fontWeight: 'bold',
+          annotations: [
+            {
+              start: name.length + 1,
+              end: label.length,
+              attrs: {
+                fill: COLORS.light,
+                "font-family": "FontAwesome",
+                "font-size": 20
+              }
+            }
+          ]
         },
       },
     });
@@ -221,7 +236,8 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
         line: {
           strokeWidth: 2,
           stroke: '#999999',
-          strokeDasharray: '9,2',
+          //TODO for automatic transictions
+          //strokeDasharray: '9,2',
         },
       },
       labels: [
@@ -241,6 +257,22 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
             },
           },
         },
+        /* TODO for indicate message
+        {
+          attrs: {
+            text: {
+              fill: COLORS.dark,
+              text: FA.envelope,
+              fontFamily: "FontAwesome"
+            },
+            rect: { fill: COLORS.light }
+          },
+          position: {
+            distance: 0.5,
+            offset: 20,
+          },
+        }
+        */
       ],
       vertices: vertices,
     });
@@ -277,18 +309,18 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       tools: [
         new InfoButton({
           distance: '50%',
-          offset: -30,
+          offset: -20,
           action() {
             console.log(this.model);
             fn();
-          }
+          },
         }),
         new RemoveButton({
           distance: '50%',
-          offset: -30,
+          offset: -20,
           action() {
             this.model.remove();
-          }
+          },
         }),
         verticesTool,
         sourceAnchorTool,
@@ -368,7 +400,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
           offset: 0,
           action() {
             console.log(this.model);
-          }
+          },
         }),
         boundaryTool,
         new RemoveButton({
@@ -377,7 +409,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
           offset: 0,
           action() {
             this.model.remove();
-          }
+          },
         }),
         new ResizeTool({
           selector: 'body',
