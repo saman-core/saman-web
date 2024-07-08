@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Remove {{ request.typeName }}</h2>
+<mat-dialog-content>
+  <p>Do you want to remove the {{ request.typeName }} "{{ request.name }}"?</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
+  <button
+    mat-button
+    [mat-dialog-close]="accept()"
+  >
+    Remove
+  </button>
+</mat-dialog-actions>

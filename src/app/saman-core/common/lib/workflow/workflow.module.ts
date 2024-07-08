@@ -19,12 +19,14 @@ import { AlertModule } from '@saman-core/core';
 import { WorkflowComponent } from './workflow/workflow.component';
 import { CreateStateDialogComponent } from './create-state-dialog/create-state-dialog.component';
 import { CreateTransitionDialogComponent } from './create-transition-dialog/create-transition-dialog.component';
+import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
     WorkflowComponent,
     CreateStateDialogComponent,
     CreateTransitionDialogComponent,
+    DeleteConfirmationDialogComponent,
   ],
   imports: [
     CommonModule,

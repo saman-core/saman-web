@@ -13,6 +13,10 @@ import {
   CreateTransitionDialogResponse,
 } from '../create-transition-dialog/create-transition-dialog.component';
 import { COLORS, FA } from '../utils/icons.constants';
+import {
+  DeleteConfirmationDialogComponent,
+  DeleteConfirmationDialogResponse,
+} from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'app-workflow',
@@ -181,8 +185,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     const name = 'START';
     let label = name;
     //TODO for message icons
-    if (false)
-      label = `${name} ${FA.envelope}`;
+    if (false) label = `${name} ${FA.envelope}`;
     const start = new shapes.standard.Circle({
       position: { x: x, y: y },
       size: { width: 70, height: 70 },
@@ -210,11 +213,11 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
               end: label.length,
               attrs: {
                 fill: COLORS.light,
-                "font-family": "FontAwesome",
-                "font-size": 20
-              }
-            }
-          ]
+                'font-family': 'FontAwesome',
+                'font-size': 20,
+              },
+            },
+          ],
         },
       },
     });
@@ -305,6 +308,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     });
 
     const fn = () => this.createState();
+    const deleteFn = (typeName: string, state: dia.Element) => this._delete(typeName, state);
     return new dia.ToolsView({
       tools: [
         new InfoButton({
@@ -319,7 +323,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
           distance: '50%',
           offset: -20,
           action() {
-            this.model.remove();
+            deleteFn('Link', this.model);
           },
         }),
         verticesTool,
@@ -392,6 +396,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
         `,
     });
 
+    const deleteFn = (typeName: string, state: dia.Element) => this._delete(typeName, state);
     return new dia.ToolsView({
       tools: [
         new InfoButton({
@@ -408,13 +413,27 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
           y: '0',
           offset: 0,
           action() {
-            this.model.remove();
+            deleteFn('State', this.model);
           },
         }),
         new ResizeTool({
           selector: 'body',
         }),
       ],
+    });
+  }
+
+  private _delete(typeName: string, state: dia.Element): void {
+    const dialogRef = this._dialog.open(DeleteConfirmationDialogComponent, {
+      data: { typeName: typeName, name: state.get('name') },
+      height: '200px',
+      width: '300px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((response: DeleteConfirmationDialogResponse) => {
+      if (response.accepted) {
+        state.remove();
+      }
     });
   }
 }
