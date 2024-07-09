@@ -1,6 +1,6 @@
 import { AfterViewInit, OnInit, Component, ElementRef, ViewChild, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { dia, shapes, linkTools, elementTools, util } from '@joint/core';
+import { dia, shapes, linkTools, elementTools, util, g } from '@joint/core';
 import { StateTypeProperties } from '../state-type.properties';
 import { StateTypeEnum } from '../state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
@@ -281,6 +281,8 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     });
     link.set('name', label);
     link.addTo(this.graph);
+    if (link.source().id === link.target().id && link.vertices().length === 0)
+      this._adjustVertices(link);
   }
 
   private _linksToolsView(): dia.ToolsView {
@@ -435,5 +437,21 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
         state.remove();
       }
     });
+  }
+
+  private _adjustVertices(link: shapes.standard.Link): void {
+    const leftMiddle = link.getSourceCell().getBBox().leftMiddle();
+    const rightMiddle = link.getTargetCell().getBBox().rightMiddle();
+
+    const num = 6;
+    const distance = 10;
+    const min = 30;
+    const offset = Math.floor(Math.random() * num) * distance + min;
+
+    const angle = g.toRad(90);
+    const vertexL = g.Point.fromPolar(offset, angle, leftMiddle);
+    const vertexR = g.Point.fromPolar(offset, angle, rightMiddle);
+
+    link.vertices([vertexL, vertexR]);
   }
 }
