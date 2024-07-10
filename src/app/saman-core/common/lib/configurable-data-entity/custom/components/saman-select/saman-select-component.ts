@@ -265,7 +265,10 @@ export default class SamanSelectComponent extends Component {
             this.shouldSanitizeValue,
           );
         });
-        const notFounds = _.difference(data, response.map((f) => f['id']));
+        const notFounds = _.difference(
+          data,
+          response.map((f) => f['id']),
+        );
         return _.union(founds, notFounds);
       } catch (_) {
         return data;
@@ -281,5 +284,30 @@ export default class SamanSelectComponent extends Component {
           : data.data;
     }
     return super.itemTemplate(data, value);
+  }
+
+  get emptyValue() {
+    if (this.component.multiple) {
+      return [];
+    }
+    // if select has JSON data source type, we are defining if empty value would be an object or a string by checking JSON's first item
+    if (this.component.dataSrc === 'json' && this.component.data.json) {
+      const firstItem = this.component.data.json[0];
+      let firstValue;
+      if (this.valueProperty) {
+        firstValue = _.get(firstItem, this.valueProperty);
+      } else {
+        firstValue = firstItem;
+      }
+      if (firstValue && typeof firstValue === 'string') {
+        return '';
+      } else {
+        return null;
+      }
+    }
+    if (this.valueProperty) {
+      return '';
+    }
+    return null;
   }
 }
