@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
-import { ResourceRepository } from './repository/resource.repository';
+import { ProductsGitRepository } from './repository/products-git.repository';
+import { BusinessGitRepository } from './repository/business-git.repository';
 
 @NgModule({
-  providers: [ResourceRepository],
+  providers: [
+    ProductsGitRepository,
+    BusinessGitRepository,
+  ],
 })
 export class TemplateBuilderModule {}

@@ -25,7 +25,8 @@ export * from './lib/module/generic-resources/generic-resources.module';
 export * from './lib/module/template-builder/model/commit-request.model';
 export * from './lib/module/template-builder/model/conditions-property.model';
 export * from './lib/module/template-builder/model/node.model';
-export * from './lib/module/template-builder/repository/resource.repository';
+export * from './lib/module/template-builder/repository/business-git.repository';
+export * from './lib/module/template-builder/repository/products-git.repository';
 export * from './lib/module/template-builder/template-builder.module';
 
 export * from './lib/module/template/repository/template.repository';

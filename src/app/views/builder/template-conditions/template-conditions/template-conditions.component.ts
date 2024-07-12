@@ -4,7 +4,7 @@ import {
   CommitRequestModel,
   DynamicFlatNode,
   NodeModel,
-  ResourceRepository,
+  ProductsGitRepository,
   ConditionTypeEnum,
   ConditionsPropertyModel,
 } from '@saman-core/data';
@@ -48,20 +48,20 @@ export class TemplateConditionsComponent {
   template: object = {};
 
   constructor(
-    private _resourceRepository: ResourceRepository,
+    private _productsGitRepository: ProductsGitRepository,
     private _dialog: MatDialog,
     private _alertSubscriptor: AlertSubscriptor,
   ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, _resourceRepository);
+    this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
 
-    this._resourceRepository.getAllProducts().subscribe((products) => {
+    this._productsGitRepository.getAllProducts().subscribe((products) => {
       this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
     });
   }
 
   refreshProductTree() {
-    this._resourceRepository.getAllProducts().subscribe((products) => {
+    this._productsGitRepository.getAllProducts().subscribe((products) => {
       this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
     });
   }
@@ -69,8 +69,8 @@ export class TemplateConditionsComponent {
   refreshConditionsTable(): void {
     this.elementData = [];
     this.table.renderRows();
-    const templateObservable = this._resourceRepository.getTemplate(this.productNameSelected, this.templateNameSelected);
-    const conditionsObservable = this._resourceRepository.getAllConditionsPropertiesByTemplate(
+    const templateObservable = this._productsGitRepository.getTemplate(this.productNameSelected, this.templateNameSelected);
+    const conditionsObservable = this._productsGitRepository.getAllConditionsPropertiesByTemplate(
       this.productNameSelected,
       this.templateNameSelected,
     );
@@ -89,8 +89,8 @@ export class TemplateConditionsComponent {
   openConditionSelector(productName: string, templateName: string) {
     this.elementData = [];
     this.table.renderRows();
-    const templateObservable = this._resourceRepository.getTemplate(productName, templateName);
-    const conditionsObservable = this._resourceRepository.getAllConditionsPropertiesByTemplate(
+    const templateObservable = this._productsGitRepository.getTemplate(productName, templateName);
+    const conditionsObservable = this._productsGitRepository.getAllConditionsPropertiesByTemplate(
       productName,
       templateName,
     );
@@ -139,7 +139,7 @@ export class TemplateConditionsComponent {
           message: response.message,
           data: node,
         };
-        this._resourceRepository
+        this._productsGitRepository
           .persistCondition(
             productName,
             templateName,
@@ -169,7 +169,7 @@ export class TemplateConditionsComponent {
     propertyName: string,
     conditionType: ConditionTypeEnum,
   ) {
-    this._resourceRepository
+    this._productsGitRepository
       .getCondition(productName, templateName, propertyName, conditionType)
       .subscribe((node) => {
         const conditionDialogRequest: ConditionDialogRequest = {
@@ -191,7 +191,7 @@ export class TemplateConditionsComponent {
               message: response.message,
               data: node,
             };
-            this._resourceRepository
+            this._productsGitRepository
               .persistCondition(
                 productName,
                 templateName,
@@ -236,7 +236,7 @@ export class TemplateConditionsComponent {
           message: response.message,
           data: node,
         };
-        this._resourceRepository
+        this._productsGitRepository
           .deleteCondition(productName, templateName, node.name, conditionType, commitRequest)
           .subscribe({
             next: (node) => {

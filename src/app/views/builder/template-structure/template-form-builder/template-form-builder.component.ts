@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
-import { CommitRequestModel, NodeModel, ResourceRepository } from '@saman-core/data';
+import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
 import { CdeBuilderComponent } from '@saman-core/common';
 import { CommitDialogComponent, CommitDialogResponse } from '../commit-dialog/commit-dialog.component';
 import { Buffer } from 'buffer';
@@ -21,7 +21,7 @@ export class TemplateFormBuilderComponent implements OnInit {
   @Output() exitEmitter = new EventEmitter<boolean>();
 
   constructor(
-    private _resourceRepository: ResourceRepository,
+    private _productsGitRepository: ProductsGitRepository,
     private _alertSubscriptor: AlertSubscriptor,
     private _dialog: MatDialog,
   ) {}
@@ -53,7 +53,7 @@ export class TemplateFormBuilderComponent implements OnInit {
           message: response.message,
           data: this.node,
         };
-        this._resourceRepository
+        this._productsGitRepository
           .persistTemplate(this.productName, this.templateName, commitRequest)
           .subscribe({
             next: (node) => {

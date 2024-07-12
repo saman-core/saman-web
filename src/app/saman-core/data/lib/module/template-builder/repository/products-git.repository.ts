@@ -9,7 +9,7 @@ import { ConditionsPropertyModel } from '../model/conditions-property.model';
 
 
 @Injectable()
-export class ResourceRepository implements Repository {
+export class ProductsGitRepository implements Repository {
   datasource: DatasourceConsumer;
   private _dataformat = 'format2';
   private _port = '9083';

@@ -1,6 +1,6 @@
 import { CollectionViewer, SelectionChange, DataSource } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { DynamicFlatNode, ResourceRepository } from '@saman-core/data';
+import { DynamicFlatNode, ProductsGitRepository } from '@saman-core/data';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   
     constructor(
       private _treeControl: FlatTreeControl<DynamicFlatNode>,
-      private _resourceRepository: ResourceRepository,
+      private _productsGitRepository: ProductsGitRepository,
     ) {}
   
     public connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
@@ -51,7 +51,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       const index = this.data.indexOf(node);
 
       if (expand) {
-        this._resourceRepository.getAllTemplatesByProduct(node.item).subscribe((templates) => {
+        this._productsGitRepository.getAllTemplatesByProduct(node.item).subscribe((templates) => {
           const children = templates.map((t) => t.name);
           if (!children || index < 0) {
             return;
