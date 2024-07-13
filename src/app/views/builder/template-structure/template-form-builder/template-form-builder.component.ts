@@ -30,7 +30,7 @@ export class TemplateFormBuilderComponent implements OnInit {
     try {
       this.initialJson = JSON.parse(Buffer.from(this.node.content, 'base64').toString('utf-8'));
       this._newJson = this.initialJson;
-    } catch (_) {
+    } catch {
       console.error('initial node content parser error');
     }
   }

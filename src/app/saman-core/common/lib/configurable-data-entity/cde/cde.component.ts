@@ -167,7 +167,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
             this._setOptionsProperty(condition);
             break;
         }
-      } catch (e) {
+      } catch {
         console.warn(`condition cannot be applied: ${JSON.stringify(condition)}`);
       }
     });

@@ -92,7 +92,7 @@ export default class SamanSelectComponent extends Component {
           try {
             const resourceName = this.component.data.resource;
             this.loadItems(resourceName, searchInput);
-          } catch (err) {
+          } catch {
             console.warn(`Unable to load resources for ${this.key}`);
           }
         } else {
@@ -223,7 +223,7 @@ export default class SamanSelectComponent extends Component {
             : response['label'],
           this.shouldSanitizeValue,
         );
-      } catch (_) {
+      } catch {
         console.warn(`Can't not fetch ${resourceName} by id ${data}`);
         valueFromRepository = data;
       }
@@ -270,7 +270,7 @@ export default class SamanSelectComponent extends Component {
           response.map((f) => f['id']),
         );
         return _.union(founds, notFounds);
-      } catch (_) {
+      } catch {
         return data;
       }
     }

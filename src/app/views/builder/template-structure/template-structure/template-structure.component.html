@@ -7,15 +7,18 @@
     </mat-expansion-panel-header>
 
     <section>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Update"
-        matTooltip="Update"
-        (click)="refreshProductTree()"
-      >
-        <mat-icon>refresh</mat-icon>
-      </button>
+      <h6>
+        <button
+          mat-icon-button
+          color="primary"
+          aria-label="Update"
+          matTooltip="Update"
+          (click)="refreshProductTree()"
+        >
+          <mat-icon>refresh</mat-icon>
+        </button>
+        Products:
+      </h6>
     </section>
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">

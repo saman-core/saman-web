@@ -25,7 +25,7 @@ export class GenericResourceRepository {
     let params = {};
     try {
       params = JSON.parse(`{${filterParam}}`);
-    } catch (_) {
+    } catch {
       /* empty */
     }
     if (searchField !== '') params[searchField] = searchValue;
