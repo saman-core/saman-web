@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: APP_NAME
+  labels:
+    app: APP_NAME
+    version: v-APP_VERSION
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: APP_NAME
+      version: v-APP_VERSION
+  template:
+    metadata:
+      labels:
+        app: APP_NAME
+        version: v-APP_VERSION
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      serviceAccountName: APP_NAME
+      containers:
+        - name: APP_NAME
+          image: CONTAINER_IMAGE
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80

@@ -1,0 +1,77 @@
+name: CI-CD-WEB
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  ACTOR: saman-core
+  IMAGE_APP_NAME: saman-web
+  APP_NAME: saman-web
+  EKS_CLUSTER_NAME: my-cluster
+  AWS_REGION: us-east-1
+  N_REPLICA: 1
+
+jobs:
+  build_contenizer:
+    name: Build & Contenerize App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Build App
+        run: |
+          npm run build -- --configuration=production --aot
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to the container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.ACTOR }}
+          password: ${{ secrets.GIT_TOKEN }}
+
+      - name: Container app build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.ACTOR }}/${{ env.IMAGE_APP_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.ACTOR }}/${{ env.IMAGE_APP_NAME }}:latest
+          labels: |
+            maintainer=hernael
+            org.opencontainers.image.title=${{ env.IMAGE_APP_NAME }}
+            org.opencontainers.image.vendor=${{ env.ACTOR }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Update kube config
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+
+      - name: Deploy app to EKS
+        run: |
+          sed -i -e 's/CONTAINER_IMAGE/${{ env.REGISTRY }}\/${{ env.ACTOR }}\/${{ env.IMAGE_APP_NAME }}:${{ github.sha }}/g' -e 's/APP_VERSION/${{ github.run_number }}/g' -e 's/APP_NAME/${{ env.APP_NAME }}/g' -e 's/DEPLOY_HASH/${{ github.sha }}/g' -e 's/N_REPLICA/${{ env.N_REPLICA }}/g' ./deployment.yml
+          kubectl delete -f ./deployment.yml -n api || true
+          kubectl apply -f ./deployment.yml -n api
