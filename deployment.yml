@@ -1,10 +1,11 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: APP_NAME
   labels:
     app: APP_NAME
     version: v-APP_VERSION
+  name: APP_NAME
 spec:
   replicas: 1
   selector:
@@ -17,12 +18,77 @@ spec:
         app: APP_NAME
         version: v-APP_VERSION
     spec:
-      imagePullSecrets:
-        - name: regcred
-      serviceAccountName: APP_NAME
       containers:
-        - name: APP_NAME
-          image: CONTAINER_IMAGE
-          imagePullPolicy: IfNotPresent
+        - image: CONTAINER_IMAGE
+          imagePullPolicy: Always
+          name: APP_NAME
           ports:
             - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /work/certs
+              name: certs
+              readOnly: true
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
+      volumes:
+        - name: certs
+          secret:
+            secretName: certs
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: APP_NAME
+  name: APP_NAME
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: APP_NAME
+    service: APP_NAME
+  name: APP_NAME
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: APP_NAME
+  type: ClusterIP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: APP_NAME-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - APP_NAME.sige3.link
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: APP_NAME
+spec:
+  gateways:
+    - APP_NAME-gateway
+  hosts:
+    - APP_NAME.sige3.link
+  http:
+    - route:
+        - destination:
+            host: APP_NAME
+            port:
+              number: 80
+---
