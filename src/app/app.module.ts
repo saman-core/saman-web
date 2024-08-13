@@ -42,7 +42,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { DataBaseModule } from '@saman-core/data';
 import { AlertModule, AuthModule, LoaderModule } from '@saman-core/core';
-import { environment } from '../environments/environment.development';
+import { environment } from '../environments/environment';
 import { DashboardModule } from './views/dashboard/dashboard.module';
 
 const APP_CONTAINERS = [

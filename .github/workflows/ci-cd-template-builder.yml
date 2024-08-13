@@ -7,8 +7,6 @@ env:
   ACTOR: saman-core
   IMAGE_APP_NAME: saman-web
   APP_NAME: saman-web
-  EKS_CLUSTER_NAME: my-cluster
-  AWS_REGION: us-east-1
   N_REPLICA: 1
 
 jobs:
@@ -31,7 +29,7 @@ jobs:
 
       - name: Build App
         run: |
-          npm run build -- --configuration=production --aot
+          npm run build -- --configuration=local --aot
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
@@ -60,18 +58,15 @@ jobs:
             org.opencontainers.image.title=${{ env.IMAGE_APP_NAME }}
             org.opencontainers.image.vendor=${{ env.ACTOR }}
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+      - name: Set Kubectl
+        uses: azure/setup-kubectl@v4
 
-      - name: Update kube config
-        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
-
-      - name: Deploy app to EKS
+      - name: Set Kubeconfig file and deploy app to K8S
+        env:
+          BASE64: ${{ secrets.KUBE_CONFIG }}
         run: |
+          base64 -d -i <<<$(echo $BASE64) > ./kubeconfig
+          export KUBECONFIG=./kubeconfig
           sed -i -e 's/CONTAINER_IMAGE/${{ env.REGISTRY }}\/${{ env.ACTOR }}\/${{ env.IMAGE_APP_NAME }}:${{ github.sha }}/g' -e 's/APP_VERSION/${{ github.run_number }}/g' -e 's/APP_NAME/${{ env.APP_NAME }}/g' -e 's/DEPLOY_HASH/${{ github.sha }}/g' -e 's/N_REPLICA/${{ env.N_REPLICA }}/g' ./deployment.yml
           kubectl delete -f ./deployment.yml -n api || true
           kubectl apply -f ./deployment.yml -n api

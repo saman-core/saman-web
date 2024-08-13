@@ -68,6 +68,27 @@
               ],
               "outputHashing": "all"
             },
+            "local": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "700kb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
+              "outputHashing": "all"
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -90,6 +111,9 @@
             },
             "development": {
               "buildTarget": "saman-web:build:development"
+            },
+            "local": {
+              "buildTarget": "saman-web:build:local"
             }
           },
           "defaultConfiguration": "development"

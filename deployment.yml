@@ -69,12 +69,15 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-    - hosts:
-        - APP_NAME.sige3.link
-      port:
-        name: http
-        number: 80
-        protocol: HTTP
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: tls-secret
+      hosts:
+        - APP_NAME.nacxio.com
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -84,7 +87,7 @@ spec:
   gateways:
     - APP_NAME-gateway
   hosts:
-    - APP_NAME.sige3.link
+    - APP_NAME.nacxio.com
   http:
     - route:
         - destination:
