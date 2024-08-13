@@ -68,5 +68,5 @@ jobs:
           base64 -d -i <<<$(echo $BASE64) > ./kubeconfig
           export KUBECONFIG=./kubeconfig
           sed -i -e 's/CONTAINER_IMAGE/${{ env.REGISTRY }}\/${{ env.ACTOR }}\/${{ env.IMAGE_APP_NAME }}:${{ github.sha }}/g' -e 's/APP_VERSION/${{ github.run_number }}/g' -e 's/APP_NAME/${{ env.APP_NAME }}/g' -e 's/DEPLOY_HASH/${{ github.sha }}/g' -e 's/N_REPLICA/${{ env.N_REPLICA }}/g' ./deployment.yml
-          kubectl delete -f ./deployment.yml -n api || true
-          kubectl apply -f ./deployment.yml -n api
+          kubectl delete -f ./deployment.yml -n api --insecure-skip-tls-verify || true
+          kubectl apply -f ./deployment.yml -n api --insecure-skip-tls-verify
