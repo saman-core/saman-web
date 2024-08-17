@@ -3,54 +3,39 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: APP_NAME
+    app: APP_NAME-deploy
     version: v-APP_VERSION
-  name: APP_NAME
+  name: APP_NAME-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: APP_NAME
+      app: APP_NAME-deploy
       version: v-APP_VERSION
   template:
     metadata:
       labels:
-        app: APP_NAME
+        app: APP_NAME-deploy
         version: v-APP_VERSION
     spec:
       containers:
         - image: CONTAINER_IMAGE
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           name: APP_NAME
           ports:
             - containerPort: 80
               protocol: TCP
-          volumeMounts:
-            - mountPath: /work/certs
-              name: certs
-              readOnly: true
       imagePullSecrets:
         - name: regcred
       restartPolicy: Always
-      volumes:
-        - name: certs
-          secret:
-            secretName: certs
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    account: APP_NAME
-  name: APP_NAME
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: APP_NAME
-    service: APP_NAME
-  name: APP_NAME
+    app: APP_NAME-service
+    service: APP_NAME-service
+  name: APP_NAME-service
 spec:
   ports:
     - name: http
@@ -58,40 +43,30 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    app: APP_NAME
+    app: APP_NAME-deploy
   type: ClusterIP
 ---
-apiVersion: networking.istio.io/v1beta1
-kind: Gateway
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: APP_NAME-gateway
+  name: APP_NAME-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
-  selector:
-    istio: ingressgateway
-  servers:
-    - port:
-        number: 443
-        name: https
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        credentialName: tls-secret
-      hosts:
+  tls:
+    - hosts:
         - APP_NAME.nacxio.com
----
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name: APP_NAME
-spec:
-  gateways:
-    - APP_NAME-gateway
-  hosts:
-    - APP_NAME.nacxio.com
-  http:
-    - route:
-        - destination:
-            host: APP_NAME
-            port:
-              number: 80
+      secretName: tls-secret
+  ingressClassName: nginx
+  rules:
+    - host: APP_NAME.nacxio.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: APP_NAME-service
+                port:
+                  number: 80
 ---
