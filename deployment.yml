@@ -1,22 +1,9 @@
----
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: serving.knative.dev/v1
+kind: Service
 metadata:
-  labels:
-    app: APP_NAME-deploy
-    version: v-APP_VERSION
-  name: APP_NAME-deploy
+ name: APP_NAME
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: APP_NAME-deploy
-      version: v-APP_VERSION
   template:
-    metadata:
-      labels:
-        app: APP_NAME-deploy
-        version: v-APP_VERSION
     spec:
       containers:
         - image: CONTAINER_IMAGE
@@ -24,49 +11,5 @@ spec:
           name: APP_NAME
           ports:
             - containerPort: 80
+              name: http1
               protocol: TCP
-      imagePullSecrets:
-        - name: regcred
-      restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: APP_NAME-service
-    service: APP_NAME-service
-  name: APP_NAME-service
-spec:
-  ports:
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: 80
-  selector:
-    app: APP_NAME-deploy
-  type: ClusterIP
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: APP_NAME-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-spec:
-  tls:
-    - hosts:
-        - APP_NAME.nacxio.com
-      secretName: tls-secret
-  ingressClassName: nginx
-  rules:
-    - host: APP_NAME.nacxio.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: APP_NAME-service
-                port:
-                  number: 80
----
