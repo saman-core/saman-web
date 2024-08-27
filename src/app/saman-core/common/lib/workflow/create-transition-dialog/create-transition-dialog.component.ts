@@ -35,6 +35,10 @@ export class CreateTransitionDialogComponent {
   targetStateControl: FormControl<dia.Element>;
   form: FormGroup;
   data: CreateTransitionDialogRequest;
+  productName = 'common';
+  templateName = 'workflow';
+  formValid = false;
+  cdeData: object = {};
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowComponent>,
@@ -103,5 +107,13 @@ export class CreateTransitionDialogComponent {
     return this.targetStateControl.hasError('forbiddenTargetState')
       ? 'Target State cannot be START'
       : '';
+  }
+
+  onChangeData(data: object): void {
+    this.cdeData = data;
+  }
+
+  onFormErrors(formValid: boolean): void {
+    this.formValid = formValid;
   }
 }

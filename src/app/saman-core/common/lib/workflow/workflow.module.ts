@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertModule } from '@saman-core/core';
+import { ConfigurableDataEntityModule } from '@saman-core/common';
 import { WorkflowComponent } from './workflow/workflow.component';
 import { CreateStateDialogComponent } from './create-state-dialog/create-state-dialog.component';
 import { CreateTransitionDialogComponent } from './create-transition-dialog/create-transition-dialog.component';
@@ -30,6 +31,7 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
   ],
   imports: [
     CommonModule,
+    ConfigurableDataEntityModule,
     AlertModule,
     FormsModule,
     ReactiveFormsModule,

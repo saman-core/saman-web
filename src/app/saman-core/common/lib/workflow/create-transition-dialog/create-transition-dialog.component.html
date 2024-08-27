@@ -32,6 +32,12 @@
       <mat-error>{{ targetStateErrorMessage() }}</mat-error>
     }
   </mat-form-field>
+  <app-cde
+    [productName]="productName"
+    [templateName]="templateName"
+    (data)="onChangeData($event)"
+    (formErrors)="onFormErrors($event)"
+  ></app-cde>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>

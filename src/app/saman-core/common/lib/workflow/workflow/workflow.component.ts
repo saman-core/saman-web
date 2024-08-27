@@ -1,4 +1,4 @@
-import { AfterViewInit, OnInit, Component, ElementRef, ViewChild, Inject } from '@angular/core';
+import { AfterViewInit, OnInit, Component, ElementRef, ViewChild, Inject, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { dia, shapes, linkTools, elementTools, util, g } from '@joint/core';
 import { StateTypeProperties } from '../state-type.properties';
@@ -30,6 +30,8 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
   private paper: dia.Paper;
 
   constructor(
+    private viewContainerRef: ViewContainerRef,
+    private componentFactoryResolver: ComponentFactoryResolver,
     private _dialog: MatDialog,
     @Inject(DOCUMENT) private document: Document,
   ) {}
@@ -53,33 +55,23 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     this.canvas.nativeElement.appendChild(this.paper.el);
     const start = this._initState(50, 200);
-    const code = this._createState(180, 390, 'code', StateTypeEnum.IN_PROGRESS);
-    const slash = this._createState(340, 220, 'slash', StateTypeEnum.COMPLETED);
-    const star = this._createState(600, 400, 'star', StateTypeEnum.PENDING);
-    const line = this._createState(190, 100, 'line', StateTypeEnum.COMPLETED);
-    const block = this._createState(560, 140, 'block', StateTypeEnum.EXCLUDED);
+    const code = this._createState(180, 390, 'uno', StateTypeEnum.IN_PROGRESS);
+    const slash = this._createState(340, 220, 'dos', StateTypeEnum.COMPLETED);
+    const star = this._createState(600, 400, 'tres', StateTypeEnum.PENDING);
+    const line = this._createState(190, 100, 'cuatro', StateTypeEnum.COMPLETED);
+    const block = this._createState(560, 140, 'cinco', StateTypeEnum.EXCLUDED);
 
-    this._createLink(start, code, 'start');
-    this._createLink(code, slash, '/');
-    this._createLink(slash, code, 'other', [{ x: 270, y: 300 }]);
-    this._createLink(slash, line, '/');
-    this._createLink(line, code, 'new\n line');
-    this._createLink(slash, block, '*');
-    this._createLink(block, star, '*');
-    this._createLink(star, block, 'other', [{ x: 650, y: 290 }]);
-    this._createLink(star, code, 'C', [{ x: 490, y: 310 }]);
-    this._createLink(line, line, 'other', [
-      { x: 115, y: 100 },
-      { x: 250, y: 50 },
-    ]);
-    this._createLink(block, block, 'other', [
-      { x: 485, y: 140 },
-      { x: 620, y: 90 },
-    ]);
-    this._createLink(code, code, 'other', [
-      { x: 180, y: 500 },
-      { x: 305, y: 450 },
-    ]);
+    this._createLink(start, code, 'alpha');
+    this._createLink(code, slash, 'beta');
+    this._createLink(slash, code, 'gamma');
+    this._createLink(slash, line, 'delta');
+    this._createLink(line, code, 'epsilon');
+    this._createLink(slash, block, 'varepsilon');
+    this._createLink(block, star, 'zeta');
+    this._createLink(line, line, 'eta');
+    this._createLink(star, code, 'theta');
+    this._createLink(line, line, 'vartheta');
+    this._createLink(block, block, 'eta');
 
     this.paper.unfreeze();
 
@@ -106,6 +98,8 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       height: '80%',
       width: '80%',
       disableClose: true,
+      viewContainerRef: this.viewContainerRef,
+      componentFactoryResolver: this.componentFactoryResolver,
     });
     dialogRef.afterClosed().subscribe((response: CreateTransitionDialogResponse) => {
       if (response.accepted) {
@@ -309,7 +303,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
         `,
     });
 
-    const fn = () => this.createState();
+    const fn = () => this.createTransition();
     const deleteFn = (typeName: string, state: dia.Element) => this._delete(typeName, state);
     return new dia.ToolsView({
       tools: [
