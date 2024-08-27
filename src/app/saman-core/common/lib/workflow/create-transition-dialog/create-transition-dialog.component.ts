@@ -35,7 +35,7 @@ export class CreateTransitionDialogComponent {
   targetStateControl: FormControl<dia.Element>;
   form: FormGroup;
   data: CreateTransitionDialogRequest;
-  productName = 'common';
+  productName = 'system';
   templateName = 'workflow';
   formValid = false;
   cdeData: object = {};
