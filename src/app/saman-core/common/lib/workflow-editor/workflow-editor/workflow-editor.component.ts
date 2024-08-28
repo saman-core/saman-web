@@ -1,6 +1,17 @@
-import { AfterViewInit, OnInit, Component, ElementRef, ViewChild, Inject, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import {
+  AfterViewInit,
+  OnInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  Inject,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+  Input,
+} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { dia, shapes, linkTools, elementTools, util, g } from '@joint/core';
+import _ from 'lodash';
 import { StateTypeProperties } from '../state-type.properties';
 import { StateTypeEnum } from '../state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,12 +30,247 @@ import {
 } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
-  selector: 'app-workflow',
-  templateUrl: './workflow.component.html',
-  styleUrl: './workflow.component.scss',
+  selector: 'app-workflow-editor',
+  templateUrl: './workflow-editor.component.html',
+  styleUrl: './workflow-editor.component.scss',
 })
-export class WorkflowComponent implements OnInit, AfterViewInit {
+export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas') canvas: ElementRef;
+  @Input() graphJson: object = {
+    "cells": [
+        {
+            "type": "standard.Circle",
+            "position": {
+                "x": 50,
+                "y": 200
+            },
+            "size": {
+                "width": 70,
+                "height": 70
+            },
+            "angle": 0,
+            "id": "302e9bed-73d0-45c1-a4e2-b54ad9c62c3f",
+            "isImmutable": true,
+            "name": "START",
+            "z": 1,
+            "attrs": {
+                "body": {
+                    "fill": "#647687",
+                    "filter": {
+                        "name": "highlight",
+                        "args": {
+                            "color": "#314354",
+                            "width": 2,
+                            "opacity": 0.8,
+                            "blur": 4
+                        }
+                    }
+                },
+                "label": {
+                    "fill": "white",
+                    "text": "START",
+                    "event": "element:label:pointerdown",
+                    "fontWeight": "bold",
+                    "annotations": [
+                        {
+                            "start": 6,
+                            "end": 5,
+                            "attrs": {
+                                "fill": "#dde6ed",
+                                "font-family": "FontAwesome",
+                                "font-size": 20
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "standard.Rectangle",
+            "position": {
+                "x": 288,
+                "y": 214
+            },
+            "size": {
+                "width": 130,
+                "height": 50
+            },
+            "angle": 0,
+            "id": "8943ab6f-87fb-4fb2-989c-ad525c24e4f6",
+            "name": "emitir",
+            "data": {},
+            "z": 2,
+            "attrs": {
+                "body": {
+                    "stroke": "#6C8EBF",
+                    "fill": "#DAE8FC",
+                    "rx": 13,
+                    "ry": 13
+                },
+                "label": {
+                    "text": "emitir",
+                    "event": "element:label:pointerdown",
+                    "fontWeight": "bold",
+                    "style": {
+                        "userSelect": "text"
+                    }
+                }
+            }
+        },
+        {
+            "type": "standard.Link",
+            "source": {
+                "id": "302e9bed-73d0-45c1-a4e2-b54ad9c62c3f"
+            },
+            "target": {
+                "id": "8943ab6f-87fb-4fb2-989c-ad525c24e4f6"
+            },
+            "labels": [
+                {
+                    "position": {
+                        "distance": 0.5,
+                        "offset": 0,
+                        "args": {
+                            "keepGradient": true,
+                            "ensureLegibility": true
+                        }
+                    },
+                    "attrs": {
+                        "text": {
+                            "text": "emit",
+                            "fontWeight": "bold"
+                        }
+                    }
+                }
+            ],
+            "vertices": [],
+            "id": "da143095-d50b-410d-96cf-029e642b04f5",
+            "name": "emit",
+            "data": {},
+            "z": 3,
+            "attrs": {
+                "line": {
+                    "stroke": "#999999"
+                }
+            }
+        },
+        {
+            "type": "standard.Rectangle",
+            "position": {
+                "x": 626,
+                "y": 215
+            },
+            "size": {
+                "width": 130,
+                "height": 50
+            },
+            "angle": 0,
+            "id": "1589a72e-ddce-4f39-83a6-962a9db06bb1",
+            "name": "cancelar",
+            "data": {},
+            "z": 4,
+            "attrs": {
+                "body": {
+                    "stroke": "#B85450",
+                    "fill": "#F8CECC",
+                    "rx": 13,
+                    "ry": 13
+                },
+                "label": {
+                    "text": "cancelar",
+                    "event": "element:label:pointerdown",
+                    "fontWeight": "bold",
+                    "style": {
+                        "userSelect": "text"
+                    }
+                }
+            }
+        },
+        {
+            "type": "standard.Link",
+            "source": {
+                "id": "8943ab6f-87fb-4fb2-989c-ad525c24e4f6"
+            },
+            "target": {
+                "id": "1589a72e-ddce-4f39-83a6-962a9db06bb1"
+            },
+            "labels": [
+                {
+                    "position": {
+                        "distance": 0.5,
+                        "offset": 0,
+                        "args": {
+                            "keepGradient": true,
+                            "ensureLegibility": true
+                        }
+                    },
+                    "attrs": {
+                        "text": {
+                            "text": "cancel",
+                            "fontWeight": "bold"
+                        }
+                    }
+                }
+            ],
+            "vertices": [],
+            "id": "c4ceef42-deac-4877-987b-e975fe5a0557",
+            "name": "cancel",
+            "data": {},
+            "z": 5,
+            "attrs": {
+                "line": {
+                    "stroke": "#999999"
+                }
+            }
+        },
+        {
+            "type": "standard.Link",
+            "source": {
+                "id": "8943ab6f-87fb-4fb2-989c-ad525c24e4f6"
+            },
+            "target": {
+                "id": "8943ab6f-87fb-4fb2-989c-ad525c24e4f6"
+            },
+            "labels": [
+                {
+                    "position": {
+                        "distance": 0.5,
+                        "offset": 0,
+                        "args": {
+                            "keepGradient": true,
+                            "ensureLegibility": true
+                        }
+                    },
+                    "attrs": {
+                        "text": {
+                            "text": "endosar",
+                            "fontWeight": "bold"
+                        }
+                    }
+                }
+            ],
+            "vertices": [
+                {
+                    "x": 288,
+                    "y": 179
+                },
+                {
+                    "x": 418,
+                    "y": 179
+                }
+            ],
+            "id": "25ca93f1-03c7-49d8-8f70-86a781736b68",
+            "name": "endosar",
+            "data": {},
+            "z": 6,
+            "attrs": {
+                "line": {
+                    "stroke": "#999999"
+                }
+            }
+        }
+    ]
+};
 
   private graph: dia.Graph;
   private paper: dia.Paper;
@@ -54,28 +300,11 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.canvas.nativeElement.appendChild(this.paper.el);
-    const start = this._initState(50, 200);
-    const code = this._createState(180, 390, 'uno', StateTypeEnum.IN_PROGRESS);
-    const slash = this._createState(340, 220, 'dos', StateTypeEnum.COMPLETED);
-    const star = this._createState(600, 400, 'tres', StateTypeEnum.PENDING);
-    const line = this._createState(190, 100, 'cuatro', StateTypeEnum.COMPLETED);
-    const block = this._createState(560, 140, 'cinco', StateTypeEnum.EXCLUDED);
-
-    this._createLink(start, code, 'alpha');
-    this._createLink(code, slash, 'beta');
-    this._createLink(slash, code, 'gamma');
-    this._createLink(slash, line, 'delta');
-    this._createLink(line, code, 'epsilon');
-    this._createLink(slash, block, 'varepsilon');
-    this._createLink(block, star, 'zeta');
-    this._createLink(line, line, 'eta');
-    this._createLink(star, code, 'theta');
-    this._createLink(line, line, 'vartheta');
-    this._createLink(block, block, 'eta');
-
+    if (_.isEqual(this.graphJson, {}))
+      this._initState(50, 200);
+    else
+      this.graph.fromJSON(this.graphJson);
     this.paper.unfreeze();
-
-    console.log(this.graph.toJSON());
   }
 
   createState() {
@@ -87,7 +316,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: CreateStateDialogResponse) => {
       if (response.accepted) {
-        this._createState(30, 30, response.name, response.stateType);
+        this._createState(30, 30, response.name, response.stateType, response.data);
       }
     });
   }
@@ -103,7 +332,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: CreateTransitionDialogResponse) => {
       if (response.accepted) {
-        this._createLink(response.sourceState, response.targetState, response.name);
+        this._createLink(response.sourceState, response.targetState, response.name, response.data);
       }
     });
   }
@@ -146,7 +375,13 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private _createState(x: number, y: number, label: string, type: StateTypeEnum): dia.Element {
+  private _createState(
+    x: number,
+    y: number,
+    label: string,
+    type: StateTypeEnum,
+    data: object = {},
+  ): dia.Element {
     const bodyColor = StateTypeProperties[type].bodyColor;
     const lineColor = StateTypeProperties[type].lineColor;
     const state = new shapes.standard.Rectangle({
@@ -172,6 +407,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       },
     });
     state.set('name', label);
+    state.set('data', data);
     return state.addTo(this.graph);
   }
 
@@ -224,6 +460,7 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
     source: dia.Element,
     target: dia.Element,
     label: string,
+    data: object = {},
     vertices = [],
   ): void {
     const link = new shapes.standard.Link({
@@ -274,9 +511,12 @@ export class WorkflowComponent implements OnInit, AfterViewInit {
       vertices: vertices,
     });
     link.set('name', label);
+    link.set('data', data);
     link.addTo(this.graph);
     if (link.source().id === link.target().id && link.vertices().length === 0)
       this._adjustVertices(link);
+    
+    console.log(this.graph.toJSON());
   }
 
   private _linksToolsView(): dia.ToolsView {

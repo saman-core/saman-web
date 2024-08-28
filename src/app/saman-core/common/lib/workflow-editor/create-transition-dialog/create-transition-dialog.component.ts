@@ -6,13 +6,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { dia } from '@joint/core';
-import { WorkflowComponent } from '../workflow/workflow.component';
+import { WorkflowEditorComponent } from '../workflow-editor/workflow-editor.component';
 import { duplicateNameValidator, forbiddenTargetStateValidator, nameFormatValidator } from '../utils/validator';
 
 export interface CreateTransitionDialogResponse {
   name: string;
   sourceState: dia.Element;
   targetState: dia.Element;
+  data: object;
   accepted: boolean;
 }
 
@@ -41,7 +42,7 @@ export class CreateTransitionDialogComponent {
   cdeData: object = {};
 
   constructor(
-    public dialogRef: MatDialogRef<WorkflowComponent>,
+    public dialogRef: MatDialogRef<WorkflowEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public request: CreateTransitionDialogRequest,
   ) {
     this.states = request.states;
@@ -74,6 +75,7 @@ export class CreateTransitionDialogComponent {
       accepted: true,
       sourceState: this.sourceStateControl.value,
       targetState: this.targetStateControl.value,
+      data: {},
     };
   }
 

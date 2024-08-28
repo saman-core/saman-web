@@ -18,5 +18,5 @@ export * from './lib/configurable-data-entity/form-utils';
 export * from './lib/form-util/form-util.service';
 export * from './lib/form-util/form-util.module';
 
-export * from './lib/workflow/workflow.module';
-export * from './lib/workflow/workflow/workflow.component';
+export * from './lib/workflow-editor/workflow-editor.module';
+export * from './lib/workflow-editor/workflow-editor/workflow-editor.component';

@@ -17,14 +17,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertModule } from '@saman-core/core';
 import { ConfigurableDataEntityModule } from '@saman-core/common';
-import { WorkflowComponent } from './workflow/workflow.component';
+import { WorkflowEditorComponent } from './workflow-editor/workflow-editor.component';
 import { CreateStateDialogComponent } from './create-state-dialog/create-state-dialog.component';
 import { CreateTransitionDialogComponent } from './create-transition-dialog/create-transition-dialog.component';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
-    WorkflowComponent,
+    WorkflowEditorComponent,
     CreateStateDialogComponent,
     CreateTransitionDialogComponent,
     DeleteConfirmationDialogComponent,
@@ -46,6 +46,6 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
     MatFormFieldModule,
   ],
   providers: [],
-  exports: [WorkflowComponent],
+  exports: [WorkflowEditorComponent],
 })
-export class WorkflowModule {}
+export class WorkflowEditorModule {}

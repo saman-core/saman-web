@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { WorkflowComponent } from '../workflow/workflow.component';
+import { WorkflowEditorComponent } from '../workflow-editor/workflow-editor.component';
 import { StateTypeEnum } from '../state-type.enum';
 import _ from 'lodash';
 import { dia } from '@joint/core';
@@ -9,7 +9,8 @@ import { duplicateNameValidator, nameFormatValidator } from '../utils/validator'
 
 export interface CreateStateDialogResponse {
   name: string;
-  stateType: StateTypeEnum,
+  stateType: StateTypeEnum;
+  data: object;
   accepted: boolean;
 }
 
@@ -32,7 +33,7 @@ export class CreateStateDialogComponent {
   data: CreateStateDialogRequest;
 
   constructor(
-    public dialogRef: MatDialogRef<WorkflowComponent>,
+    public dialogRef: MatDialogRef<WorkflowEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public request: CreateStateDialogRequest,
   ) {
     this.statesLabels = request.states.map((l) => l.get('name'));
@@ -56,7 +57,12 @@ export class CreateStateDialogComponent {
   }
 
   accept(): CreateStateDialogResponse {
-    return { name: this.nameControl.value, accepted: true, stateType: this.stateTypeControl.value };
+    return {
+      name: this.nameControl.value,
+      accepted: true,
+      stateType: this.stateTypeControl.value,
+      data: {},
+    };
   }
 
   getErrorMessage() {

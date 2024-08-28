@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { WorkflowComponent } from '../workflow/workflow.component';
+import { WorkflowEditorComponent } from '../workflow-editor/workflow-editor.component';
 
 export interface DeleteConfirmationDialogResponse {
   accepted: boolean;
@@ -19,7 +19,7 @@ export interface DeleteConfirmationDialogRequest {
 export class DeleteConfirmationDialogComponent {
 
   constructor(
-    public dialogRef: MatDialogRef<WorkflowComponent>,
+    public dialogRef: MatDialogRef<WorkflowEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public request: DeleteConfirmationDialogRequest,
   ) {}
 
