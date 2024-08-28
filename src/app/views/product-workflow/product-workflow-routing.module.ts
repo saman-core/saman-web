@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WorkflowEditorComponent } from '@saman-core/common';
+import { ProductWorkflowComponent } from './product-workflow/product-workflow.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: WorkflowEditorComponent,
+    component: ProductWorkflowComponent,
     data: {
       title: $localize`Workflow`,
     },
