@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { dia, shapes, linkTools, elementTools, util, g } from '@joint/core';
-import _ from 'lodash';
 import { StateTypeProperties } from '../state-type.properties';
 import { StateTypeEnum } from '../state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,6 +29,7 @@ import {
   DeleteConfirmationDialogComponent,
   DeleteConfirmationDialogResponse,
 } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-workflow-editor',
@@ -38,7 +38,7 @@ import {
 })
 export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas') canvas: ElementRef;
-  @Input() graphJson: object = {};
+  @Input() graphJsonBase64: string = '';
   @Output() actionEmitter = new EventEmitter<ActionWorkflowType>();
 
   private graph: dia.Graph;
@@ -68,14 +68,18 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
+    const graphJson = Buffer.from(this.graphJsonBase64, 'base64').toString('utf-8');
     this.canvas.nativeElement.appendChild(this.paper.el);
-    if (_.isEqual(this.graphJson, {})) this._initState(50, 200);
-    else this.graph.fromJSON(this.graphJson);
+    if (graphJson === '{}') this._initState(50, 200);
+    else this.graph.fromJSON(graphJson);
     this.paper.unfreeze();
   }
 
   save(): void {
-    this.actionEmitter.emit({ action: 'save', data: this.graph.toJSON() });
+    this.actionEmitter.emit({
+      action: 'save',
+      dataBase64: Buffer.from(JSON.stringify(this.graph.toJSON()), 'utf-8').toString('base64'),
+    });
   }
 
   cancel(): void {
@@ -465,5 +469,5 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
 
 export type ActionWorkflowType = {
   action: 'save' | 'cancel';
-  data?: object;
+  dataBase64?: string;
 };

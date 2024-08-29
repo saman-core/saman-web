@@ -1,4 +1,59 @@
-# Product Workflow
+<h1>Workflow Editor</h1>
 
-<app-workflow-editor [graphJson]="graphJson" (actionEmitter)="actionsListener($event)">
-</app-workflow-editor>
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Select a Product for View or Edit Workflow </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <section>
+      <h6>
+        <button
+          mat-icon-button
+          color="primary"
+          aria-label="Update"
+          matTooltip="Update"
+          (click)="refreshProductTree()"
+        >
+          <mat-icon>refresh</mat-icon>
+        </button>
+        Products:
+      </h6>
+    </section>
+
+    <mat-list role="list">
+      @for (product of products; track product) {
+        <mat-list-item role="listitem">
+          <button
+            mat-icon-button
+            aria-label="Update"
+            matTooltip="Update"
+            (click)="openEditor(product)"
+          >
+            <mat-icon>edit</mat-icon></button
+          >{{ product }}
+        </mat-list-item>
+      }
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
+        Builder
+      </mat-panel-title>
+      <mat-panel-description>
+        @if (productNameSelected === "") {
+          Not Product Selected
+        } @else {
+          Edit Workflow "<span style="text-transform: uppercase"
+            ><b>{{ productNameSelected }}</b></span
+          >"
+        }
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <ng-template #dynamicEditorLoader></ng-template>
+  </mat-expansion-panel>
+</mat-accordion>

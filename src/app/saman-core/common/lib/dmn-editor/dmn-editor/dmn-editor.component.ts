@@ -36,7 +36,7 @@ export class DmnEditorComponent implements OnInit {
   }
 
   private _replaceBase64ParametersAndCode(base64: string): string {
-    let xml = Buffer.from(base64, 'base64').toString('utf-8')
+    let xml = Buffer.from(base64, 'base64').toString('utf-8');
     xml = xml.replace(/name="\S+"/, `name="${this.dmnName}"`);
     return xml.replace(/namespace="\S+"/, `namespace="${this.namespace}"`);
   }
