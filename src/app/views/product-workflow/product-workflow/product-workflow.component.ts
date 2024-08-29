@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActionWorkflowType } from '@saman-core/common';
+import { ProductsGitRepository } from '@saman-core/data';
 
 @Component({
   selector: 'app-product-workflow',
@@ -243,7 +244,7 @@ export class ProductWorkflowComponent {
     ],
   };
 
-  constructor() {}
+  constructor(private _productsGitRepository: ProductsGitRepository) {}
 
   actionsListener(action: ActionWorkflowType) {
     switch (action.action) {
