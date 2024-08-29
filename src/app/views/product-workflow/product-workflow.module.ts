@@ -19,9 +19,13 @@ import { WorkflowEditorModule } from '@saman-core/common';
 import { ProductWorkflowRoutingModule } from './product-workflow-routing.module';
 import { ProductWorkflowComponent } from './product-workflow/product-workflow.component';
 import { TemplateBuilderModule } from '@saman-core/data';
+import { CommitWorkflowDialogComponent } from './commit-workflow-dialog/commit-workflow-dialog.component';
 
 @NgModule({
-  declarations: [ProductWorkflowComponent],
+  declarations: [
+    ProductWorkflowComponent,
+    CommitWorkflowDialogComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

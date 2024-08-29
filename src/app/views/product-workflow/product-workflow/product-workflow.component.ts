@@ -1,6 +1,9 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
-import { ProductsGitRepository } from '@saman-core/data';
+import { Component, ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
 import { ActionWorkflowType, WorkflowEditorComponent } from '@saman-core/common';
+import { CommitWorkflowDialogComponent, CommitDialogResponse } from '../commit-workflow-dialog/commit-workflow-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertSubscriptor } from '@saman-core/core';
 
 @Component({
   selector: 'app-product-workflow',
@@ -13,8 +16,13 @@ export class ProductWorkflowComponent {
   step = 0;
   products: string[] = [];
   productNameSelected = '';
+  node: NodeModel;
 
-  constructor(private _productsGitRepository: ProductsGitRepository) {
+  constructor(
+    private _productsGitRepository: ProductsGitRepository,
+    private _alertSubscriptor: AlertSubscriptor,
+    private _dialog: MatDialog,
+  ) {
     this.refreshProductTree();
   }
 
@@ -27,6 +35,7 @@ export class ProductWorkflowComponent {
   openEditor(productName: string) {
     this._productsGitRepository.getWorkflow(productName).subscribe((node) => {
       this.dynamicEditorLoader.clear();
+      this.node = node;
       const componentRef = this.dynamicEditorLoader.createComponent(WorkflowEditorComponent);
       componentRef.instance.graphJsonBase64 = node.content;
       componentRef.instance.actionEmitter.subscribe((action: ActionWorkflowType) => {
@@ -42,17 +51,45 @@ export class ProductWorkflowComponent {
     this.step = index;
   }
 
-  actionsListener(action: ActionWorkflowType, componentRef) {
+  actionsListener(action: ActionWorkflowType, componentRef: ComponentRef<WorkflowEditorComponent>) {
     switch (action.action) {
       case 'save':
-        console.log(action.dataBase64);
+        this.save(action.dataBase64);
         break;
       case 'cancel':
-        console.log('cancel');
+        this.node = null;
         this.setStep(0);
         this.productNameSelected = '';
         componentRef.destroy();
         break;
     }
+  }
+
+  save(content: string) {
+    const dialogRef = this._dialog.open(CommitWorkflowDialogComponent, {
+      data: this.productNameSelected,
+    });
+
+    dialogRef.afterClosed().subscribe((response: CommitDialogResponse) => {
+      if (response.accepted) {
+        this.node.content = content;
+        const commitRequest: CommitRequestModel = {
+          message: response.message,
+          data: this.node,
+        };
+        this._productsGitRepository
+          .persistWorkflow(this.productNameSelected, commitRequest)
+          .subscribe({
+            next: (node) => {
+              this.node = node;
+              this._alertSubscriptor.success('Workflow saved successfully');
+            },
+            error: (e) => {
+              console.error(e);
+              this._alertSubscriptor.error('Worklow could not be saved');
+            },
+          });
+      }
+    });
   }
 }

@@ -71,7 +71,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     const graphJson = Buffer.from(this.graphJsonBase64, 'base64').toString('utf-8');
     this.canvas.nativeElement.appendChild(this.paper.el);
     if (graphJson === '{}') this._initState(50, 200);
-    else this.graph.fromJSON(graphJson);
+    else this.graph.fromJSON(JSON.parse(graphJson));
     this.paper.unfreeze();
   }
 
