@@ -41,5 +41,5 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
-  <button mat-button [mat-dialog-close]="accept()" [disabled]="form.invalid">Create</button>
+  <button mat-button [mat-dialog-close]="accept()" [disabled]="form.invalid && formValid">Create</button>
 </mat-dialog-actions>

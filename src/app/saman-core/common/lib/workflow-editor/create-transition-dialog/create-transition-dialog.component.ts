@@ -75,7 +75,7 @@ export class CreateTransitionDialogComponent {
       accepted: true,
       sourceState: this.sourceStateControl.value,
       targetState: this.targetStateControl.value,
-      data: {},
+      data: this.cdeData,
     };
   }
 
