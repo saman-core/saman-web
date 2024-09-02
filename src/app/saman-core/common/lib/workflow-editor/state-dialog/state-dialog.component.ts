@@ -15,6 +15,7 @@ export interface StateDialogResponse {
 }
 
 export interface StateDialogRequest {
+  action: 'create' | 'update'
   productName: string;
   states: dia.Element[];
 }

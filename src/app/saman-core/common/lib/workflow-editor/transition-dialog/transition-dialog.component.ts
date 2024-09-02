@@ -18,6 +18,7 @@ export interface TransitionDialogResponse {
 }
 
 export interface TransitionDialogRequest {
+  action: 'Create' | 'Update'
   productName: string;
   states: dia.Element[];
   links: dia.Link[];

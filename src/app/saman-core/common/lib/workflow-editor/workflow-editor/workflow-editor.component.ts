@@ -16,10 +16,7 @@ import { dia, shapes, linkTools, elementTools, util, g } from '@joint/core';
 import { StateTypeProperties } from '../state-type.properties';
 import { StateTypeEnum } from '../state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  StateDialogComponent,
-  StateDialogResponse,
-} from '../state-dialog/state-dialog.component';
+import { StateDialogComponent, StateDialogResponse } from '../state-dialog/state-dialog.component';
 import {
   TransitionDialogComponent,
   TransitionDialogResponse,
@@ -88,7 +85,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
 
   createState() {
     const dialogRef = this._dialog.open(StateDialogComponent, {
-      data: { productName: 'Auto', states: this.graph.getElements() },
+      data: { action: 'Create', productName: 'Auto', states: this.graph.getElements() },
       height: '400px',
       width: '700px',
       disableClose: true,
@@ -102,7 +99,12 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
 
   createTransition() {
     const dialogRef = this._dialog.open(TransitionDialogComponent, {
-      data: { productName: 'Auto', states: this.graph.getElements(), links: this.graph.getLinks() },
+      data: {
+        action: 'Create',
+        productName: 'Auto',
+        states: this.graph.getElements(),
+        links: this.graph.getLinks(),
+      },
       height: '400px',
       width: '700px',
       disableClose: true,
@@ -114,6 +116,53 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
         this._createLink(response.sourceState, response.targetState, response.name, response.data);
       }
     });
+  }
+
+  updateState(state: dia.Element) {
+    const dialogRef = this._dialog.open(StateDialogComponent, {
+      data: { action: 'Update', productName: 'Auto', states: this.graph.getElements() },
+      height: '400px',
+      width: '700px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((response: StateDialogResponse) => {
+      if (response.accepted) {
+        this._updateState(state, response.name, response.stateType, response.data);
+      }
+    });
+  }
+
+  updateTransition(link: dia.Link) {
+    const dialogRef = this._dialog.open(TransitionDialogComponent, {
+      data: {
+        action: 'Update',
+        productName: 'Auto',
+        states: this.graph.getElements(),
+        links: this.graph.getLinks(),
+      },
+      height: '400px',
+      width: '700px',
+      disableClose: true,
+      viewContainerRef: this.viewContainerRef,
+      componentFactoryResolver: this.componentFactoryResolver,
+    });
+    dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
+      if (response.accepted) {
+        this._updateLink(link, response.sourceState, response.targetState, response.name, response.data);
+      }
+    });
+  }
+
+  private _updateState(state: dia.Element, label: string, type: StateTypeEnum, data: object) {
+    //state
+  }
+
+  private _updateLink(link: dia.Link, source: dia.Element, target: dia.Element, name: string, data: object) {
+    link.source(source);
+    link.target(target);
+    link.set('name', name);
+    link.set('data', data);
+    link.label(0, this._createLinkLabel(name));
   }
 
   private _addToolsToView(paper: dia.Paper, graph: dia.Graph): void {
@@ -253,47 +302,49 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
           //strokeDasharray: '9,2',
         },
       },
-      labels: [
-        {
-          position: {
-            distance: 0.5,
-            offset: 0,
-            args: {
-              keepGradient: true,
-              ensureLegibility: true,
-            },
-          },
-          attrs: {
-            text: {
-              text: label,
-              fontWeight: 'bold',
-            },
-          },
-        },
-        /* TODO for indicate message
-        {
-          attrs: {
-            text: {
-              fill: COLORS.dark,
-              text: FA.envelope,
-              fontFamily: "FontAwesome"
-            },
-            rect: { fill: COLORS.light }
-          },
-          position: {
-            distance: 0.5,
-            offset: 20,
-          },
-        }
-        */
-      ],
       vertices: vertices,
     });
     link.set('name', label);
     link.set('data', data);
+    link.label(0, this._createLinkLabel(label));
     link.addTo(this.graph);
     if (link.source().id === link.target().id && link.vertices().length === 0)
       this._adjustVertices(link);
+  }
+
+  private _createLinkLabel(name: string): object {
+    return {
+      position: {
+        distance: 0.5,
+        offset: 0,
+        args: {
+          keepGradient: true,
+          ensureLegibility: true,
+        },
+      },
+      attrs: {
+        text: {
+          text: name,
+          fontWeight: 'bold',
+        },
+      },
+    };
+    /* TODO for indicate message
+    {
+      attrs: {
+        text: {
+          fill: COLORS.dark,
+          text: FA.envelope,
+          fontFamily: "FontAwesome"
+        },
+        rect: { fill: COLORS.light }
+      },
+      position: {
+        distance: 0.5,
+        offset: 20,
+      },
+    };
+    */
   }
 
   private _linksToolsView(): dia.ToolsView {
@@ -320,7 +371,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
         `,
     });
 
-    const fn = () => this.createTransition();
+    const fn = (transition) => this.updateTransition(transition);
     const deleteFn = (typeName: string, state: dia.Element) => this._delete(typeName, state);
     return new dia.ToolsView({
       tools: [
@@ -328,7 +379,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
           distance: '50%',
           offset: -20,
           action() {
-            fn();
+            fn(this.model);
           },
         }),
         new RemoveButton({
@@ -408,7 +459,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
         `,
     });
 
-    const fn = () => this.createState();
+    const fn = (state) => this.updateState(state);
     const deleteFn = (typeName: string, state: dia.Element) => this._delete(typeName, state);
     return new dia.ToolsView({
       tools: [
@@ -417,7 +468,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
           y: '0',
           offset: 0,
           action() {
-            fn();
+            fn(this.model);
           },
         }),
         boundaryTool,

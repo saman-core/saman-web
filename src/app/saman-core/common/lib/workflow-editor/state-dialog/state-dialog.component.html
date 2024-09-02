@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>Create State</h2>
+<h2 mat-dialog-title>{{ request.action }} State</h2>
 <mat-dialog-content>
-  <p>Create a stage for product {{ request.productName }}</p>
+  <p>{{ request.action }} a stage for product {{ request.productName }}</p>
   <mat-form-field>
     <mat-label>Name</mat-label>
     <input matInput placeholder="type a name" [formControl]="nameControl" required />
@@ -20,11 +20,7 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
-  <button
-    mat-button
-    [mat-dialog-close]="accept()"
-    [disabled]="form.invalid"
-  >
-    Create
+  <button mat-button [mat-dialog-close]="accept()" [disabled]="form.invalid">
+    {{ request.action }}
   </button>
 </mat-dialog-actions>
