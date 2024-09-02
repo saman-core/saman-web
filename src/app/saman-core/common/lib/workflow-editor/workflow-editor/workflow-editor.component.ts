@@ -17,13 +17,13 @@ import { StateTypeProperties } from '../state-type.properties';
 import { StateTypeEnum } from '../state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  CreateStateDialogComponent,
-  CreateStateDialogResponse,
-} from '../create-state-dialog/create-state-dialog.component';
+  StateDialogComponent,
+  StateDialogResponse,
+} from '../state-dialog/state-dialog.component';
 import {
-  CreateTransitionDialogComponent,
-  CreateTransitionDialogResponse,
-} from '../create-transition-dialog/create-transition-dialog.component';
+  TransitionDialogComponent,
+  TransitionDialogResponse,
+} from '../transition-dialog/transition-dialog.component';
 import { COLORS, FA } from '../utils/icons.constants';
 import {
   DeleteConfirmationDialogComponent,
@@ -87,13 +87,13 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   }
 
   createState() {
-    const dialogRef = this._dialog.open(CreateStateDialogComponent, {
+    const dialogRef = this._dialog.open(StateDialogComponent, {
       data: { productName: 'Auto', states: this.graph.getElements() },
       height: '400px',
       width: '700px',
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((response: CreateStateDialogResponse) => {
+    dialogRef.afterClosed().subscribe((response: StateDialogResponse) => {
       if (response.accepted) {
         this._createState(30, 30, response.name, response.stateType, response.data);
       }
@@ -101,7 +101,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   }
 
   createTransition() {
-    const dialogRef = this._dialog.open(CreateTransitionDialogComponent, {
+    const dialogRef = this._dialog.open(TransitionDialogComponent, {
       data: { productName: 'Auto', states: this.graph.getElements(), links: this.graph.getLinks() },
       height: '400px',
       width: '700px',
@@ -109,7 +109,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
       viewContainerRef: this.viewContainerRef,
       componentFactoryResolver: this.componentFactoryResolver,
     });
-    dialogRef.afterClosed().subscribe((response: CreateTransitionDialogResponse) => {
+    dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
       if (response.accepted) {
         this._createLink(response.sourceState, response.targetState, response.name, response.data);
       }

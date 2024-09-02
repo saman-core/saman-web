@@ -7,34 +7,34 @@ import _ from 'lodash';
 import { dia } from '@joint/core';
 import { duplicateNameValidator, nameFormatValidator } from '../utils/validator';
 
-export interface CreateStateDialogResponse {
+export interface StateDialogResponse {
   name: string;
   stateType: StateTypeEnum;
   data: object;
   accepted: boolean;
 }
 
-export interface CreateStateDialogRequest {
+export interface StateDialogRequest {
   productName: string;
   states: dia.Element[];
 }
 
 @Component({
-  selector: 'app-create-state-dialog',
-  templateUrl: './create-state-dialog.component.html',
-  styleUrl: './create-state-dialog.component.scss',
+  selector: 'app-state-dialog',
+  templateUrl: './state-dialog.component.html',
+  styleUrl: './state-dialog.component.scss',
 })
-export class CreateStateDialogComponent {
+export class StateDialogComponent {
   statesLabels: string[] = [];
   nameControl: FormControl<string>;
   stateTypeControl: FormControl<StateTypeEnum>;
   form: FormGroup;
   stateTypes: string[] = _.uniq(Object.keys(StateTypeEnum));
-  data: CreateStateDialogRequest;
+  data: StateDialogRequest;
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public request: CreateStateDialogRequest,
+    @Inject(MAT_DIALOG_DATA) public request: StateDialogRequest,
   ) {
     this.statesLabels = request.states.map((l) => l.get('name'));
     this.nameControl = new FormControl('', [
@@ -56,7 +56,7 @@ export class CreateStateDialogComponent {
     this.dialogRef.close({ message: '', accepted: false });
   }
 
-  accept(): CreateStateDialogResponse {
+  accept(): StateDialogResponse {
     return {
       name: this.nameControl.value,
       accepted: true,

@@ -18,15 +18,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertModule } from '@saman-core/core';
 import { ConfigurableDataEntityModule } from '@saman-core/common';
 import { WorkflowEditorComponent } from './workflow-editor/workflow-editor.component';
-import { CreateStateDialogComponent } from './create-state-dialog/create-state-dialog.component';
-import { CreateTransitionDialogComponent } from './create-transition-dialog/create-transition-dialog.component';
+import { StateDialogComponent } from './state-dialog/state-dialog.component';
+import { TransitionDialogComponent } from './transition-dialog/transition-dialog.component';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
     WorkflowEditorComponent,
-    CreateStateDialogComponent,
-    CreateTransitionDialogComponent,
+    StateDialogComponent,
+    TransitionDialogComponent,
     DeleteConfirmationDialogComponent,
   ],
   imports: [

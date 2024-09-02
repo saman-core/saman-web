@@ -9,7 +9,7 @@ import { dia } from '@joint/core';
 import { WorkflowEditorComponent } from '../workflow-editor/workflow-editor.component';
 import { duplicateNameValidator, forbiddenTargetStateValidator, nameFormatValidator } from '../utils/validator';
 
-export interface CreateTransitionDialogResponse {
+export interface TransitionDialogResponse {
   name: string;
   sourceState: dia.Element;
   targetState: dia.Element;
@@ -17,25 +17,25 @@ export interface CreateTransitionDialogResponse {
   accepted: boolean;
 }
 
-export interface CreateTransitionDialogRequest {
+export interface TransitionDialogRequest {
   productName: string;
   states: dia.Element[];
   links: dia.Link[];
 }
 
 @Component({
-  selector: 'app-create-transition-dialog',
-  templateUrl: './create-transition-dialog.component.html',
-  styleUrl: './create-transition-dialog.component.scss',
+  selector: 'app-transition-dialog',
+  templateUrl: './transition-dialog.component.html',
+  styleUrl: './transition-dialog.component.scss',
 })
-export class CreateTransitionDialogComponent {
+export class TransitionDialogComponent {
   states: dia.Element[];
   linksLabels: string[] = [];
   nameControl: FormControl<string>;
   sourceStateControl: FormControl<dia.Element>;
   targetStateControl: FormControl<dia.Element>;
   form: FormGroup;
-  data: CreateTransitionDialogRequest;
+  data: TransitionDialogRequest;
   productName = 'system';
   templateName = 'workflow';
   formValid = false;
@@ -43,7 +43,7 @@ export class CreateTransitionDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public request: CreateTransitionDialogRequest,
+    @Inject(MAT_DIALOG_DATA) public request: TransitionDialogRequest,
   ) {
     this.states = request.states;
     this.linksLabels = request.links.map((l) => l.get('name'));
@@ -69,7 +69,7 @@ export class CreateTransitionDialogComponent {
     this.dialogRef.close({ message: '', accepted: false });
   }
 
-  accept(): CreateTransitionDialogResponse {
+  accept(): TransitionDialogResponse {
     return {
       name: this.nameControl.value,
       accepted: true,
