@@ -89,8 +89,8 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   createState() {
     const dialogRef = this._dialog.open(CreateStateDialogComponent, {
       data: { productName: 'Auto', states: this.graph.getElements() },
-      height: '80%',
-      width: '80%',
+      height: '400px',
+      width: '700px',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((response: CreateStateDialogResponse) => {
@@ -103,8 +103,8 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   createTransition() {
     const dialogRef = this._dialog.open(CreateTransitionDialogComponent, {
       data: { productName: 'Auto', states: this.graph.getElements(), links: this.graph.getLinks() },
-      height: '80%',
-      width: '80%',
+      height: '400px',
+      width: '700px',
       disableClose: true,
       viewContainerRef: this.viewContainerRef,
       componentFactoryResolver: this.componentFactoryResolver,
@@ -328,7 +328,6 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
           distance: '50%',
           offset: -20,
           action() {
-            console.log(this.model);
             fn();
           },
         }),
@@ -409,6 +408,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
         `,
     });
 
+    const fn = () => this.createState();
     const deleteFn = (typeName: string, state: dia.Element) => this._delete(typeName, state);
     return new dia.ToolsView({
       tools: [
@@ -417,7 +417,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
           y: '0',
           offset: 0,
           action() {
-            console.log(this.model);
+            fn();
           },
         }),
         boundaryTool,
