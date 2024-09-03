@@ -18,6 +18,7 @@ export interface StateDialogRequest {
   action: 'create' | 'update'
   productName: string;
   states: dia.Element[];
+  stateToUpdate?: dia.Element;
 }
 
 @Component({
@@ -38,13 +39,13 @@ export class StateDialogComponent {
     @Inject(MAT_DIALOG_DATA) public request: StateDialogRequest,
   ) {
     this.statesLabels = request.states.map((l) => l.get('name'));
-    this.nameControl = new FormControl('', [
+    this.nameControl = new FormControl(request.stateToUpdate?.get('name'), [
       Validators.required,
       Validators.maxLength(256),
-      duplicateNameValidator(this.statesLabels),
+      duplicateNameValidator(this.statesLabels, request.stateToUpdate?.get('name')),
       nameFormatValidator(),
     ]);
-    this.stateTypeControl = new FormControl<StateTypeEnum>(StateTypeEnum.PENDING, [
+    this.stateTypeControl = new FormControl<StateTypeEnum>(request.stateToUpdate?.get('stateType'), [
       Validators.required,
     ]);
     this.form = new FormGroup({

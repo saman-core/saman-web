@@ -120,7 +120,12 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
 
   updateState(state: dia.Element) {
     const dialogRef = this._dialog.open(StateDialogComponent, {
-      data: { action: 'Update', productName: 'Auto', states: this.graph.getElements() },
+      data: {
+        action: 'Update',
+        productName: 'Auto',
+        states: this.graph.getElements(),
+        stateToUpdate: state,
+      },
       height: '400px',
       width: '700px',
       disableClose: true,
@@ -149,16 +154,31 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
       if (response.accepted) {
-        this._updateLink(link, response.sourceState, response.targetState, response.name, response.data);
+        this._updateLink(
+          link,
+          response.sourceState,
+          response.targetState,
+          response.name,
+          response.data,
+        );
       }
     });
   }
 
   private _updateState(state: dia.Element, label: string, type: StateTypeEnum, data: object) {
-    //state
+    state.set('name', label);
+    state.set('stateType', type);
+    state.prop('attrs', this._createStateAttrs(label, type));
+    state.set('data', data);
   }
 
-  private _updateLink(link: dia.Link, source: dia.Element, target: dia.Element, name: string, data: object) {
+  private _updateLink(
+    link: dia.Link,
+    source: dia.Element,
+    target: dia.Element,
+    name: string,
+    data: object,
+  ) {
     link.source(source);
     link.target(target);
     link.set('name', name);
@@ -211,33 +231,38 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     type: StateTypeEnum,
     data: object = {},
   ): dia.Element {
-    const bodyColor = StateTypeProperties[type].bodyColor;
-    const lineColor = StateTypeProperties[type].lineColor;
     const state = new shapes.standard.Rectangle({
       position: { x: x, y: y },
       size: { width: 130, height: 50 },
-      attrs: {
-        label: {
-          text: label,
-          event: 'element:label:pointerdown',
-          fontWeight: 'bold',
-          fill: '#333333',
-          style: {
-            userSelect: 'text',
-          },
-        },
-        body: {
-          rx: 13,
-          ry: 13,
-          fill: bodyColor,
-          stroke: lineColor,
-          strokeWidth: 2,
-        },
-      },
     });
     state.set('name', label);
     state.set('data', data);
+    state.set('stateType', type);
+    state.prop('attrs', this._createStateAttrs(label, type));
     return state.addTo(this.graph);
+  }
+
+  private _createStateAttrs(label: string, type: StateTypeEnum): object {
+    const bodyColor = StateTypeProperties[type].bodyColor;
+    const lineColor = StateTypeProperties[type].lineColor;
+    return {
+      label: {
+        text: label,
+        event: 'element:label:pointerdown',
+        fontWeight: 'bold',
+        fill: '#333333',
+        style: {
+          userSelect: 'text',
+        },
+      },
+      body: {
+        rx: 13,
+        ry: 13,
+        fill: bodyColor,
+        stroke: lineColor,
+        strokeWidth: 2,
+      },
+    };
   }
 
   private _initState(x: number, y: number): dia.Element {
