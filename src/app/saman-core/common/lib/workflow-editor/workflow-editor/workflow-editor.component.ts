@@ -139,6 +139,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
         productName: 'Auto',
         states: this.graph.getElements(),
         links: this.graph.getLinks(),
+        linkToUpdate: link,
       },
       height: '400px',
       width: '700px',

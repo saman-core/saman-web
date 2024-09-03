@@ -18,7 +18,7 @@ import {
   TemplateRepository,
 } from '@saman-core/data';
 import { Subject, bufferWhen, combineLatestWith, filter, take, tap } from 'rxjs';
-import uniq from 'lodash-es/uniq';
+import _ from 'lodash';
 import { InitCdeService } from '../init.service';
 import { FormUtilService } from '@saman-core/common';
 
@@ -29,6 +29,7 @@ import { FormUtilService } from '@saman-core/common';
 })
 export class CdeComponent implements AfterViewInit, OnInit {
   @ViewChild('formio') formComponent!: FormioComponent;
+  @Input() initialData: object = {};
   @Input() productName: string;
   @Input() templateName: string;
   @Input() id: number | undefined;
@@ -56,7 +57,11 @@ export class CdeComponent implements AfterViewInit, OnInit {
     const templateObserver = this._templateRepository.getJson(this.productName, this.templateName);
     if (this._isNewRegistry()) {
       templateObserver.subscribe((templateJson) => {
-        const data = this._formUtilService.getDefaultValues(templateJson);
+        let data: object;
+        if (_.isEqual(this.initialData, {}))
+          data = this._formUtilService.getDefaultValues(templateJson);
+        else
+          data = this.initialData;
         this._init(templateJson, data);
       });
     } else {
@@ -110,7 +115,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
         bufferWhen(() => grouping),
       )
       .subscribe((components: object[]) => {
-        const properties: string[] = uniq(components.map((c) => c['changed'].component.key));
+        const properties: string[] = _.uniq(components.map((c) => c['changed'].component.key));
         const data = this.formComponent.formio.data;
 
         this._callConditions(data, properties, true);

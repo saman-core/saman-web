@@ -33,6 +33,7 @@
     }
   </mat-form-field>
   <app-cde
+    [initialData]="cdeData"
     [productName]="productName"
     [templateName]="templateName"
     (data)="onChangeData($event)"

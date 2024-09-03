@@ -22,6 +22,7 @@ export interface TransitionDialogRequest {
   productName: string;
   states: dia.Element[];
   links: dia.Link[];
+  linkToUpdate?: dia.Link;
 }
 
 @Component({
@@ -48,14 +49,14 @@ export class TransitionDialogComponent {
   ) {
     this.states = request.states;
     this.linksLabels = request.links.map((l) => l.get('name'));
-    this.nameControl = new FormControl('', [
+    this.nameControl = new FormControl(request.linkToUpdate?.get('name'), [
       Validators.required,
       Validators.maxLength(256),
-      duplicateNameValidator(this.linksLabels),
+      duplicateNameValidator(this.linksLabels, request.linkToUpdate?.get('name')),
       nameFormatValidator(),
     ]);
-    this.sourceStateControl = new FormControl<dia.Element>(null, [Validators.required]);
-    this.targetStateControl = new FormControl<dia.Element>(null, [
+    this.sourceStateControl = new FormControl<dia.Element>(request.linkToUpdate?.getSourceElement(), [Validators.required]);
+    this.targetStateControl = new FormControl<dia.Element>(request.linkToUpdate?.getTargetElement(), [
       Validators.required,
       forbiddenTargetStateValidator(),
     ]);
@@ -64,6 +65,8 @@ export class TransitionDialogComponent {
       sourceStateControl: this.sourceStateControl,
       targetStateControl: this.targetStateControl,
     });
+    if (typeof request.linkToUpdate?.get('data') !== 'undefined')
+      this.cdeData = request.linkToUpdate.get('data');
   }
 
   cancel(): void {

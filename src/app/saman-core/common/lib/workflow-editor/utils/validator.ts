@@ -8,8 +8,10 @@ export function forbiddenTargetStateValidator(): ValidatorFn {
     };
   }
   
-  export function duplicateNameValidator(names: string[]): ValidatorFn {
+  export function duplicateNameValidator(names: string[], actualName: string = undefined): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value === actualName)
+        return null;
       const found = names.find((l: string) => l === control.value);
       return typeof found !== 'undefined' ? { duplicateName: { value: control.value } } : null;
     };
