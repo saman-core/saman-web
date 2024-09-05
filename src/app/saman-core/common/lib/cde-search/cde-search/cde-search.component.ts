@@ -23,11 +23,11 @@ import {
   Subject,
   catchError,
   from,
-  last,
   map,
   merge,
   mergeAll,
   of,
+  skip,
   switchMap,
   takeUntil,
   tap,
@@ -137,6 +137,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
     ).pipe(
       takeUntil(this._unsubscribe),
       switchMap(() => {
+        this.isLoadingResults = true;
         const pageableModel = new PageableModel();
         pageableModel.page = this.paginator.pageIndex;
         pageableModel.size = this.paginator.pageSize;
@@ -154,8 +155,12 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
         this.resultsLength = page.count;
         return page.data;
       }),
-      switchMap((rows) => from(this.mappers.map((m) => m(rows))).pipe(mergeAll(), last())),
-      tap(() => this.isLoadingResults = false),
+      switchMap((rows) => {
+        const total = this.mappers.length;
+        if (total === 0) return of(rows);
+        return from(this.mappers.map((m) => m(rows))).pipe(mergeAll(), skip(total - 1));
+      }),
+      tap(() => (this.isLoadingResults = false)),
       catchError((err) => {
         console.error(err);
         this.isLoadingResults = false;
