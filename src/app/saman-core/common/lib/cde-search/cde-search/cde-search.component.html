@@ -15,7 +15,12 @@
       </mat-action-row>
     </mat-expansion-panel>
 
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" (closed)="setStep(0)" hideToggle>
+    <mat-expansion-panel
+      [expanded]="step === 1"
+      (opened)="setStep(1)"
+      (closed)="setStep(0)"
+      hideToggle
+    >
       <mat-expansion-panel-header>
         <mat-panel-title>
           @if (step !== 1) {
@@ -108,7 +113,13 @@
 
     <!-- Row shown when there is no matching data. -->
     <tr *matNoDataRow>
-      <td mat-row class="not-data-cell" [attr.rowspan]="columnsToDisplay.length">No data found.</td>
+      <td mat-row class="not-data-cell" [attr.rowspan]="columnsToDisplay.length">
+        @if (isLoadingResults) {
+          Loading data...
+        } @else {
+          No data found.
+        }
+      </td>
     </tr>
   </mat-table>
 

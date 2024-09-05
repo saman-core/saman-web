@@ -1,6 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -29,6 +30,7 @@ import {
   of,
   switchMap,
   takeUntil,
+  tap,
 } from 'rxjs';
 import _ from 'lodash';
 
@@ -64,6 +66,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   selection = new SelectionModel<object>(false);
   resultsLength = 0;
   data: object[] = [];
+  isLoadingResults = false;
   columnsToDisplay: string[] = [];
   columnsHeader: { [column: string]: string } = {};
   mappers: MapperTableRow[] = [];
@@ -76,6 +79,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
     private _templateRepository: TemplateRepository,
     private _cdeRepository: CdeRepository,
     private _formUtilService: FormUtilService,
+    private _cdref: ChangeDetectorRef,
   ) {
     this._initCdeService.initConf();
   }
@@ -123,6 +127,8 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   _fetchData(): Observable<object[]> {
+    this.isLoadingResults = true;
+    this._cdref.detectChanges();
     return merge(
       this.sort.sortChange,
       this.paginator.page,
@@ -149,8 +155,10 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
         return page.data;
       }),
       switchMap((rows) => from(this.mappers.map((m) => m(rows))).pipe(mergeAll(), last())),
+      tap(() => this.isLoadingResults = false),
       catchError((err) => {
         console.error(err);
+        this.isLoadingResults = false;
         this.selection.clear();
         this.resultsLength = 0;
         return of([]);
