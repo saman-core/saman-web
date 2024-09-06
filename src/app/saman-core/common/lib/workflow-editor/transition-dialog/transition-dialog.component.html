@@ -32,6 +32,26 @@
       <mat-error>{{ targetStateErrorMessage() }}</mat-error>
     }
   </mat-form-field>
+
+  <mat-form-field class="roles-form-field">
+    <mat-label>Roles</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Enter rol name" [formControl]="rolesControl">
+      @for (rol of roles(); track rol) {
+        <mat-chip-row (removed)="removeRol(rol)">
+          {{ rol }}
+          <button matChipRemove aria-label="'remove ' + rol">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input
+      placeholder="New rol..."
+      [matChipInputFor]="chipGrid"
+      (matChipInputTokenEnd)="add($event)"
+    />
+  </mat-form-field>
+
   <app-cde
     [initialData]="cdeData"
     [productName]="productName"

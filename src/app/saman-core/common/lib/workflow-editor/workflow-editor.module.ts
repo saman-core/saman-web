@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
 import { AlertModule } from '@saman-core/core';
 import { ConfigurableDataEntityModule } from '@saman-core/common';
 import { WorkflowEditorComponent } from './workflow-editor/workflow-editor.component';
@@ -44,6 +45,7 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatChipsModule,
   ],
   providers: [],
   exports: [WorkflowEditorComponent],

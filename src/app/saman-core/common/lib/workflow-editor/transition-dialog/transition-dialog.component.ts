@@ -1,10 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { dia } from '@joint/core';
 import { WorkflowEditorComponent } from '../workflow-editor/workflow-editor.component';
 import { duplicateNameValidator, forbiddenTargetStateValidator, nameFormatValidator } from '../utils/validator';
@@ -13,6 +14,7 @@ export interface TransitionDialogResponse {
   name: string;
   sourceState: dia.Element;
   targetState: dia.Element;
+  roles: string[];
   data: object;
   accepted: boolean;
 }
@@ -36,12 +38,14 @@ export class TransitionDialogComponent {
   nameControl: FormControl<string>;
   sourceStateControl: FormControl<dia.Element>;
   targetStateControl: FormControl<dia.Element>;
+  rolesControl: FormControl<string>;
   form: FormGroup;
   data: TransitionDialogRequest;
   productName = 'system';
   templateName = 'workflow';
   formValid = false;
   cdeData: object = {};
+  roles =   signal<string[]>([]);
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowEditorComponent>,
@@ -60,10 +64,13 @@ export class TransitionDialogComponent {
       Validators.required,
       forbiddenTargetStateValidator(),
     ]);
+    this.rolesControl = new FormControl<string>('');
+    this.roles.set(request.linkToUpdate?.get('roles') || []);
     this.form = new FormGroup({
       nameControl: this.nameControl,
       sourceStateControl: this.sourceStateControl,
       targetStateControl: this.targetStateControl,
+      rolesControl: this.rolesControl,
     });
     if (typeof request.linkToUpdate?.get('data') !== 'undefined')
       this.cdeData = request.linkToUpdate.get('data');
@@ -80,6 +87,7 @@ export class TransitionDialogComponent {
       sourceState: this.sourceStateControl.value,
       targetState: this.targetStateControl.value,
       data: this.cdeData,
+      roles: this.roles(),
     };
   }
 
@@ -121,5 +129,26 @@ export class TransitionDialogComponent {
 
   onFormErrors(formValid: boolean): void {
     this.formValid = formValid;
+  }
+
+  removeRol(rol: string) {
+    this.roles.update(roles => {
+      const index = roles.indexOf(rol);
+      if (index < 0) {
+        return roles;
+      }
+
+      roles.splice(index, 1);
+      return [...roles];
+    });
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.roles.update(keywords => [...keywords, value]);
+    }
+    event.chipInput!.clear();
   }
 }

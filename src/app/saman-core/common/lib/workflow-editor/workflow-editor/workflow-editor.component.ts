@@ -113,7 +113,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
       if (response.accepted) {
-        this._createLink(response.sourceState, response.targetState, response.name, response.data);
+        this._createLink(response.sourceState, response.targetState, response.name, response.roles ,response.data);
       }
     });
   }
@@ -159,6 +159,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
           response.sourceState,
           response.targetState,
           response.name,
+          response.roles,
           response.data,
         );
       }
@@ -177,6 +178,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     source: dia.Element,
     target: dia.Element,
     name: string,
+    roles: string[],
     data: object,
   ) {
     link.source(source);
@@ -184,6 +186,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     link.set('name', name);
     link.set('data', data);
     link.label(0, this._createLinkLabel(name));
+    link.set('roles', roles);
   }
 
   private _addToolsToView(paper: dia.Paper, graph: dia.Graph): void {
@@ -314,6 +317,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     source: dia.Element,
     target: dia.Element,
     label: string,
+    roles: string[],
     data: object = {},
     vertices = [],
   ): void {
@@ -334,6 +338,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     link.set('data', data);
     link.label(0, this._createLinkLabel(label));
     link.addTo(this.graph);
+    link.set('roles', roles);
     if (link.source().id === link.target().id && link.vertices().length === 0)
       this._adjustVertices(link);
   }
