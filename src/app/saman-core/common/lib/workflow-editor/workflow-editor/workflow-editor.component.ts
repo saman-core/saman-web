@@ -92,7 +92,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: StateDialogResponse) => {
       if (response.accepted) {
-        this._createState(30, 30, response.name, response.stateType, response.data);
+        this._createState(30, 30, response.name, response.stateType, response.roles, response.data);
       }
     });
   }
@@ -113,7 +113,13 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
       if (response.accepted) {
-        this._createLink(response.sourceState, response.targetState, response.name, response.roles ,response.data);
+        this._createLink(
+          response.sourceState,
+          response.targetState,
+          response.name,
+          response.roles,
+          response.data,
+        );
       }
     });
   }
@@ -132,7 +138,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: StateDialogResponse) => {
       if (response.accepted) {
-        this._updateState(state, response.name, response.stateType, response.data);
+        this._updateState(state, response.name, response.stateType, response.data, response.roles);
       }
     });
   }
@@ -166,11 +172,18 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private _updateState(state: dia.Element, label: string, type: StateTypeEnum, data: object) {
+  private _updateState(
+    state: dia.Element,
+    label: string,
+    type: StateTypeEnum,
+    data: object,
+    roles: string[],
+  ) {
     state.set('name', label);
     state.set('stateType', type);
     state.prop('attrs', this._createStateAttrs(label, type));
     state.set('data', data);
+    state.set('roles', roles);
   }
 
   private _updateLink(
@@ -232,6 +245,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     y: number,
     label: string,
     type: StateTypeEnum,
+    roles: string[],
     data: object = {},
   ): dia.Element {
     const state = new shapes.standard.Rectangle({
@@ -242,6 +256,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     state.set('data', data);
     state.set('stateType', type);
     state.prop('attrs', this._createStateAttrs(label, type));
+    state.set('roles', roles);
     return state.addTo(this.graph);
   }
 
@@ -310,6 +325,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
     });
     start.set('isImmutable', true);
     start.set('name', name);
+    start.set('roles', []);
     return start.addTo(this.graph);
   }
 
