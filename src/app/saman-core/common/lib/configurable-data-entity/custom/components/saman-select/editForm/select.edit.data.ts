@@ -1,3 +1,4 @@
+//TODO update key: 'data.resource' for call rest api
 export default [
   {
     key: 'dataSrc',
@@ -101,17 +102,29 @@ export default [
   {
     type: 'select',
     input: true,
-    dataSrc: 'url',
     data: {
-      url: '/form21?type=resource&limit=1000000',
+      "values": [
+        {
+          "label": "occupation",
+          "value": "occupation"
+        },
+        {
+          "label": "state",
+          "value": "state"
+        },
+        {
+          "label": "municipality",
+          "value": "municipality"
+        },
+        {
+          "label": "parish",
+          "value": "parish"
+        }
+      ]
     },
-    authenticate: true,
-    template: '<span>{{ item.name }}</span>',
-    valueProperty: 'id',
-    clearOnHide: false,
+    valueProperty: 'value',
     label: 'Resource',
     key: 'data.resource',
-    lazyLoad: false,
     weight: 10,
     tooltip: 'The resource to be used with this field.',
     conditional: {
