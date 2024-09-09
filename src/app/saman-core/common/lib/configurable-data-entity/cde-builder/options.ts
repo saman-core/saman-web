@@ -1,4 +1,5 @@
 export const buildOptions = {
+    noDefaultSubmitButton: true,
     builder: {
       basic: false,
       data: false,
