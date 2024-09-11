@@ -54,6 +54,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/cde-auto-auto1/cde-auto-auto1.module').then((m) => m.CdeAutoAuto1Module)
       },
+      {
+        path: 'cde-vida-vidatradicional',
+        loadChildren: () =>
+          import('./views/cde-vida-vidatradicional/cde-vida-vidatradicional.module').then((m) => m.CdeVidaVidatradicionalModule)
+      },
     ]
   },
   {

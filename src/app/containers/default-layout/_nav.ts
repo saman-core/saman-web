@@ -236,4 +236,19 @@ export const navItems: INavData[] = [
       },
     ]
   },
+  {
+    name: 'CDE Vida Tradicional',
+    url: '#',
+    iconComponent: { name: 'cilLibraryAdd' },
+    children: [
+      {
+        name: 'Search and Edit',
+        url: 'cde-vida-vidatradicional'
+      },
+      {
+        name: 'Create',
+        url: 'cde-vida-vidatradicional/create'
+      },
+    ]
+  },
 ];
