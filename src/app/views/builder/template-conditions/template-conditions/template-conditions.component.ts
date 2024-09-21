@@ -31,7 +31,7 @@ import { Buffer } from 'buffer';
   styleUrl: './template-conditions.component.scss',
 })
 export class TemplateConditionsComponent {
-  static readonly NAMESPACE = 'saman-core';
+  static readonly NAMESPACE = 'saman-core/property';
   static readonly NOT_FOUND = ' [Not_Found]';
   @ViewChild(MatTable) table: MatTable<unknown>;
   displayedColumns: string[] = ['property', 'value', 'visible', 'disable', 'alert', 'validate', 'options'];
