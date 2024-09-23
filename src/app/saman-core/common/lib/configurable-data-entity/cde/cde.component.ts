@@ -154,6 +154,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
       try {
         switch (condition.conditionType) {
           case ConditionTypeEnum.VALUE:
+            console.log(condition);
             this._setValueProperty(condition);
             break;
           case ConditionTypeEnum.VISIBLE:
@@ -193,7 +194,8 @@ export class CdeComponent implements AfterViewInit, OnInit {
   }
 
   private _setValueProperty(condition: ConditionModel): void {
-    this._getProperty(condition.property).setValue(condition.value, { noUpdateEvent: true });
+    const flags = (condition.value == null) ? { noUpdateEvent: true, resetValue: true } : { noUpdateEvent: true };
+    this._getProperty(condition.property).setValue(condition.value, flags);
   }
 
   private _setVisibleProperty(condition: ConditionModel): void {
