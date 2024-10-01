@@ -11,9 +11,9 @@ export default [
   {
     weight: 31,
     type: 'checkbox',
-    label: 'Arbitrary-precision arithmetic',
-    tooltip: 'Arbitrary-Precision arithmetic is a set of data structures and algorithms which allows to process much greater numbers than can be fit in standard data types.',
-    key: 'arbitraryPrecision',
+    label: 'Long number',
+    tooltip: 'Change the default Integer data type to Long',
+    key: 'longNumber',
     input: true
   },
   {
