@@ -17,10 +17,11 @@ import {
   DatasourceConsumer,
   TemplateRepository,
 } from '@saman-core/data';
+import { FormUtilService } from '@saman-core/common';
+import { AlertSubscriptor } from '@saman-core/core';
 import { Subject, bufferWhen, combineLatestWith, filter, take, tap } from 'rxjs';
 import _ from 'lodash';
 import { InitCdeService } from '../init.service';
-import { FormUtilService } from '@saman-core/common';
 
 @Component({
   selector: 'app-cde',
@@ -47,6 +48,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
     private _conditionRepository: ConditionRepository,
     private _cdeRepository: CdeRepository,
     private _formUtilService: FormUtilService,
+    private _alertSubscriptor: AlertSubscriptor,
   ) {
     _initCdeService.initConf();
   }
@@ -211,7 +213,8 @@ export class CdeComponent implements AfterViewInit, OnInit {
   }
 
   private _throwAlertProperty(condition: ConditionModel): void {
-    console.log(condition);
+    if (condition.value !== '')
+      this._alertSubscriptor.error(condition.value as string);
   }
 
   private _setValidateProperty(condition: ConditionModel): void {

@@ -4,11 +4,12 @@ import { Formio, FormioModule, Templates } from '@formio/angular';
 import { FormioGrid } from '@formio/angular/grid';
 import { FormioResources } from '@formio/angular/resource';
 import { CdeModule, ConditionTemplateModule, GenericResourcesModule, TemplateModule } from '@saman-core/data';
+import { FormUtilModule } from '@saman-core/common';
+import { AlertModule } from '@saman-core/core';
 import { CdeComponent } from './cde/cde.component';
 import { CdeBuilderComponent } from './cde-builder/cde-builder.component';
 import { InitCdeService } from './init.service';
 import { template } from './template';
-import { FormUtilModule } from '@saman-core/common';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Formio as any).icons = 'fontawesome';
@@ -25,6 +26,7 @@ Templates.current = template;
     GenericResourcesModule,
     CdeModule,
     FormUtilModule,
+    AlertModule,
   ],
   providers: [InitCdeService, FormioResources],
   exports: [CdeComponent, CdeBuilderComponent],
