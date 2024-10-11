@@ -175,8 +175,9 @@ export class CdeComponent implements AfterViewInit, OnInit {
             this._setOptionsProperty(condition);
             break;
         }
-      } catch {
+      } catch(e) {
         console.warn(`condition cannot be applied: ${JSON.stringify(condition)}`);
+        console.warn(e);
       }
     });
   }
@@ -218,7 +219,11 @@ export class CdeComponent implements AfterViewInit, OnInit {
   }
 
   private _setValidateProperty(condition: ConditionModel): void {
-    this._getProperty(condition.property).setCustomValidity(condition.value, false);
+    const customValidator = ((condition.value as string).length <= 0) ? 'return true' : 'return false'
+    this._getProperty(condition.property).component.validate.custom = customValidator;
+    this._getProperty(condition.property).component.validate.customMessage = condition.value;
+
+    this.formErrors.emit(this.formComponent.formio.checkValidity(this.formComponent.formio.data, false));
   }
 
   private _setOptionsProperty(condition: ConditionModel): void {
