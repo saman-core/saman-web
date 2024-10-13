@@ -16,14 +16,14 @@ export default [
         context.instance.data.idPath = 'id';
       }
       if (dataSrc === 'values') {
-        context.instance.root.getComponent('valueProperty').setValue('value');
-        context.instance.data.idPath = 'value';
-        context.instance.data.data.resource = null;
+        context.instance.root.getComponent('valueProperty').setValue(null, { noUpdateEvent: true, resetValue: true });
+        delete context.instance.data.idPath;
+        delete context.instance.data.data.resource;
       }
       if (dataSrc === 'json') {
         context.instance.root.getComponent('valueProperty').setValue('id');
         context.instance.data.idPath = 'id';
-        context.instance.data.data.resource = null;
+        delete context.instance.data.data.resource;
       }
     },
   },
