@@ -41,7 +41,7 @@ export class FormUtilService {
         const resourceName = c['data']['resource'];
         mapper = this._generateMapperResource(id, label, key, resourceName);
       } else {
-        const id = c['idPath'];
+        const id = 'value';
         const items = c['data']['values'];
         mapper = this._generateMapper(id, label, key, items);
       }
