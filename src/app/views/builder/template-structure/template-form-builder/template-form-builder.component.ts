@@ -40,7 +40,6 @@ export class TemplateFormBuilderComponent implements OnInit {
   }
 
   public save(): void {
-    this._newJson['properties'] = this.builder.getComponentsKey();
     this.node.content = Buffer.from(JSON.stringify(this._newJson), 'utf-8').toString('base64');
 
     const dialogRef = this._dialog.open(CommitDialogComponent, {

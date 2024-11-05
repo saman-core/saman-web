@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DmnEditorModule } from '@saman-core/common';
+import { DmnEditorModule, FormUtilModule } from '@saman-core/common';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -27,6 +27,7 @@ import { CommitDialogComponent } from './commit-dialog/commit-dialog.component';
 
 @NgModule({
   imports: [
+    FormUtilModule,
     TemplateConditionsRoutingModule,
     CommonModule,
     ReactiveFormsModule,

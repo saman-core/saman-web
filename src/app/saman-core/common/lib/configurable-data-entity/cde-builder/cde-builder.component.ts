@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormioComponent, FormioRefreshValue } from '@formio/angular';
 import { InitCdeService } from '../init.service';
-import { FormUtils } from '../form-utils';
 import { buildOptions } from './options';
 
 @Component({
@@ -18,11 +17,6 @@ export class CdeBuilderComponent implements AfterViewInit {
 
   constructor(private _initService: InitCdeService) {
     _initService.initConf();
-  }
-  
-  getComponentsKey(): string[] {
-    const util = new FormUtils();
-    return util.getComponentsKey(this.formComponent).sort();
   }
 
   onChange(event) {

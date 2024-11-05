@@ -138,6 +138,13 @@ export class FormUtilService {
     return defaultValues;
   }
 
+  public getDataComponentsKey(formJson: object): string[] {
+    const flatComponets = this.filterComponents(formJson['components'], {});
+    return flatComponets.map((c) => {
+      return c['key'];
+    });
+  }
+
   public getFlatInputComponents(formJson: object, filter: { [key: string]: any } = {}): object {
     const components = formJson['components'];
     const filtereds = this.filterComponents(components, filter);

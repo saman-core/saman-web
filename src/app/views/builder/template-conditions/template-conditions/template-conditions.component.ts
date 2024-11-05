@@ -24,6 +24,7 @@ import {
 } from '../delete-dialog/delete-dialog.component';
 import { AlertSubscriptor } from '@saman-core/core';
 import { Buffer } from 'buffer';
+import { FormUtilService } from '@saman-core/common';
 
 @Component({
   selector: 'app-template-conditions',
@@ -51,6 +52,7 @@ export class TemplateConditionsComponent {
     private _productsGitRepository: ProductsGitRepository,
     private _dialog: MatDialog,
     private _alertSubscriptor: AlertSubscriptor,
+    private _fomrUtilService: FormUtilService,
   ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
@@ -261,7 +263,7 @@ export class TemplateConditionsComponent {
   private _fillElementData(node: NodeModel, conditions: ConditionsPropertyModel[]): void {
     const json = JSON.parse(Buffer.from(node.content, 'base64').toString('utf-8'));
     this.template = json;
-    const properties: string[] = json['properties'];
+    const properties: string[] = this._fomrUtilService.getDataComponentsKey(json);
     const conditionsWithOutproperty: ConditionNodes[] = [];
     properties.forEach((p) => this.elementData.push(new ConditionNodes(p)));
     conditions.forEach((c) => {
