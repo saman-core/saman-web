@@ -127,6 +127,7 @@ export class TemplateConditionsComponent {
       namespace: TemplateConditionsComponent.NAMESPACE,
       dmnName: this._generateDmnName(propertyName, conditionType),
       template: this.template,
+      componentsKey: this._fomrUtilService.getDataComponentsKey(this.template),
     };
     const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
       data: conditionDialogRequest,
@@ -179,6 +180,7 @@ export class TemplateConditionsComponent {
           namespace: TemplateConditionsComponent.NAMESPACE,
           dmnName: this._generateDmnName(propertyName, conditionType),
           template: this.template,
+          componentsKey: this._fomrUtilService.getDataComponentsKey(this.template),
         };
         const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
           data: conditionDialogRequest,

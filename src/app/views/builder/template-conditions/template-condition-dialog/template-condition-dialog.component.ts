@@ -29,7 +29,7 @@ export class TemplateConditionDialogComponent {
     this.data = requestData.data;
     this.dmnName = requestData.dmnName;
     this.namespace = requestData.namespace;
-    this.properties = requestData.template['properties'];
+    this.properties = requestData.componentsKey;
   }
 
   cancel(): void {
@@ -59,6 +59,7 @@ export interface ConditionDialogRequest {
   dmnName: string;
   namespace: string;
   template: object;
+  componentsKey: string[];
 }
 
 export interface ConditionDialogResponse {
