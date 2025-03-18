@@ -11,167 +11,6 @@ export const navItems: INavData[] = [
     }
   },
   {
-    name: 'Insurances',
-    url: '#',
-    iconComponent: { name: 'cilLibraryAdd' },
-    children: [
-      {
-        name: 'Health',
-        url: '#'
-      },
-      {
-        name: 'Life',
-        url: '#'
-      },
-      {
-        name: 'Business',
-        url: '#'
-      },
-      {
-        name: 'Residential',
-        url: '#'
-      },
-      {
-        name: 'Transport',
-        url: '#'
-      },
-      {
-        name: 'Casualty',
-        url: '#'
-      },
-      {
-        name: 'Liability',
-        url: '#'
-      },
-    ]
-  },
-  {
-    name: 'Contracts',
-    url: '#',
-    iconComponent: { name: 'cilLibraryAdd' },
-    children: [
-      {
-        name: 'Policies',
-        url: 'policy'
-      },
-      {
-        name: 'Coinsurances',
-        url: 'coinsurance'
-      },
-      {
-        name: 'Reinsurances',
-        url: '#'
-      },
-      {
-        name: 'Agreements',
-        url: '#'
-      },
-    ]
-  },
-  {
-    name: 'Parties',
-    url: '#',
-    iconComponent: { name: 'cilLibraryAdd' },
-    children: [
-      {
-        name: 'Natural',
-        url: '#'
-      },
-      {
-        name: 'Legal',
-        url: '#'
-      },
-    ]
-  },
-  {
-    name: 'Actions',
-    url: '#',
-    iconComponent: { name: 'cilLibraryAdd' },
-    children: [
-      {
-        name: 'Operations',
-        url: '#'
-      },
-      {
-        name: 'Claims',
-        url: '#'
-      },
-      {
-        name: 'Notifications',
-        url: '#'
-      },
-      {
-        name: 'Inspections',
-        url: '#'
-      },
-    ]
-  },
-  {
-    name: 'Accountings',
-    url: '#',
-    iconComponent: { name: 'cilLibraryAdd' },
-    children: [
-      {
-        name: 'Comissions',
-        url: '#'
-      },
-      {
-        name: 'Cash Registers',
-        url: '#'
-      },
-      {
-        name: 'Settlements',
-        url: '#'
-      },
-      {
-        name: 'Movements',
-        url: '#'
-      },
-      {
-        name: 'Collections',
-        url: '#'
-      },
-    ]
-  },
-  {
-    name: 'Security',
-    url: '#',
-    iconComponent: { name: 'cilLibraryAdd' },
-    children: [
-      {
-        name: 'Audit',
-        url: '#'
-      },
-      {
-        name: 'Permissions',
-        url: '#'
-      },
-      {
-        name: 'Users',
-        url: '#'
-      },
-    ]
-  },
-  {
-    name: 'Maintenance',
-    url: '#',
-    iconComponent: { name: 'cilLibraryAdd' },
-    children: [
-      {
-        name: 'Bulk Processing',
-        url: '#',
-      },
-      {
-        name: 'Reports',
-        url: '#',
-      },
-      {
-        name: 'Documents',
-        url: '#',
-      },
-    ]
-  },
-  {
     name: 'Builders',
     title: true
   },
@@ -181,24 +20,32 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cilLibraryAdd' },
     children: [
       {
-        name: 'Structure',
+        name: 'Contracts hierarchy',
         url: '#'
       },
       {
-        name: 'Planes',
+        name: 'Parties hierarchy',
         url: '#'
       },
       {
-        name: 'Insurance Objects',
-        url: '#'
-      },
-      {
-        name: 'Coverage',
+        name: 'Stocks hierarchy',
         url: '#'
       },
       {
         name: 'Workflow',
         url: 'workflow'
+      },
+      {
+        name: 'Resources',
+        url: '#'
+      },
+      {
+        name: 'System-Tables',
+        url: '#'
+      },
+      {
+        name: 'Rules',
+        url: '#'
       },
     ]
   },
@@ -248,6 +95,17 @@ export const navItems: INavData[] = [
       {
         name: 'Create',
         url: 'cde-vida-vidatradicional/create'
+      },
+    ]
+  },
+  {
+    name: 'Contracts',
+    url: '#',
+    iconComponent: { name: 'cilLibraryAdd' },
+    children: [
+      {
+        name: 'Policies',
+        url: 'policy'
       },
     ]
   },

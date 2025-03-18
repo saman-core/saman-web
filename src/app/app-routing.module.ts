@@ -45,11 +45,6 @@ const routes: Routes = [
           import('./views/contracts/policy/policy.module').then((m) => m.PolicyModule)
       },
       {
-        path: 'coinsurance',
-        loadChildren: () =>
-          import('./views/contracts/coinsurance/coinsurance.module').then((m) => m.CoinsuranceModule)
-      },
-      {
         path: 'cde-auto-auto1',
         loadChildren: () =>
           import('./views/cde-auto-auto1/cde-auto-auto1.module').then((m) => m.CdeAutoAuto1Module)
