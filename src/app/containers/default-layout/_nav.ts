@@ -15,25 +15,32 @@ export const navItems: INavData[] = [
     title: true
   },
   {
+    name: 'Module Builder',
+    url: '#',
+    iconComponent: { name: 'cilLibraryAdd' },
+    children: [
+      {
+        name: 'Manage',
+        url: '#'
+      },
+      {
+        name: 'Hierarchy',
+        url: 'hierarchy'
+      },
+    ]
+  },
+  {
     name: 'Product Builder',
     url: '#',
     iconComponent: { name: 'cilLibraryAdd' },
     children: [
       {
-        name: 'Hierarchy',
-        url: 'hierarchy'
+        name: 'Manage',
+        url: '#'
       },
       {
         name: 'Workflow',
         url: 'workflow'
-      },
-      {
-        name: 'Resources',
-        url: '#'
-      },
-      {
-        name: 'System-Tables',
-        url: '#'
       },
       {
         name: 'Rules',
@@ -47,8 +54,12 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cilLibraryAdd' },
     children: [
       {
+        name: 'Manage',
+        url: '#'
+      },
+      {
         name: 'Structure',
-        url: 'template-structure/'
+        url: 'template-structure'
       },
       {
         name: 'Condition',
