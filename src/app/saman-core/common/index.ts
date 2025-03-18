@@ -17,5 +17,8 @@ export * from './lib/configurable-data-entity/cde-builder/cde-builder.component'
 export * from './lib/form-util/form-util.service';
 export * from './lib/form-util/form-util.module';
 
+export * from './lib/hierarchy-editor/hierarchy-editor.module';
+export * from './lib/hierarchy-editor/hierarchy-editor/hierarchy-editor.component';
+
 export * from './lib/workflow-editor/workflow-editor.module';
 export * from './lib/workflow-editor/workflow-editor/workflow-editor.component';

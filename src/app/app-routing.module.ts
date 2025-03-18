@@ -35,6 +35,11 @@ const routes: Routes = [
           import('./views/builder/template-conditions/template-conditions.module').then((m) => m.TemplateConditionsModule)
       },
       {
+        path: 'hierarchy',
+        loadChildren: () =>
+          import('./views/product-hierarchy/product-hierarchy.module').then((m) => m.ProductHierarchyModule)
+      },
+      {
         path: 'workflow',
         loadChildren: () =>
           import('./views/product-workflow/product-workflow.module').then((m) => m.ProductWorkflowModule)

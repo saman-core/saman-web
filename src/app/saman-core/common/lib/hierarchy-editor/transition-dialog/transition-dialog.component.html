@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>{{ request.action }} Transition</h2>
+<mat-dialog-content>
+  <p>{{ request.action }} a transition for product {{ request.productName }}</p>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="type a name" [formControl]="nameControl" required />
+    @if (nameControl.invalid) {
+      <mat-error>{{ nameErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Source State</mat-label>
+    <mat-select [formControl]="sourceStateControl">
+      @for (st of states; track st) {
+        <mat-option [value]="st">{{ st.get("name") }}</mat-option>
+      }
+    </mat-select>
+    @if (sourceStateControl.invalid) {
+      <mat-error>{{ sourceStateErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Target State</mat-label>
+    <mat-select [formControl]="targetStateControl">
+      @for (st of states; track st) {
+        <mat-option [value]="st">{{ st.get("name") }}</mat-option>
+      }
+    </mat-select>
+    @if (targetStateControl.invalid) {
+      <mat-error>{{ targetStateErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="roles-form-field">
+    <mat-label>Roles</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Enter rol name" [formControl]="rolesControl">
+      @for (rol of roles(); track rol) {
+        <mat-chip-row (removed)="removeRol(rol)">
+          {{ rol }}
+          <button matChipRemove aria-label="'remove ' + rol">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input
+      placeholder="New rol..."
+      [matChipInputFor]="chipGrid"
+      (matChipInputTokenEnd)="add($event)"
+    />
+  </mat-form-field>
+
+  <app-cde
+    [initialData]="cdeData"
+    [productName]="productName"
+    [templateName]="templateName"
+    (data)="onChangeData($event)"
+    (formErrors)="onFormErrors($event)"
+  ></app-cde>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
+  <button mat-button [mat-dialog-close]="accept()" [disabled]="form.invalid && formValid">
+    {{ request.action }}
+  </button>
+</mat-dialog-actions>

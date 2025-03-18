@@ -20,16 +20,8 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cilLibraryAdd' },
     children: [
       {
-        name: 'Contracts hierarchy',
-        url: '#'
-      },
-      {
-        name: 'Parties hierarchy',
-        url: '#'
-      },
-      {
-        name: 'Stocks hierarchy',
-        url: '#'
+        name: 'Hierarchy',
+        url: 'hierarchy'
       },
       {
         name: 'Workflow',

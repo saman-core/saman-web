@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>{{ request.action }} State</h2>
+<mat-dialog-content>
+  <p>{{ request.action }} a stage for product {{ request.productName }}</p>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="type a name" [formControl]="nameControl" required />
+    @if (nameControl.invalid) {
+      <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>State Type</mat-label>
+    <mat-select [formControl]="stateTypeControl">
+      @for (st of stateTypes; track st) {
+        <mat-option [value]="st">{{ st }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="roles-form-field">
+    <mat-label>Roles</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Enter rol name" [formControl]="rolesControl">
+      @for (rol of roles(); track rol) {
+        <mat-chip-row (removed)="removeRol(rol)">
+          {{ rol }}
+          <button matChipRemove aria-label="'remove ' + rol">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input
+      placeholder="New rol..."
+      [matChipInputFor]="chipGrid"
+      (matChipInputTokenEnd)="add($event)"
+    />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
+  <button mat-button [mat-dialog-close]="accept()" [disabled]="form.invalid">
+    {{ request.action }}
+  </button>
+</mat-dialog-actions>
