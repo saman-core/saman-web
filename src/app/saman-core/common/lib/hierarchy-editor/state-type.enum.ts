@@ -1,6 +1,0 @@
-export enum StateTypeEnum {
-  PENDING = 'PENDING',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-  EXCLUDED = 'EXCLUDED'
-}

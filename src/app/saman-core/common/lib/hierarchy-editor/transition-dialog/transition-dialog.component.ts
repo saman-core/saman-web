@@ -1,26 +1,26 @@
-import { Component, Inject, signal } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { dia } from '@joint/core';
 import { HierarchyEditorComponent } from '../hierarchy-editor/hierarchy-editor.component';
-import { duplicateNameValidator, forbiddenTargetStateValidator, nameFormatValidator } from '../utils/validator';
+import {
+  duplicateNameValidator,
+  forbiddenTargetStateValidator,
+  nameFormatValidator,
+} from '../utils/validator';
+import { CardinalityTypeEnum } from '../cardinality-type.enum';
 
 export interface TransitionDialogResponse {
   name: string;
   sourceState: dia.Element;
   targetState: dia.Element;
-  roles: string[];
-  data: object;
+  cardinalitySource: CardinalityTypeEnum;
+  cardinalityTarget: CardinalityTypeEnum;
   accepted: boolean;
 }
 
 export interface TransitionDialogRequest {
-  action: 'Create' | 'Update'
+  action: 'Create' | 'Update';
   productName: string;
   states: dia.Element[];
   links: dia.Link[];
@@ -34,18 +34,18 @@ export interface TransitionDialogRequest {
 })
 export class TransitionDialogComponent {
   states: dia.Element[];
+  cardinalitiesOneMany: CardinalityTypeEnum[] = Object.values(CardinalityTypeEnum);
+  cardinalitiesOne: CardinalityTypeEnum[] = this.cardinalitiesOneMany.filter((cardinality) =>
+    cardinality.startsWith('ONE'),
+  );
   linksLabels: string[] = [];
   nameControl: FormControl<string>;
   sourceStateControl: FormControl<dia.Element>;
   targetStateControl: FormControl<dia.Element>;
-  rolesControl: FormControl<string>;
+  cardinalitySourceControl: FormControl<CardinalityTypeEnum>;
+  cardinalityTargetControl: FormControl<CardinalityTypeEnum>;
   form: FormGroup;
   data: TransitionDialogRequest;
-  productName = 'system';
-  templateName = 'workflow';
-  formValid = false;
-  cdeData: object = {};
-  roles =   signal<string[]>([]);
 
   constructor(
     public dialogRef: MatDialogRef<HierarchyEditorComponent>,
@@ -59,21 +59,30 @@ export class TransitionDialogComponent {
       duplicateNameValidator(this.linksLabels, request.linkToUpdate?.get('name')),
       nameFormatValidator(),
     ]);
-    this.sourceStateControl = new FormControl<dia.Element>(request.linkToUpdate?.getSourceElement(), [Validators.required]);
-    this.targetStateControl = new FormControl<dia.Element>(request.linkToUpdate?.getTargetElement(), [
-      Validators.required,
-      forbiddenTargetStateValidator(),
-    ]);
-    this.rolesControl = new FormControl<string>('');
-    this.roles.set(request.linkToUpdate?.get('roles') || []);
+    this.sourceStateControl = new FormControl<dia.Element>(
+      request.linkToUpdate?.getSourceElement(),
+      [Validators.required],
+    );
+    this.targetStateControl = new FormControl<dia.Element>(
+      request.linkToUpdate?.getTargetElement(),
+      [Validators.required, forbiddenTargetStateValidator()],
+    );
+    this.cardinalitySourceControl = new FormControl<CardinalityTypeEnum>(
+      request.linkToUpdate?.get('cardinalitySource'),
+      [Validators.required],
+    );
+    this.cardinalityTargetControl = new FormControl<CardinalityTypeEnum>(
+      request.linkToUpdate?.get('cardinalityTarget'),
+      [Validators.required],
+    );
+
     this.form = new FormGroup({
       nameControl: this.nameControl,
       sourceStateControl: this.sourceStateControl,
       targetStateControl: this.targetStateControl,
-      rolesControl: this.rolesControl,
+      cardinalitySourceControl: this.cardinalitySourceControl,
+      cardinalityTargetControl: this.cardinalityTargetControl,
     });
-    if (typeof request.linkToUpdate?.get('data') !== 'undefined')
-      this.cdeData = request.linkToUpdate.get('data');
   }
 
   cancel(): void {
@@ -86,8 +95,8 @@ export class TransitionDialogComponent {
       accepted: true,
       sourceState: this.sourceStateControl.value,
       targetState: this.targetStateControl.value,
-      data: this.cdeData,
-      roles: this.roles(),
+      cardinalitySource: this.cardinalitySourceControl.value,
+      cardinalityTarget: this.cardinalityTargetControl.value,
     };
   }
 
@@ -121,34 +130,5 @@ export class TransitionDialogComponent {
     return this.targetStateControl.hasError('forbiddenTargetState')
       ? 'Target State cannot be START'
       : '';
-  }
-
-  onChangeData(data: object): void {
-    this.cdeData = data;
-  }
-
-  onFormErrors(formValid: boolean): void {
-    this.formValid = formValid;
-  }
-
-  removeRol(rol: string) {
-    this.roles.update(roles => {
-      const index = roles.indexOf(rol);
-      if (index < 0) {
-        return roles;
-      }
-
-      roles.splice(index, 1);
-      return [...roles];
-    });
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    if (value) {
-      this.roles.update(keywords => [...keywords, value]);
-    }
-    event.chipInput!.clear();
   }
 }

@@ -13,8 +13,6 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { dia, shapes, linkTools, elementTools, util, g } from '@joint/core';
-import { StateTypeProperties } from '../state-type.properties';
-import { StateTypeEnum } from '../state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { StateDialogComponent, StateDialogResponse } from '../state-dialog/state-dialog.component';
 import {
@@ -27,6 +25,10 @@ import {
   DeleteConfirmationDialogResponse,
 } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { Buffer } from 'buffer';
+import { CardinalityTypeEnum } from '../cardinality-type.enum';
+import { BG_COLOR, CardinalityTypeProperties, FG_COLOR } from '../cardinality-type.properties';
+import { EntityTypeEnum } from '../entity-type.enum';
+import { EntityTypeProperties } from '../entity-type.properties';
 
 @Component({
   selector: 'app-hierarchy-editor',
@@ -42,10 +44,10 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
   private paper: dia.Paper;
 
   constructor(
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private _dialog: MatDialog,
-    @Inject(DOCUMENT) private document: Document,
+    private readonly viewContainerRef: ViewContainerRef,
+    private readonly componentFactoryResolver: ComponentFactoryResolver,
+    private readonly _dialog: MatDialog,
+    @Inject(DOCUMENT) private readonly document: Document,
   ) {}
 
   public ngOnInit(): void {
@@ -57,6 +59,7 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
       cellViewNamespace: shapes,
       defaultConnector: { name: 'smooth' },
       interactive: { linkMove: false },
+      background: { color: BG_COLOR },
       labelsLayer: true,
       frozen: true,
     });
@@ -67,8 +70,7 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     const graphJson = Buffer.from(this.graphJsonBase64, 'base64').toString('utf-8');
     this.canvas.nativeElement.appendChild(this.paper.el);
-    if (graphJson === '{}') this._initState(50, 200);
-    else this.graph.fromJSON(JSON.parse(graphJson));
+    if (graphJson !== '{}') this.graph.fromJSON(JSON.parse(graphJson));
     this.paper.unfreeze();
   }
 
@@ -92,7 +94,7 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: StateDialogResponse) => {
       if (response.accepted) {
-        this._createState(30, 30, response.name, response.stateType, response.roles, response.data);
+        this._createState(30, 30, response.name, response.comment, response.stateType);
       }
     });
   }
@@ -117,8 +119,8 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
           response.sourceState,
           response.targetState,
           response.name,
-          response.roles,
-          response.data,
+          response.cardinalitySource,
+          response.cardinalityTarget,
         );
       }
     });
@@ -138,7 +140,7 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((response: StateDialogResponse) => {
       if (response.accepted) {
-        this._updateState(state, response.name, response.stateType, response.data, response.roles);
+        this._updateState(state, response.name, response.comment, response.stateType);
       }
     });
   }
@@ -165,8 +167,8 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
           response.sourceState,
           response.targetState,
           response.name,
-          response.roles,
-          response.data,
+          response.cardinalitySource,
+          response.cardinalityTarget,
         );
       }
     });
@@ -175,15 +177,13 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
   private _updateState(
     state: dia.Element,
     label: string,
-    type: StateTypeEnum,
-    data: object,
-    roles: string[],
+    comment: string,
+    stateType: EntityTypeEnum,
   ) {
     state.set('name', label);
-    state.set('stateType', type);
-    state.prop('attrs', this._createStateAttrs(label, type));
-    state.set('data', data);
-    state.set('roles', roles);
+    state.set('comment', comment);
+    state.set('stateType', stateType);
+    state.prop('attrs', this._createStateAttrs(label, stateType));
   }
 
   private _updateLink(
@@ -191,15 +191,16 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
     source: dia.Element,
     target: dia.Element,
     name: string,
-    roles: string[],
-    data: object,
+    cardinalitySource: CardinalityTypeEnum,
+    cardinalityTarget: CardinalityTypeEnum,
   ) {
     link.source(source);
     link.target(target);
     link.set('name', name);
-    link.set('data', data);
+    link.set('cardinalitySource', cardinalitySource);
+    link.set('cardinalityTarget', cardinalityTarget);
     link.label(0, this._createLinkLabel(name));
-    link.set('roles', roles);
+    link.set('attrs', this._createLinkAttrs(cardinalitySource, cardinalityTarget));
   }
 
   private _addToolsToView(paper: dia.Paper, graph: dia.Graph): void {
@@ -244,25 +245,23 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
     x: number,
     y: number,
     label: string,
-    type: StateTypeEnum,
-    roles: string[],
-    data: object = {},
+    comment: string,
+    stateType: EntityTypeEnum,
   ): dia.Element {
     const state = new shapes.standard.Rectangle({
       position: { x: x, y: y },
       size: { width: 130, height: 50 },
     });
     state.set('name', label);
-    state.set('data', data);
-    state.set('stateType', type);
-    state.prop('attrs', this._createStateAttrs(label, type));
-    state.set('roles', roles);
+    state.set('comment', comment);
+    state.set('stateType', stateType);
+    state.prop('attrs', this._createStateAttrs(label, stateType));
     return state.addTo(this.graph);
   }
 
-  private _createStateAttrs(label: string, type: StateTypeEnum): object {
-    const bodyColor = StateTypeProperties[type].bodyColor;
-    const lineColor = StateTypeProperties[type].lineColor;
+  private _createStateAttrs(label: string, type: EntityTypeEnum): object {
+    const bodyColor = EntityTypeProperties[type].bodyColor;
+    const lineColor = EntityTypeProperties[type].lineColor;
     return {
       label: {
         text: label,
@@ -283,80 +282,47 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
     };
   }
 
-  private _initState(x: number, y: number): dia.Element {
-    const name = 'START';
-    let label = name;
-    //TODO for message icons
-    if (false) label = `${name} ${FA.envelope}`;
-    const start = new shapes.standard.Circle({
-      position: { x: x, y: y },
-      size: { width: 70, height: 70 },
-      attrs: {
-        body: {
-          fill: '#647687',
-          filter: {
-            name: 'highlight',
-            args: {
-              color: '#314354',
-              width: 2,
-              opacity: 0.8,
-              blur: 4,
-            },
-          },
-        },
-        label: {
-          text: label,
-          fill: 'white',
-          event: 'element:label:pointerdown',
-          fontWeight: 'bold',
-          annotations: [
-            {
-              start: name.length + 1,
-              end: label.length,
-              attrs: {
-                fill: COLORS.light,
-                'font-family': 'FontAwesome',
-                'font-size': 20,
-              },
-            },
-          ],
-        },
-      },
-    });
-    start.set('isImmutable', true);
-    start.set('name', name);
-    start.set('roles', []);
-    return start.addTo(this.graph);
-  }
-
   private _createLink(
     source: dia.Element,
     target: dia.Element,
     label: string,
-    roles: string[],
-    data: object = {},
+    cardinalitySource: CardinalityTypeEnum,
+    cardinalityTarget: CardinalityTypeEnum,
     vertices = [],
   ): void {
     const link = new shapes.standard.Link({
       source: { id: source.id },
       target: { id: target.id },
-      attrs: {
-        line: {
-          strokeWidth: 2,
-          stroke: '#999999',
-          //TODO for automatic transictions
-          //strokeDasharray: '9,2',
-        },
-      },
+      attrs: this._createLinkAttrs(cardinalitySource, cardinalityTarget),
       vertices: vertices,
     });
     link.set('name', label);
-    link.set('data', data);
+    link.set('cardinalitySource', cardinalitySource);
+    link.set('cardinalityTarget', cardinalityTarget);
     link.label(0, this._createLinkLabel(label));
     link.addTo(this.graph);
-    link.set('roles', roles);
     if (link.source().id === link.target().id && link.vertices().length === 0)
       this._adjustVertices(link);
+  }
+
+  private _createLinkAttrs(
+    cardinalitySource: CardinalityTypeEnum,
+    cardinalityTarget: CardinalityTypeEnum,
+  ): object {
+    return {
+      root: {
+        title: `Marker`,
+      },
+      line: {
+        stroke: FG_COLOR,
+        strokeWidth: 2,
+        sourceMarker: CardinalityTypeProperties[cardinalitySource],
+        targetMarker: CardinalityTypeProperties[cardinalityTarget],
+      },
+      wrapper: {
+        strokeWidth: 15,
+      },
+    };
   }
 
   private _createLinkLabel(name: string): object {
@@ -376,22 +342,6 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
         },
       },
     };
-    /* TODO for indicate message
-    {
-      attrs: {
-        text: {
-          fill: COLORS.dark,
-          text: FA.envelope,
-          fontFamily: "FontAwesome"
-        },
-        rect: { fill: COLORS.light }
-      },
-      position: {
-        distance: 0.5,
-        offset: 20,
-      },
-    };
-    */
   }
 
   private _linksToolsView(): dia.ToolsView {

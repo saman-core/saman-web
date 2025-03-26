@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatDialogTitle,
   MatDialogContent,
@@ -15,7 +12,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatChipsModule } from '@angular/material/chips';
 import { AlertModule } from '@saman-core/core';
 import { ConfigurableDataEntityModule } from '@saman-core/common';
 import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.component';
@@ -45,7 +41,6 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatChipsModule,
   ],
   providers: [],
   exports: [HierarchyEditorComponent],
