@@ -200,7 +200,8 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
     link.set('cardinalitySource', cardinalitySource);
     link.set('cardinalityTarget', cardinalityTarget);
     link.label(0, this._createLinkLabel(name));
-    link.set('attrs', this._createLinkAttrs(cardinalitySource, cardinalityTarget));
+    link.prop('attrs/line/sourceMarker', CardinalityTypeProperties[cardinalitySource], { rewrite: true });
+    link.prop('attrs/line/targetMarker', CardinalityTypeProperties[cardinalityTarget], { rewrite: true });
   }
 
   private _addToolsToView(paper: dia.Paper, graph: dia.Graph): void {
@@ -273,8 +274,6 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
         },
       },
       body: {
-        rx: 13,
-        ry: 13,
         fill: bodyColor,
         stroke: lineColor,
         strokeWidth: 2,
@@ -293,43 +292,35 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
     const link = new shapes.standard.Link({
       source: { id: source.id },
       target: { id: target.id },
-      attrs: this._createLinkAttrs(cardinalitySource, cardinalityTarget),
+      attrs: {
+        line: {
+          stroke: FG_COLOR,
+          strokeWidth: 2,
+          sourceMarker: CardinalityTypeProperties[cardinalitySource],
+          targetMarker: CardinalityTypeProperties[cardinalityTarget],
+        },
+        wrapper: {
+          strokeWidth: 15,
+        },
+      },
       vertices: vertices,
     });
     link.set('name', label);
     link.set('cardinalitySource', cardinalitySource);
     link.set('cardinalityTarget', cardinalityTarget);
     link.label(0, this._createLinkLabel(label));
+    link.router('orthogonal');
+    link.connector('jumpover', { size: 7 });
     link.addTo(this.graph);
     if (link.source().id === link.target().id && link.vertices().length === 0)
       this._adjustVertices(link);
-  }
-
-  private _createLinkAttrs(
-    cardinalitySource: CardinalityTypeEnum,
-    cardinalityTarget: CardinalityTypeEnum,
-  ): object {
-    return {
-      root: {
-        title: `Marker`,
-      },
-      line: {
-        stroke: FG_COLOR,
-        strokeWidth: 2,
-        sourceMarker: CardinalityTypeProperties[cardinalitySource],
-        targetMarker: CardinalityTypeProperties[cardinalityTarget],
-      },
-      wrapper: {
-        strokeWidth: 15,
-      },
-    };
   }
 
   private _createLinkLabel(name: string): object {
     return {
       position: {
         distance: 0.5,
-        offset: 0,
+        offset: 10,
         args: {
           keepGradient: true,
           ensureLegibility: true,
@@ -338,7 +329,6 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
       attrs: {
         text: {
           text: name,
-          fontWeight: 'bold',
         },
       },
     };
