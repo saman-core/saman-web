@@ -87,20 +87,22 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selection = new SelectionModel<object>(this.isMultipleSelection);
-    this._templateRepository.getJson(this.productName, this.templateName).subscribe((formJson) => {
-      const flatProperties = this._formUtilService.getFlatInputComponents(formJson);
-      this.displayedColumns.forEach((colum) => {
-        const componentLabel = flatProperties['components'].find(
-          (element) => element['key'] === colum,
-        );
-        this.columnsHeader[colum] =
-          typeof componentLabel === 'undefined' ? colum : componentLabel['label'];
+    this._templateRepository
+      .getJson(this.moduleName, this.productName, this.templateName)
+      .subscribe((formJson) => {
+        const flatProperties = this._formUtilService.getFlatInputComponents(formJson);
+        this.displayedColumns.forEach((colum) => {
+          const componentLabel = flatProperties['components'].find(
+            (element) => element['key'] === colum,
+          );
+          this.columnsHeader[colum] =
+            typeof componentLabel === 'undefined' ? colum : componentLabel['label'];
+        });
+        this.filterFormJson = this._formUtilService.getFlatInputComponents(flatProperties, {
+          dbIndex: true,
+        });
+        this.mappers = this._formUtilService.getListMappers(formJson, this.displayedColumns);
       });
-      this.filterFormJson = this._formUtilService.getFlatInputComponents(flatProperties, {
-        dbIndex: true,
-      });
-      this.mappers = this._formUtilService.getListMappers(formJson, this.displayedColumns);
-    });
     this.columnsToDisplay = this.displayedColumns;
     if (this.isMultipleSelection) {
       this.columnsToDisplay = ['_select', ...this.columnsToDisplay];

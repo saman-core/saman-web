@@ -61,7 +61,11 @@ export class CdeComponent implements AfterViewInit, OnInit {
       this.templateName,
     );
 
-    const templateObserver = this._templateRepository.getJson(this.productName, this.templateName);
+    const templateObserver = this._templateRepository.getJson(
+      this.moduleName,
+      this.productName,
+      this.templateName,
+    );
     if (this._isNewRegistry()) {
       templateObserver.subscribe((templateJson) => {
         let data: object;
