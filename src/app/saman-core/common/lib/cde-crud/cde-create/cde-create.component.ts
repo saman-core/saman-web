@@ -14,6 +14,7 @@ import {
   styleUrl: './cde-create.component.scss',
 })
 export class CdeCreateComponent implements OnInit {
+  moduleName: string = '';
   productName: string = '';
   templateName: string = '';
   routeBase = '';
@@ -21,15 +22,16 @@ export class CdeCreateComponent implements OnInit {
   data: object = {};
 
   constructor(
-    private _router: Router,
-    private _activatedRoute: ActivatedRoute,
-    private _dialog: MatDialog,
-    private _alert: AlertSubscriptor,
-    private _cdeRepository: CdeRepository,
+    private readonly _router: Router,
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _dialog: MatDialog,
+    private readonly _alert: AlertSubscriptor,
+    private readonly _cdeRepository: CdeRepository,
   ) {}
 
   ngOnInit() {
     this._activatedRoute.data.subscribe((data) => {
+      this.moduleName = data.moduleName;
       this.productName = data.productName;
       this.templateName = data.templateName;
       this.routeBase = data.routeBase;
@@ -53,7 +55,7 @@ export class CdeCreateComponent implements OnInit {
       dialogRef.afterClosed().subscribe((response: CreateConfirmDialogResponse) => {
         if (response.accepted) {
           this._cdeRepository
-            .create(this.productName, this.templateName, this.data)
+            .create(this.moduleName, this.productName, this.templateName, this.data)
             .subscribe((response) => {
               this._alert.success(`Data saved successfully by ID: ${response['id']}`);
               this._router.navigate([this.routeBase]);

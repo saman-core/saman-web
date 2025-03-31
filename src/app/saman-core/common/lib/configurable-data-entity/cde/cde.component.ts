@@ -31,6 +31,7 @@ import { InitCdeService } from '../init.service';
 export class CdeComponent implements AfterViewInit, OnInit {
   @ViewChild('formio') formComponent!: FormioComponent;
   @Input() initialData: object = {};
+  @Input() moduleName: string;
   @Input() productName: string;
   @Input() templateName: string;
   @Input() id: number | undefined;
@@ -43,18 +44,22 @@ export class CdeComponent implements AfterViewInit, OnInit {
   formData = { data: {} };
 
   constructor(
-    private _initCdeService: InitCdeService,
-    private _templateRepository: TemplateRepository,
-    private _conditionRepository: ConditionRepository,
-    private _cdeRepository: CdeRepository,
-    private _formUtilService: FormUtilService,
-    private _alertSubscriptor: AlertSubscriptor,
+    private readonly _initCdeService: InitCdeService,
+    private readonly _templateRepository: TemplateRepository,
+    private readonly _conditionRepository: ConditionRepository,
+    private readonly _cdeRepository: CdeRepository,
+    private readonly _formUtilService: FormUtilService,
+    private readonly _alertSubscriptor: AlertSubscriptor,
   ) {
     _initCdeService.initConf();
   }
 
   ngOnInit(): void {
-    this._consumer = this._conditionRepository.getConsumer(this.productName, this.templateName);
+    this._consumer = this._conditionRepository.getConsumer(
+      this.moduleName,
+      this.productName,
+      this.templateName,
+    );
 
     const templateObserver = this._templateRepository.getJson(this.productName, this.templateName);
     if (this._isNewRegistry()) {
@@ -62,12 +67,12 @@ export class CdeComponent implements AfterViewInit, OnInit {
         let data: object;
         if (_.isEqual(this.initialData, {}))
           data = this._formUtilService.getDefaultValues(templateJson);
-        else
-          data = this.initialData;
+        else data = this.initialData;
         this._init(templateJson, data);
       });
     } else {
       const dataObserver = this._cdeRepository.getById(
+        this.moduleName,
         this.productName,
         this.templateName,
         this.id,
@@ -175,7 +180,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
             this._setOptionsProperty(condition);
             break;
         }
-      } catch(e) {
+      } catch (e) {
         console.warn(`condition cannot be applied: ${JSON.stringify(condition)}`);
         console.warn(e);
       }
@@ -197,7 +202,8 @@ export class CdeComponent implements AfterViewInit, OnInit {
   }
 
   private _setValueProperty(condition: ConditionModel): void {
-    const flags = (condition.value == null) ? { noUpdateEvent: true, resetValue: true } : { noUpdateEvent: true };
+    const flags =
+      condition.value == null ? { noUpdateEvent: true, resetValue: true } : { noUpdateEvent: true };
     this._getProperty(condition.property).setValue(condition.value, flags);
   }
 
@@ -214,16 +220,18 @@ export class CdeComponent implements AfterViewInit, OnInit {
   }
 
   private _throwAlertProperty(condition: ConditionModel): void {
-    if (condition.value !== '')
-      this._alertSubscriptor.error(condition.value as string);
+    if (condition.value !== '') this._alertSubscriptor.error(condition.value as string);
   }
 
   private _setValidateProperty(condition: ConditionModel): void {
-    const customValidator = ((condition.value as string).length <= 0) ? 'return true' : 'return false'
+    const customValidator =
+      (condition.value as string).length <= 0 ? 'return true' : 'return false';
     this._getProperty(condition.property).component.validate.custom = customValidator;
     this._getProperty(condition.property).component.validate.customMessage = condition.value;
 
-    this.formErrors.emit(this.formComponent.formio.checkValidity(this.formComponent.formio.data, false));
+    this.formErrors.emit(
+      this.formComponent.formio.checkValidity(this.formComponent.formio.data, false),
+    );
   }
 
   private _setOptionsProperty(condition: ConditionModel): void {

@@ -23,21 +23,23 @@ export class CdeCrudComponent implements OnInit, OnDestroy {
   deleteAction: boolean = true;
   avancedSearch: boolean = true;
   displayedColumns: string[] = [];
+  moduleName: string = '';
   productName = '';
   templateName = '';
   routeBase = '';
   refreshTable = new Subject<boolean>();
 
   constructor(
-    private _router: Router,
-    private _activatedRoute: ActivatedRoute,
-    private _dialog: MatDialog,
-    private _alert: AlertSubscriptor,
-    private _cdeRepository: CdeRepository,
+    private readonly _router: Router,
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _dialog: MatDialog,
+    private readonly _alert: AlertSubscriptor,
+    private readonly _cdeRepository: CdeRepository,
   ) {}
 
   ngOnInit() {
     this._activatedRoute.data.subscribe((data) => {
+      this.moduleName = data.moduleName;
       this.productName = data.productName;
       this.templateName = data.templateName;
       this.routeBase = data.routeBase;
@@ -64,12 +66,14 @@ export class CdeCrudComponent implements OnInit, OnDestroy {
       });
       dialogRef.afterClosed().subscribe((response: DeleteConfirmDialogResponse) => {
         if (response.accepted) {
-          this._cdeRepository.delete(this.productName, this.templateName, id).subscribe((response) => {
-            if (response) {
-              this._alert.success(`Data deleted successfully, ID: ${id}`);
-              this.refreshTable.next(true);
-            }
-          });
+          this._cdeRepository
+            .delete(this.moduleName, this.productName, this.templateName, id)
+            .subscribe((response) => {
+              if (response) {
+                this._alert.success(`Data deleted successfully, ID: ${id}`);
+                this.refreshTable.next(true);
+              }
+            });
         }
       });
     }

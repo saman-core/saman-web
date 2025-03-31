@@ -1,7 +1,10 @@
 import { Component, ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
 import { ActionHierarchyType, HierarchyEditorComponent } from '@saman-core/common';
-import { CommitHierarchyDialogComponent, CommitDialogResponse } from '../commit-hierarchy-dialog/commit-hierarchy-dialog.component';
+import {
+  CommitHierarchyDialogComponent,
+  CommitDialogResponse,
+} from '../commit-hierarchy-dialog/commit-hierarchy-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
 
@@ -19,21 +22,21 @@ export class ProductHierarchyComponent {
   node: NodeModel;
 
   constructor(
-    private _productsGitRepository: ProductsGitRepository,
-    private _alertSubscriptor: AlertSubscriptor,
-    private _dialog: MatDialog,
+    private readonly _productsGitRepository: ProductsGitRepository,
+    private readonly _alertSubscriptor: AlertSubscriptor,
+    private readonly _dialog: MatDialog,
   ) {
     this.refreshProductTree();
   }
 
   refreshProductTree() {
-    this._productsGitRepository.getAllProducts().subscribe((products) => {
+    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
       this.products = products.map((p) => p.name);
     });
   }
 
   openEditor(productName: string) {
-    this._productsGitRepository.getWorkflow(productName).subscribe((node) => {
+    this._productsGitRepository.getWorkflow('po', productName).subscribe((node) => {
       this.dynamicEditorLoader.clear();
       this.node = node;
       const componentRef = this.dynamicEditorLoader.createComponent(HierarchyEditorComponent);
@@ -51,7 +54,10 @@ export class ProductHierarchyComponent {
     this.step = index;
   }
 
-  actionsListener(action: ActionHierarchyType, componentRef: ComponentRef<HierarchyEditorComponent>) {
+  actionsListener(
+    action: ActionHierarchyType,
+    componentRef: ComponentRef<HierarchyEditorComponent>,
+  ) {
     switch (action.action) {
       case 'save':
         this.save(action.dataBase64);
@@ -78,7 +84,7 @@ export class ProductHierarchyComponent {
           data: this.node,
         };
         this._productsGitRepository
-          .persistWorkflow(this.productNameSelected, commitRequest)
+          .persistWorkflow('po', this.productNameSelected, commitRequest)
           .subscribe({
             next: (node) => {
               this.node = node;

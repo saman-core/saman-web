@@ -7,69 +7,141 @@ import { NodeModel } from '../model/node.model';
 import { CommitRequestModel } from '../model/commit-request.model';
 import { ConditionsPropertyModel } from '../model/conditions-property.model';
 
-
 @Injectable()
 export class ProductsGitRepository implements Repository {
   datasource: DatasourceConsumer;
-  private _dataformat = 'format2';
-  private _port = '9083';
-  private _server = 'template-builder';
-  private _resource = 'products';
+  private readonly _dataformat = 'format2';
+  private readonly _port = '9083';
+  private readonly _server = 'template-builder';
+  private readonly _resource = 'products';
 
-  constructor(private _datasourceFactory: DatasourceFactory) {
+  constructor(private readonly _datasourceFactory: DatasourceFactory) {
     this.datasource = this._datasourceFactory.getConsumer(
       this._dataformat,
       this._port,
       this._server,
-      this._resource
+      this._resource,
     );
   }
 
-  public getAllProducts(): Observable<NodeModel[]> {
-    return this.datasource.getAllByMethod<NodeModel>('');
+  public getAllProducts(moduleName: string): Observable<NodeModel[]> {
+    return this.datasource.getAllByMethod<NodeModel>(`${moduleName}`);
   }
 
-  public getProduct(name: string): Observable<NodeModel> {
-    return this.datasource.getByMethod<NodeModel>(`${name}`);
+  public getProduct(moduleName: string, productName: string): Observable<NodeModel> {
+    return this.datasource.getByMethod<NodeModel>(`${moduleName}/${productName}`);
   }
 
-  public getAllTemplatesByProduct(productName: string): Observable<NodeModel[]> {
-    return this.datasource.getAllByMethod<NodeModel>(`${productName}/templates/`);
+  public getAllTemplatesByProduct(
+    moduleName: string,
+    productName: string,
+  ): Observable<NodeModel[]> {
+    return this.datasource.getAllByMethod<NodeModel>(`${moduleName}/${productName}/templates/`);
   }
 
-  public getTemplate(productName: string, templateName: string): Observable<NodeModel> {
-    return this.datasource.getByMethod<NodeModel>(`${productName}/templates/${templateName}`);
+  public getTemplate(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+  ): Observable<NodeModel> {
+    return this.datasource.getByMethod<NodeModel>(
+      `${moduleName}/${productName}/templates/${templateName}`,
+    );
   }
 
-  public persistTemplate(productName: string, templateName: string, commitRequest: CommitRequestModel): Observable<NodeModel> {
-    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}`, commitRequest, {}, true, true, true);
+  public persistTemplate(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+    commitRequest: CommitRequestModel,
+  ): Observable<NodeModel> {
+    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(
+      `${moduleName}/${productName}/templates/${templateName}`,
+      commitRequest,
+      {},
+      true,
+      true,
+      true,
+    );
   }
 
-  public getConditionsProperty(productName: string, templateName: string, propertyName: string): Observable<ConditionsPropertyModel> {
-    return this.datasource.getByMethod<ConditionsPropertyModel>(`${productName}/templates/${templateName}/conditions/${propertyName}`);
+  public getConditionsProperty(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+    propertyName: string,
+  ): Observable<ConditionsPropertyModel> {
+    return this.datasource.getByMethod<ConditionsPropertyModel>(
+      `${moduleName}/${productName}/templates/${templateName}/conditions/${propertyName}`,
+    );
   }
 
-  public getAllConditionsPropertiesByTemplate(productName: string, templateName: string): Observable<ConditionsPropertyModel[]> {
-    return this.datasource.getAllByMethod<ConditionsPropertyModel>(`${productName}/templates/${templateName}/conditions/`);
+  public getAllConditionsPropertiesByTemplate(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+  ): Observable<ConditionsPropertyModel[]> {
+    return this.datasource.getAllByMethod<ConditionsPropertyModel>(
+      `${moduleName}/${productName}/templates/${templateName}/conditions/`,
+    );
   }
 
-  public getCondition(productName: string, templateName: string, propertyName: string, conditionType: ConditionTypeEnum): Observable<NodeModel> {
-    return this.datasource.getByMethod<NodeModel>(`${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`);
+  public getCondition(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+    propertyName: string,
+    conditionType: ConditionTypeEnum,
+  ): Observable<NodeModel> {
+    return this.datasource.getByMethod<NodeModel>(
+      `${moduleName}/${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`,
+    );
   }
 
-  public persistCondition(productName: string, templateName: string, propertyName: string, conditionType: ConditionTypeEnum, commitRequest: CommitRequestModel): Observable<NodeModel> {
-    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`, commitRequest);
+  public persistCondition(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+    propertyName: string,
+    conditionType: ConditionTypeEnum,
+    commitRequest: CommitRequestModel,
+  ): Observable<NodeModel> {
+    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(
+      `${moduleName}/${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`,
+      commitRequest,
+    );
   }
 
-  public deleteCondition(productName: string, templateName: string, propertyName: string, conditionType: ConditionTypeEnum, commitRequest: CommitRequestModel): Observable<NodeModel> {
-    return this.datasource.deleteMethodWithBody<NodeModel, CommitRequestModel>(`${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`, commitRequest);
+  public deleteCondition(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+    propertyName: string,
+    conditionType: ConditionTypeEnum,
+    commitRequest: CommitRequestModel,
+  ): Observable<NodeModel> {
+    return this.datasource.deleteMethodWithBody<NodeModel, CommitRequestModel>(
+      `${moduleName}/${productName}/templates/${templateName}/conditions/${propertyName}/${conditionType}`,
+      commitRequest,
+    );
   }
 
-  public getWorkflow(productName: string): Observable<NodeModel> {
-    return this.datasource.getByMethod<NodeModel>(`${productName}/workflow`);
+  public getWorkflow(moduleName: string, productName: string): Observable<NodeModel> {
+    return this.datasource.getByMethod<NodeModel>(`${moduleName}/${productName}/workflow`);
   }
 
-  public persistWorkflow(productName: string, commitRequest: CommitRequestModel): Observable<NodeModel> {
-    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(`${productName}/workflow`, commitRequest, {}, true, true, true);
+  public persistWorkflow(
+    moduleName: string,
+    productName: string,
+    commitRequest: CommitRequestModel,
+  ): Observable<NodeModel> {
+    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(
+      `${moduleName}/${productName}/workflow`,
+      commitRequest,
+      {},
+      true,
+      true,
+      true,
+    );
   }
 }

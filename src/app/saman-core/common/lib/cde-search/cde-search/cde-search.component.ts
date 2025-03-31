@@ -40,11 +40,12 @@ import _ from 'lodash';
   styleUrl: './cde-search.component.scss',
 })
 export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
-  private _unsubscribe = new Subject<void>();
-  private _filterData = new BehaviorSubject<object>({});
+  private readonly _unsubscribe = new Subject<void>();
+  private readonly _filterData = new BehaviorSubject<object>({});
   private _isRequestStarted = false;
   @Input() initializedRequests = true;
   @Input() searchProperty: string = 'id';
+  @Input() moduleName: string = '';
   @Input() productName: string = '';
   @Input() templateName: string = '';
   @Input() isMultipleSelection: boolean = false;
@@ -75,11 +76,11 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   step = 1;
 
   constructor(
-    private _initCdeService: InitCdeService,
-    private _templateRepository: TemplateRepository,
-    private _cdeRepository: CdeRepository,
-    private _formUtilService: FormUtilService,
-    private _cdref: ChangeDetectorRef,
+    private readonly _initCdeService: InitCdeService,
+    private readonly _templateRepository: TemplateRepository,
+    private readonly _cdeRepository: CdeRepository,
+    private readonly _formUtilService: FormUtilService,
+    private readonly _cdref: ChangeDetectorRef,
   ) {
     this._initCdeService.initConf();
   }
@@ -144,6 +145,7 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
         pageableModel.sort = this.sort.active;
         pageableModel.order = this.sort.direction;
         return this._cdeRepository.getPage(
+          this.moduleName,
           this.productName,
           this.templateName,
           pageableModel,

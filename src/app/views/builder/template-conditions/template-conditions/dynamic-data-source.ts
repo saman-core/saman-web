@@ -16,8 +16,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     }
   
     constructor(
-      private _treeControl: FlatTreeControl<DynamicFlatNode>,
-      private _productsGitRepository: ProductsGitRepository,
+      private readonly _treeControl: FlatTreeControl<DynamicFlatNode>,
+      private readonly _productsGitRepository: ProductsGitRepository,
     ) {}
   
     public connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
@@ -51,7 +51,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       const index = this.data.indexOf(node);
 
       if (expand) {
-        this._productsGitRepository.getAllTemplatesByProduct(node.item).subscribe((templates) => {
+        this._productsGitRepository.getAllTemplatesByProduct('po', node.item).subscribe((templates) => {
           const children = templates.map((t) => t.name);
           if (!children || index < 0) {
             return;

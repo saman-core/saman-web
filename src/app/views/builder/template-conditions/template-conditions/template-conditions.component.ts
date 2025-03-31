@@ -35,7 +35,15 @@ export class TemplateConditionsComponent {
   static readonly NAMESPACE = 'saman-core/property';
   static readonly NOT_FOUND = ' [Not_Found]';
   @ViewChild(MatTable) table: MatTable<unknown>;
-  displayedColumns: string[] = ['property', 'value', 'visible', 'disable', 'alert', 'validate', 'options'];
+  displayedColumns: string[] = [
+    'property',
+    'value',
+    'visible',
+    'disable',
+    'alert',
+    'validate',
+    'options',
+  ];
   elementData: ConditionNodes[] = [];
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
   dynamicEditorLoader: ViewContainerRef;
@@ -49,21 +57,21 @@ export class TemplateConditionsComponent {
   template: object = {};
 
   constructor(
-    private _productsGitRepository: ProductsGitRepository,
-    private _dialog: MatDialog,
-    private _alertSubscriptor: AlertSubscriptor,
-    private _fomrUtilService: FormUtilService,
+    private readonly _productsGitRepository: ProductsGitRepository,
+    private readonly _dialog: MatDialog,
+    private readonly _alertSubscriptor: AlertSubscriptor,
+    private readonly _fomrUtilService: FormUtilService,
   ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
 
-    this._productsGitRepository.getAllProducts().subscribe((products) => {
+    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
       this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
     });
   }
 
   refreshProductTree() {
-    this._productsGitRepository.getAllProducts().subscribe((products) => {
+    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
       this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
     });
   }
@@ -71,8 +79,13 @@ export class TemplateConditionsComponent {
   refreshConditionsTable(): void {
     this.elementData = [];
     this.table.renderRows();
-    const templateObservable = this._productsGitRepository.getTemplate(this.productNameSelected, this.templateNameSelected);
+    const templateObservable = this._productsGitRepository.getTemplate(
+      'po',
+      this.productNameSelected,
+      this.templateNameSelected,
+    );
     const conditionsObservable = this._productsGitRepository.getAllConditionsPropertiesByTemplate(
+      'po',
       this.productNameSelected,
       this.templateNameSelected,
     );
@@ -91,8 +104,13 @@ export class TemplateConditionsComponent {
   openConditionSelector(productName: string, templateName: string) {
     this.elementData = [];
     this.table.renderRows();
-    const templateObservable = this._productsGitRepository.getTemplate(productName, templateName);
+    const templateObservable = this._productsGitRepository.getTemplate(
+      'po',
+      productName,
+      templateName,
+    );
     const conditionsObservable = this._productsGitRepository.getAllConditionsPropertiesByTemplate(
+      'po',
       productName,
       templateName,
     );
@@ -144,6 +162,7 @@ export class TemplateConditionsComponent {
         };
         this._productsGitRepository
           .persistCondition(
+            'po',
             productName,
             templateName,
             propertyName,
@@ -173,7 +192,7 @@ export class TemplateConditionsComponent {
     conditionType: ConditionTypeEnum,
   ) {
     this._productsGitRepository
-      .getCondition(productName, templateName, propertyName, conditionType)
+      .getCondition('po', productName, templateName, propertyName, conditionType)
       .subscribe((node) => {
         const conditionDialogRequest: ConditionDialogRequest = {
           data: node.content,
@@ -197,6 +216,7 @@ export class TemplateConditionsComponent {
             };
             this._productsGitRepository
               .persistCondition(
+                'po',
                 productName,
                 templateName,
                 propertyName,
@@ -241,7 +261,7 @@ export class TemplateConditionsComponent {
           data: node,
         };
         this._productsGitRepository
-          .deleteCondition(productName, templateName, node.name, conditionType, commitRequest)
+          .deleteCondition('po', productName, templateName, node.name, conditionType, commitRequest)
           .subscribe({
             next: (node) => {
               this._alertSubscriptor.success(

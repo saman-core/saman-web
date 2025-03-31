@@ -7,6 +7,7 @@ import {
   CdeViewComponent,
 } from '@saman-core/common';
 
+const moduleName = 'po';
 const productName = 'vida';
 const templateName = 'vidatradicional';
 const routeBase = 'cde-vida-vidatradicional';
@@ -24,6 +25,7 @@ const routes: Routes = [
     component: CdeCrudComponent,
     data: {
       title: $localize`CDE`,
+      moduleName: moduleName,
       productName: productName,
       templateName: templateName,
       routeBase: routeBase,
@@ -41,6 +43,7 @@ const routes: Routes = [
     component: CdeEditComponent,
     data: {
       title: $localize`CDE`,
+      moduleName: moduleName,
       productName: productName,
       templateName: templateName,
       routeBase: routeBase,
@@ -51,6 +54,7 @@ const routes: Routes = [
     component: CdeCreateComponent,
     data: {
       title: $localize`CDE`,
+      moduleName: moduleName,
       productName: productName,
       templateName: templateName,
       routeBase: routeBase,
@@ -61,6 +65,7 @@ const routes: Routes = [
     component: CdeViewComponent,
     data: {
       title: $localize`CDE`,
+      moduleName: moduleName,
       productName: productName,
       templateName: templateName,
       routeBase: routeBase,

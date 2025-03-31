@@ -7,12 +7,16 @@ import { ConditionRequestModel } from '../model/condition-request.model';
 
 @Injectable()
 export class ConditionRepository {
-  constructor(private _datasourceFactory: DatasourceFactory) {}
+  constructor(private readonly _datasourceFactory: DatasourceFactory) {}
 
-  public getConsumer(productName: string, templateName: string): DatasourceConsumer {
+  public getConsumer(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+  ): DatasourceConsumer {
     const dataformat = 'format2';
     const port = '9086';
-    const server = `conditions-${productName}-${templateName}`;
+    const server = `${moduleName}-conditions-${productName}-${templateName}`;
     const resource = 'conditions';
 
     return this._datasourceFactory.getConsumer(dataformat, port, server, resource);
@@ -27,7 +31,7 @@ export class ConditionRepository {
       conditionRequest,
       {},
       true,
-      true
+      true,
     );
   }
 }
