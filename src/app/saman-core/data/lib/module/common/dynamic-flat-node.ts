@@ -3,6 +3,7 @@ export class DynamicFlatNode {
     public item: string,
     public level = 1,
     public parent = '',
+    public grandParent = '',
     public expandable = false,
   ) {}
 }

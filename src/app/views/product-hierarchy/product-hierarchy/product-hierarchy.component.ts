@@ -30,13 +30,13 @@ export class ProductHierarchyComponent {
   }
 
   refreshProductTree() {
-    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
+    this._productsGitRepository.getAllModules().subscribe((products) => {
       this.products = products.map((p) => p.name);
     });
   }
 
   openEditor(productName: string) {
-    this._productsGitRepository.getWorkflow('po', productName).subscribe((node) => {
+    this._productsGitRepository.getEr(productName).subscribe((node) => {
       this.dynamicEditorLoader.clear();
       this.node = node;
       const componentRef = this.dynamicEditorLoader.createComponent(HierarchyEditorComponent);
@@ -84,7 +84,7 @@ export class ProductHierarchyComponent {
           data: this.node,
         };
         this._productsGitRepository
-          .persistWorkflow('po', this.productNameSelected, commitRequest)
+          .persistEr(this.productNameSelected, commitRequest)
           .subscribe({
             next: (node) => {
               this.node = node;

@@ -22,14 +22,14 @@ export class TemplateStructureComponent {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
 
-    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
-      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
+    this._productsGitRepository.getAllModules().subscribe((products) => {
+      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', '', true));
     });
   }
 
   refreshProductTree() {
-    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
-      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
+    this._productsGitRepository.getAllModules().subscribe((products) => {
+      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', '', true));
     });
   }
 
@@ -39,10 +39,11 @@ export class TemplateStructureComponent {
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
-  openEditor(productName: string, templateName: string) {
-    this._productsGitRepository.getTemplate('po', productName, templateName).subscribe((node) => {
+  openEditor(moduleName: string, productName: string, templateName: string) {
+    this._productsGitRepository.getTemplate(moduleName, productName, templateName).subscribe((node) => {
       this.dynamicEditorLoader.clear();
       const componentRef = this.dynamicEditorLoader.createComponent(TemplateFormBuilderComponent);
+      componentRef.instance.productName = moduleName;
       componentRef.instance.productName = productName;
       componentRef.instance.templateName = templateName;
       componentRef.instance.node = node;

@@ -51,20 +51,37 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     const index = this.data.indexOf(node);
 
     if (expand) {
-      this._productsGitRepository
-        .getAllTemplatesByProduct('po', node.item)
-        .subscribe((templates) => {
-          const children = templates.map((t) => t.name);
-          if (!children || index < 0) {
-            return;
-          }
-          const nodes = children.map(
-            (name) => new DynamicFlatNode(name, node.level + 1, node.item, false),
-          );
-          this.data.splice(index + 1, 0, ...nodes);
-
-          this.dataChange.next(this.data);
-        });
+      if (node.level === 0) {
+        this._productsGitRepository
+          .getAllProductsByModule(node.item)
+          .subscribe((templates) => {
+            const children = templates.map((t) => t.name);
+            if (!children || index < 0) {
+              return;
+            }
+            const nodes = children.map(
+              (name) => new DynamicFlatNode(name, node.level + 1, node.item, node.parent, true),
+            );
+            this.data.splice(index + 1, 0, ...nodes);
+  
+            this.dataChange.next(this.data);
+          });
+      } else {
+        this._productsGitRepository
+          .getAllTemplatesByProduct(node.parent, node.item)
+          .subscribe((templates) => {
+            const children = templates.map((t) => t.name);
+            if (!children || index < 0) {
+              return;
+            }
+            const nodes = children.map(
+              (name) => new DynamicFlatNode(name, node.level + 1, node.item, node.parent, false),
+            );
+            this.data.splice(index + 1, 0, ...nodes);
+  
+            this.dataChange.next(this.data);
+          });
+      }
     } else {
       let count = 0;
       let i = index + 1;

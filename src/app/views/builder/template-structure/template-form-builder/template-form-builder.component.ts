@@ -19,6 +19,7 @@ export class TemplateFormBuilderComponent implements OnInit {
   public initialJson: object = { components: [] };
   private _newJson: object = { components: [] };
   @Input() node: NodeModel;
+  @Input() moduleName: string;
   @Input() productName: string;
   @Input() templateName: string;
   @Output() exitEmitter = new EventEmitter<boolean>();
@@ -56,7 +57,7 @@ export class TemplateFormBuilderComponent implements OnInit {
           data: this.node,
         };
         this._productsGitRepository
-          .persistTemplate('po', this.productName, this.templateName, commitRequest)
+          .persistTemplate(this.moduleName, this.productName, this.templateName, commitRequest)
           .subscribe({
             next: (node) => {
               this.node = node;

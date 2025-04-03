@@ -51,6 +51,7 @@ export class TemplateConditionsComponent {
   data = '{}';
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
+  moduleSelected = '';
   templateNameSelected = '';
   productNameSelected = '';
   conType = ConditionTypeEnum;
@@ -65,14 +66,14 @@ export class TemplateConditionsComponent {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
 
-    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
-      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
+    this._productsGitRepository.getAllModules().subscribe((products) => {
+      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', '', true));
     });
   }
 
   refreshProductTree() {
-    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
-      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', true));
+    this._productsGitRepository.getAllModules().subscribe((products) => {
+      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', '', true));
     });
   }
 
@@ -80,12 +81,12 @@ export class TemplateConditionsComponent {
     this.elementData = [];
     this.table.renderRows();
     const templateObservable = this._productsGitRepository.getTemplate(
-      'po',
+      this.moduleSelected,
       this.productNameSelected,
       this.templateNameSelected,
     );
     const conditionsObservable = this._productsGitRepository.getAllConditionsPropertiesByTemplate(
-      'po',
+      this.moduleSelected,
       this.productNameSelected,
       this.templateNameSelected,
     );
@@ -101,22 +102,23 @@ export class TemplateConditionsComponent {
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
-  openConditionSelector(productName: string, templateName: string) {
+  openConditionSelector(moduleName: string, productName: string, templateName: string) {
     this.elementData = [];
     this.table.renderRows();
     const templateObservable = this._productsGitRepository.getTemplate(
-      'po',
+      moduleName,
       productName,
       templateName,
     );
     const conditionsObservable = this._productsGitRepository.getAllConditionsPropertiesByTemplate(
-      'po',
+      moduleName,
       productName,
       templateName,
     );
     const combinedObservable = templateObservable.pipe(combineLatestWith(conditionsObservable));
     combinedObservable.subscribe(([node, conditions]) => {
       this._fillElementData(node, conditions);
+      this.moduleSelected = moduleName;
       this.templateNameSelected = templateName;
       this.productNameSelected = productName;
       this.step = 1;
@@ -132,6 +134,7 @@ export class TemplateConditionsComponent {
   }
 
   public createDmn(
+    moduleName: string,
     productName: string,
     templateName: string,
     propertyName: string,
@@ -162,7 +165,7 @@ export class TemplateConditionsComponent {
         };
         this._productsGitRepository
           .persistCondition(
-            'po',
+            moduleName,
             productName,
             templateName,
             propertyName,
@@ -186,13 +189,14 @@ export class TemplateConditionsComponent {
   }
 
   public updateDmn(
+    moduleName: string,
     productName: string,
     templateName: string,
     propertyName: string,
     conditionType: ConditionTypeEnum,
   ) {
     this._productsGitRepository
-      .getCondition('po', productName, templateName, propertyName, conditionType)
+      .getCondition(moduleName, productName, templateName, propertyName, conditionType)
       .subscribe((node) => {
         const conditionDialogRequest: ConditionDialogRequest = {
           data: node.content,
@@ -216,7 +220,7 @@ export class TemplateConditionsComponent {
             };
             this._productsGitRepository
               .persistCondition(
-                'po',
+                moduleName,
                 productName,
                 templateName,
                 propertyName,
@@ -241,6 +245,7 @@ export class TemplateConditionsComponent {
   }
 
   public deleteDmn(
+    moduleName: string,
     productName: string,
     templateName: string,
     node: NodeModel,
@@ -261,7 +266,7 @@ export class TemplateConditionsComponent {
           data: node,
         };
         this._productsGitRepository
-          .deleteCondition('po', productName, templateName, node.name, conditionType, commitRequest)
+          .deleteCondition(moduleName, productName, templateName, node.name, conditionType, commitRequest)
           .subscribe({
             next: (node) => {
               this._alertSubscriptor.success(

@@ -101,15 +101,4 @@ export const navItems: INavData[] = [
       },
     ]
   },
-  {
-    name: 'Contracts',
-    url: '#',
-    iconComponent: { name: 'cilLibraryAdd' },
-    children: [
-      {
-        name: 'Policies',
-        url: 'policy'
-      },
-    ]
-  },
 ];

@@ -24,7 +24,11 @@ export class ProductsGitRepository implements Repository {
     );
   }
 
-  public getAllProducts(moduleName: string): Observable<NodeModel[]> {
+  public getAllModules(): Observable<NodeModel[]> {
+    return this.datasource.getAllByMethod<NodeModel>('');
+  }
+
+  public getAllProductsByModule(moduleName: string): Observable<NodeModel[]> {
     return this.datasource.getAllByMethod<NodeModel>(`${moduleName}`);
   }
 
@@ -137,6 +141,24 @@ export class ProductsGitRepository implements Repository {
   ): Observable<NodeModel> {
     return this.datasource.saveMethod<NodeModel, CommitRequestModel>(
       `${moduleName}/${productName}/workflow`,
+      commitRequest,
+      {},
+      true,
+      true,
+      true,
+    );
+  }
+
+  public getEr(moduleName: string): Observable<NodeModel> {
+    return this.datasource.getByMethod<NodeModel>(`${moduleName}/er/diagram`);
+  }
+
+  public persistEr(
+    moduleName: string,
+    commitRequest: CommitRequestModel,
+  ): Observable<NodeModel> {
+    return this.datasource.saveMethod<NodeModel, CommitRequestModel>(
+      `${moduleName}/er/diagram`,
       commitRequest,
       {},
       true,

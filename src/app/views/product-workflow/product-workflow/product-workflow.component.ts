@@ -30,7 +30,7 @@ export class ProductWorkflowComponent {
   }
 
   refreshProductTree() {
-    this._productsGitRepository.getAllProducts('po').subscribe((products) => {
+    this._productsGitRepository.getAllProductsByModule('po').subscribe((products) => {
       this.products = products.map((p) => p.name);
     });
   }
