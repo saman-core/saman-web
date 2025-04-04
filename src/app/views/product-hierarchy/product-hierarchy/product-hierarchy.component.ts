@@ -17,8 +17,8 @@ export class ProductHierarchyComponent {
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
   dynamicEditorLoader: ViewContainerRef;
   step = 0;
-  products: string[] = [];
-  productNameSelected = '';
+  modules: string[] = [];
+  moduleNameSelected = '';
   node: NodeModel;
 
   constructor(
@@ -31,12 +31,12 @@ export class ProductHierarchyComponent {
 
   refreshProductTree() {
     this._productsGitRepository.getAllModules().subscribe((products) => {
-      this.products = products.map((p) => p.name);
+      this.modules = products.map((p) => p.name);
     });
   }
 
-  openEditor(productName: string) {
-    this._productsGitRepository.getEr(productName).subscribe((node) => {
+  openEditor(moduleName: string) {
+    this._productsGitRepository.getEr(moduleName).subscribe((node) => {
       this.dynamicEditorLoader.clear();
       this.node = node;
       const componentRef = this.dynamicEditorLoader.createComponent(HierarchyEditorComponent);
@@ -45,7 +45,7 @@ export class ProductHierarchyComponent {
         this.actionsListener(action, componentRef);
       });
 
-      this.productNameSelected = productName;
+      this.moduleNameSelected = moduleName;
       this.step = 1;
     });
   }
@@ -65,7 +65,7 @@ export class ProductHierarchyComponent {
       case 'cancel':
         this.node = null;
         this.setStep(0);
-        this.productNameSelected = '';
+        this.moduleNameSelected = '';
         componentRef.destroy();
         break;
     }
@@ -73,7 +73,7 @@ export class ProductHierarchyComponent {
 
   save(content: string) {
     const dialogRef = this._dialog.open(CommitHierarchyDialogComponent, {
-      data: this.productNameSelected,
+      data: this.moduleNameSelected,
     });
 
     dialogRef.afterClosed().subscribe((response: CommitDialogResponse) => {
@@ -83,18 +83,16 @@ export class ProductHierarchyComponent {
           message: response.message,
           data: this.node,
         };
-        this._productsGitRepository
-          .persistEr(this.productNameSelected, commitRequest)
-          .subscribe({
-            next: (node) => {
-              this.node = node;
-              this._alertSubscriptor.success('Workflow saved successfully');
-            },
-            error: (e) => {
-              console.error(e);
-              this._alertSubscriptor.error('Worklow could not be saved');
-            },
-          });
+        this._productsGitRepository.persistEr(this.moduleNameSelected, commitRequest).subscribe({
+          next: (node) => {
+            this.node = node;
+            this._alertSubscriptor.success('Workflow saved successfully');
+          },
+          error: (e) => {
+            console.error(e);
+            this._alertSubscriptor.error('Worklow could not be saved');
+          },
+        });
       }
     });
   }

@@ -3,7 +3,7 @@
 <mat-accordion class="example-headers-align">
   <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
     <mat-expansion-panel-header>
-      <mat-panel-title> Select a Product for View or Edit Hierarchy </mat-panel-title>
+      <mat-panel-title> Select a Module for View or Edit Hierarchy </mat-panel-title>
     </mat-expansion-panel-header>
 
     <section>
@@ -17,21 +17,21 @@
         >
           <mat-icon>refresh</mat-icon>
         </button>
-        Products:
+        Modules:
       </h6>
     </section>
 
     <mat-list role="list">
-      @for (product of products; track product) {
+      @for (module of modules; track module) {
         <mat-list-item role="listitem">
           <button
             mat-icon-button
             aria-label="Update"
             matTooltip="Update"
-            (click)="openEditor(product)"
+            (click)="openEditor(module)"
           >
             <mat-icon>edit</mat-icon></button
-          >{{ product }}
+          >{{ module }}
         </mat-list-item>
       }
     </mat-list>
@@ -44,11 +44,11 @@
         Builder
       </mat-panel-title>
       <mat-panel-description>
-        @if (productNameSelected === "") {
-          Not Product Selected
+        @if (moduleNameSelected === "") {
+          Not Module Selected
         } @else {
           Edit Workflow "<span style="text-transform: uppercase"
-            ><b>{{ productNameSelected }}</b></span
+            ><b>{{ moduleNameSelected }}</b></span
           >"
         }
       </mat-panel-description>

@@ -1,5 +1,10 @@
 import { Component, ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
+import {
+  CommitRequestModel,
+  DynamicFlatNode,
+  NodeModel,
+  ProductsGitRepository,
+} from '@saman-core/data';
 import { ActionWorkflowType, WorkflowEditorComponent } from '@saman-core/common';
 import {
   CommitWorkflowDialogComponent,
@@ -7,6 +12,8 @@ import {
 } from '../commit-workflow-dialog/commit-workflow-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { DynamicDataSource } from './dynamic-data-source';
 
 @Component({
   selector: 'app-product-workflow',
@@ -17,7 +24,9 @@ export class ProductWorkflowComponent {
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
   dynamicEditorLoader: ViewContainerRef;
   step = 0;
-  products: string[] = [];
+  treeControl: FlatTreeControl<DynamicFlatNode>;
+  dataSource: DynamicDataSource;
+  moduleNameSelected = '';
   productNameSelected = '';
   node: NodeModel;
 
@@ -26,17 +35,26 @@ export class ProductWorkflowComponent {
     private readonly _alertSubscriptor: AlertSubscriptor,
     private readonly _dialog: MatDialog,
   ) {
-    this.refreshProductTree();
+    this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
+    this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
+
+    this.refreshModuleTree();
   }
 
-  refreshProductTree() {
-    this._productsGitRepository.getAllProductsByModule('po').subscribe((products) => {
-      this.products = products.map((p) => p.name);
+  getLevel = (node: DynamicFlatNode) => node.level;
+
+  isExpandable = (node: DynamicFlatNode) => node.expandable;
+
+  hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
+
+  refreshModuleTree() {
+    this._productsGitRepository.getAllModules().subscribe((products) => {
+      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', '', true));
     });
   }
 
-  openEditor(productName: string) {
-    this._productsGitRepository.getWorkflow('po', productName).subscribe((node) => {
+  openEditor(moduleName: string, productName: string) {
+    this._productsGitRepository.getWorkflow(moduleName, productName).subscribe((node) => {
       this.dynamicEditorLoader.clear();
       this.node = node;
       const componentRef = this.dynamicEditorLoader.createComponent(WorkflowEditorComponent);
@@ -45,6 +63,7 @@ export class ProductWorkflowComponent {
         this.actionsListener(action, componentRef);
       });
 
+      this.moduleNameSelected = moduleName;
       this.productNameSelected = productName;
       this.step = 1;
     });
@@ -62,6 +81,7 @@ export class ProductWorkflowComponent {
       case 'cancel':
         this.node = null;
         this.setStep(0);
+        this.moduleNameSelected = '';
         this.productNameSelected = '';
         componentRef.destroy();
         break;
@@ -81,7 +101,7 @@ export class ProductWorkflowComponent {
           data: this.node,
         };
         this._productsGitRepository
-          .persistWorkflow('po', this.productNameSelected, commitRequest)
+          .persistWorkflow(this.moduleNameSelected, this.productNameSelected, commitRequest)
           .subscribe({
             next: (node) => {
               this.node = node;

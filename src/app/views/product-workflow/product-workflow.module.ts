@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,17 +20,16 @@ import { ProductWorkflowRoutingModule } from './product-workflow-routing.module'
 import { ProductWorkflowComponent } from './product-workflow/product-workflow.component';
 import { TemplateBuilderModule } from '@saman-core/data';
 import { CommitWorkflowDialogComponent } from './commit-workflow-dialog/commit-workflow-dialog.component';
+import { MatTreeModule } from '@angular/material/tree';
 
 @NgModule({
-  declarations: [
-    ProductWorkflowComponent,
-    CommitWorkflowDialogComponent,
-  ],
+  declarations: [ProductWorkflowComponent, CommitWorkflowDialogComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatExpansionModule,
+    MatTreeModule,
     MatIconModule,
     MatListModule,
     MatTooltipModule,
