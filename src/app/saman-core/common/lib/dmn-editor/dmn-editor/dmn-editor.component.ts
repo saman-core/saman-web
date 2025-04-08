@@ -1,9 +1,10 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { StandaloneEditorApi } from '@kie-tools/kie-editors-standalone/dist/common/Editor';
-import * as DmnEditor from '@kie-tools/kie-editors-standalone/dist/dmn';
-import { ContentType } from "@kie-tools-core/workspace/dist/api";
+import { DmnEditorStandaloneApi } from '@ibm/bamoe-standalone-dmn-editor/dist';
+import * as DmnEditor from '@ibm/bamoe-standalone-dmn-editor/dist';
 import { Observable, from, map } from 'rxjs';
 import { Buffer } from 'buffer';
+import { FormControl } from '@angular/forms';
+import { DmnAiRepository } from '@saman-core/data';
 import { SYSTEM_TABLE } from '../common-model';
 
 @Component({
@@ -13,11 +14,15 @@ import { SYSTEM_TABLE } from '../common-model';
 })
 export class DmnEditorComponent implements OnInit {
   @ViewChild('dmn', { static: true }) dmnDiv?: ElementRef;
-  editor: StandaloneEditorApi;
+  editor: DmnEditorStandaloneApi;
   @Input() dmnData: string = '';
   @Input() readOnly: boolean = false;
   @Input() dmnName: string = '';
   @Input() namespace: string = '';
+  message = new FormControl('');
+  aiModel = 'llama3-8b-8192'; 
+
+  constructor(private readonly _dmnAiRepostory: DmnAiRepository) {}
 
   ngOnInit(): void {
     this.editor = DmnEditor.open({
@@ -26,18 +31,20 @@ export class DmnEditorComponent implements OnInit {
       readOnly: this.readOnly,
       resources: new Map([
         [
-          "systemTable.dmn",
+          'systemTable.dmn',
           {
-            contentType: ContentType.TEXT,
-            content: Promise.resolve(SYSTEM_TABLE)
-          }
+            contentType: 'text',
+            content: Promise.resolve(SYSTEM_TABLE),
+          },
         ],
       ]),
     });
   }
 
   getContent(): Observable<string> {
-    return from(this.editor.getContent()).pipe(map((xml) => this._replaceXmlParametersAndCode(xml)));
+    return from(this.editor.getContent()).pipe(
+      map((xml) => this._replaceXmlParametersAndCode(xml)),
+    );
   }
 
   private _replaceXmlParametersAndCode(xml: string): string {
@@ -54,5 +61,13 @@ export class DmnEditorComponent implements OnInit {
 
   markAsSaved(): void {
     this.editor.markAsSaved();
+  }
+
+  sendMessage(): void {
+    this._dmnAiRepostory
+      .generate({ model: this.aiModel, message: this.message.value })
+      .subscribe((response) => {
+        this.editor.setContent('systemTable.dmn', response.data);
+      });
   }
 }

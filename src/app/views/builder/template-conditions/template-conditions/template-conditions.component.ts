@@ -152,8 +152,8 @@ export class TemplateConditionsComponent {
     };
     const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
       data: conditionDialogRequest,
-      height: '80%',
-      width: '80%',
+      height: '95%',
+      width: '95%',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {
@@ -207,8 +207,8 @@ export class TemplateConditionsComponent {
         };
         const dialogRef = this._dialog.open(TemplateConditionDialogComponent, {
           data: conditionDialogRequest,
-          height: '80%',
-          width: '80%',
+          height: '95%',
+          width: '95%',
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe((response: ConditionDialogResponse) => {

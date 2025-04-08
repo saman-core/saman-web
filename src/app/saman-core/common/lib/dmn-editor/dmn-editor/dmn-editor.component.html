@@ -1,1 +1,10 @@
+<mat-form-field class="example-full-width">
+  <mat-label>Write</mat-label>
+  <mat-icon matPrefix>auto_fix_high</mat-icon>
+  <input type="text" matInput [formControl]="message" />
+  <button mat-icon-button matSuffix color="primary" aria-label="Send" (click)="sendMessage()">
+    <mat-icon>send</mat-icon>
+  </button>
+</mat-form-field>
+
 <div #dmn id="dmn" class="dmn"></div>

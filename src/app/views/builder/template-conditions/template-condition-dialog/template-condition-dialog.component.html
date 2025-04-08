@@ -1,18 +1,17 @@
-<h2 mat-dialog-title>DMN Editor</h2>
-<h3 mat-dialog-title>Condition {{ dmnName }}</h3>
-<div>
+<h3 mat-dialog-title>
+  DMN Editor - Condition {{ dmnName }}
   <button mat-icon-button (click)="drawer.toggle()">
     <mat-icon aria-hidden="false" aria-label="Info" fontIcon="info"></mat-icon>
   </button>
-</div>
+</h3>
 <mat-dialog-content>
-  <mat-drawer-container class="example-container" autosize>
+  <mat-drawer-container class="example-container">
     <mat-drawer #drawer mode="side">
       <h4>Properties</h4>
       <ul>
-      @for (property of properties; track property) {
-        <li>{{ property }}</li>
-      }
+        @for (property of properties; track property) {
+          <li>{{ property }}</li>
+        }
       </ul>
     </mat-drawer>
     <mat-drawer-content>

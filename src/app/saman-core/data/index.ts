@@ -31,3 +31,8 @@ export * from './lib/module/template-builder/template-builder.module';
 
 export * from './lib/module/template/repository/template.repository';
 export * from './lib/module/template/template.module';
+
+export * from './lib/module/dmn-ai/model/dmn-ai-request.model';
+export * from './lib/module/dmn-ai/model/dmn-ai.model';
+export * from './lib/module/dmn-ai/repository/dmn-ai.repository';
+export * from './lib/module/dmn-ai/dmn-ai.module';

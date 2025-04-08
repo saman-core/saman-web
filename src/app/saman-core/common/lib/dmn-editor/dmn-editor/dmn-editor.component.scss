@@ -1,6 +1,9 @@
 .dmn {
-  height: 100%;
-  min-width: 300px;
+  height: calc(100% - 80px);
   width: 100%;
-  min-height: 300px;
+  border: 1px solid #555;
+}
+
+.example-full-width {
+  width: 100%;
 }
