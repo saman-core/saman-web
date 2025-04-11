@@ -6,6 +6,7 @@ import { Buffer } from 'buffer';
 import { FormControl } from '@angular/forms';
 import { DmnAiRepository } from '@saman-core/data';
 import { SYSTEM_TABLE } from '../common-model';
+import { AlertSubscriptor } from '@saman-core/core';
 
 @Component({
   selector: 'app-dmn-editor',
@@ -20,14 +21,20 @@ export class DmnEditorComponent implements OnInit {
   @Input() dmnName: string = '';
   @Input() namespace: string = '';
   message = new FormControl('');
-  aiModel = 'llama3-8b-8192'; 
 
-  constructor(private readonly _dmnAiRepostory: DmnAiRepository) {}
+  constructor(
+    private readonly _dmnAiRepostory: DmnAiRepository,
+    private readonly _alert: AlertSubscriptor,
+  ) {}
 
   ngOnInit(): void {
-    this.editor = DmnEditor.open({
+    this.editor = this.openEditor(this._replaceBase64ParametersAndCode(this.dmnData));
+  }
+
+  openEditor(data: string) {
+    return DmnEditor.open({
       container: this.dmnDiv.nativeElement,
-      initialContent: Promise.resolve(this._replaceBase64ParametersAndCode(this.dmnData)),
+      initialContent: Promise.resolve(data),
       readOnly: this.readOnly,
       resources: new Map([
         [
@@ -64,10 +71,21 @@ export class DmnEditorComponent implements OnInit {
   }
 
   sendMessage(): void {
-    this._dmnAiRepostory
-      .generate({ model: this.aiModel, message: this.message.value })
-      .subscribe((response) => {
-        this.editor.setContent('systemTable.dmn', response.data);
+    this.editor.getContent().then((prevContent) => {
+      this._dmnAiRepostory.generate({ message: this.message.value, initialModel: prevContent }).subscribe((response) => {
+        const res = this.editor.setContent('/', response.data);
+        res.then(
+          () => {
+            this._alert.info(response.message);
+          },
+          (err) => {
+            console.warn(response);
+            console.error(err);
+            this.editor.close();
+            this.editor = this.openEditor(prevContent);
+          },
+        );
       });
+    });
   }
 }

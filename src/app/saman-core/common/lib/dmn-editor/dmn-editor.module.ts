@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DmnEditorComponent } from './dmn-editor/dmn-editor.component';
 import { DmnAiModule, TemplateBuilderModule } from '@saman-core/data';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AlertModule } from '@saman-core/core';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatFormFieldModule,
     TemplateBuilderModule,
     MatDialogModule,
+    AlertModule,
   ],
   providers: [
   ],
