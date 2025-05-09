@@ -165,7 +165,6 @@ export class CdeComponent implements AfterViewInit, OnInit {
       try {
         switch (condition.conditionType) {
           case ConditionTypeEnum.VALUE:
-            console.log(condition);
             this._setValueProperty(condition);
             break;
           case ConditionTypeEnum.VISIBLE:
