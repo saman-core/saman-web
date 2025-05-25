@@ -41,6 +41,7 @@ export class TransitionDialogComponent {
   rolesControl: FormControl<string>;
   form: FormGroup;
   data: TransitionDialogRequest;
+  moduleName = 'tp';
   productName = 'system';
   templateName = 'workflow';
   formValid = false;
