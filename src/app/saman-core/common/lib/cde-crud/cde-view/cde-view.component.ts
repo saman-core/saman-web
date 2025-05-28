@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './cde-view.component.scss',
 })
 export class CdeViewComponent  implements OnInit {
+  moduleName: string = '';
   productName: string = '';
   templateName: string = '';
   routeBase = '';
@@ -20,6 +21,7 @@ export class CdeViewComponent  implements OnInit {
   ngOnInit() {
     this.id = parseInt(this._activatedRoute.snapshot.params['id']);
     this._activatedRoute.data.subscribe((data) => {
+      this.moduleName = data.moduleName;
       this.productName = data.productName;
       this.templateName = data.templateName;
       this.routeBase = data.routeBase;
