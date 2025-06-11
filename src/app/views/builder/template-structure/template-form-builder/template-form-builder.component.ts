@@ -10,9 +10,10 @@ import {
 import { Buffer } from 'buffer';
 
 @Component({
-  selector: 'app-template-form-builder',
-  templateUrl: './template-form-builder.component.html',
-  styleUrl: './template-form-builder.component.scss',
+    selector: 'app-template-form-builder',
+    templateUrl: './template-form-builder.component.html',
+    styleUrl: './template-form-builder.component.scss',
+    standalone: false
 })
 export class TemplateFormBuilderComponent implements OnInit {
   @ViewChild('builder') builder!: CdeBuilderComponent;

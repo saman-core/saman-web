@@ -5,9 +5,10 @@ import { DynamicDataSource } from './dynamic-data-source';
 import { TemplateFormBuilderComponent } from '../template-form-builder/template-form-builder.component';
 
 @Component({
-  selector: 'app-template-structure',
-  templateUrl: './template-structure.component.html',
-  styleUrl: './template-structure.component.scss',
+    selector: 'app-template-structure',
+    templateUrl: './template-structure.component.html',
+    styleUrl: './template-structure.component.scss',
+    standalone: false
 })
 export class TemplateStructureComponent {
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })

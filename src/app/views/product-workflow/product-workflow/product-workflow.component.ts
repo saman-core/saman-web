@@ -16,9 +16,10 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { DynamicDataSource } from './dynamic-data-source';
 
 @Component({
-  selector: 'app-product-workflow',
-  templateUrl: './product-workflow.component.html',
-  styleUrl: './product-workflow.component.scss',
+    selector: 'app-product-workflow',
+    templateUrl: './product-workflow.component.html',
+    styleUrl: './product-workflow.component.scss',
+    standalone: false
 })
 export class ProductWorkflowComponent {
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })

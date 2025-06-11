@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-cde-view',
-  templateUrl: './cde-view.component.html',
-  styleUrl: './cde-view.component.scss',
+    selector: 'app-cde-view',
+    templateUrl: './cde-view.component.html',
+    styleUrl: './cde-view.component.scss',
+    standalone: false
 })
 export class CdeViewComponent  implements OnInit {
   moduleName: string = '';

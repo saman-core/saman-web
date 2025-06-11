@@ -11,9 +11,10 @@ export interface CreateConfirmDialogRequest {
 }
 
 @Component({
-  selector: 'app-create-confirm-dialog',
-  templateUrl: './create-confirm-dialog.component.html',
-  styleUrl: './create-confirm-dialog.component.scss',
+    selector: 'app-create-confirm-dialog',
+    templateUrl: './create-confirm-dialog.component.html',
+    styleUrl: './create-confirm-dialog.component.scss',
+    standalone: false
 })
 export class CreateConfirmDialogComponent {
 

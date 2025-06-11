@@ -24,9 +24,10 @@ import _ from 'lodash';
 import { InitCdeService } from '../init.service';
 
 @Component({
-  selector: 'app-cde',
-  templateUrl: './cde.component.html',
-  styleUrl: './cde.component.scss',
+    selector: 'app-cde',
+    templateUrl: './cde.component.html',
+    styleUrl: './cde.component.scss',
+    standalone: false
 })
 export class CdeComponent implements AfterViewInit, OnInit {
   @ViewChild('formio') formComponent!: FormioComponent;

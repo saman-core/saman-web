@@ -29,9 +29,10 @@ import {
 import { Buffer } from 'buffer';
 
 @Component({
-  selector: 'app-workflow-editor',
-  templateUrl: './workflow-editor.component.html',
-  styleUrl: './workflow-editor.component.scss',
+    selector: 'app-workflow-editor',
+    templateUrl: './workflow-editor.component.html',
+    styleUrl: './workflow-editor.component.scss',
+    standalone: false
 })
 export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas') canvas: ElementRef;

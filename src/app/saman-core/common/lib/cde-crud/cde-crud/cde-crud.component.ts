@@ -10,9 +10,10 @@ import {
 } from '../delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Component({
-  selector: 'app-cde-crud',
-  templateUrl: './cde-crud.component.html',
-  styleUrl: './cde-crud.component.scss',
+    selector: 'app-cde-crud',
+    templateUrl: './cde-crud.component.html',
+    styleUrl: './cde-crud.component.scss',
+    standalone: false
 })
 export class CdeCrudComponent implements OnInit, OnDestroy {
   initializedRequests = true;

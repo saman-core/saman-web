@@ -24,9 +24,10 @@ export interface StateDialogRequest {
 }
 
 @Component({
-  selector: 'app-state-dialog',
-  templateUrl: './state-dialog.component.html',
-  styleUrl: './state-dialog.component.scss',
+    selector: 'app-state-dialog',
+    templateUrl: './state-dialog.component.html',
+    styleUrl: './state-dialog.component.scss',
+    standalone: false
 })
 export class StateDialogComponent {
   statesLabels: string[] = [];

@@ -9,9 +9,10 @@ import {
 } from '../commit-dialog/commit-dialog.component';
 
 @Component({
-  selector: 'app-template-condition-dialog',
-  templateUrl: './template-condition-dialog.component.html',
-  styleUrl: './template-condition-dialog.component.scss',
+    selector: 'app-template-condition-dialog',
+    templateUrl: './template-condition-dialog.component.html',
+    styleUrl: './template-condition-dialog.component.scss',
+    standalone: false
 })
 export class TemplateConditionDialogComponent {
   @ViewChild('dmneditor') dmnEditor!: DmnEditorComponent;

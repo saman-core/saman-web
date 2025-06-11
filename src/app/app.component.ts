@@ -12,8 +12,9 @@ import { iconSubset } from './icon-subset';
 import { AuthService, LoaderSubscriptor } from '@saman-core/core';
 
 @Component({
-  selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
+    selector: 'app-root',
+    template: '<router-outlet></router-outlet>',
+    standalone: false
 })
 export class AppComponent implements OnInit {
   title = 'saman-web';

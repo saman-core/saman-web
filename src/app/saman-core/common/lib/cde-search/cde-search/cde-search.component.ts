@@ -35,9 +35,10 @@ import {
 import _ from 'lodash';
 
 @Component({
-  selector: 'app-cde-search',
-  templateUrl: './cde-search.component.html',
-  styleUrl: './cde-search.component.scss',
+    selector: 'app-cde-search',
+    templateUrl: './cde-search.component.html',
+    styleUrl: './cde-search.component.scss',
+    standalone: false
 })
 export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   private readonly _unsubscribe = new Subject<void>();

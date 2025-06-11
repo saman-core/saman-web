@@ -9,9 +9,10 @@ import {
 } from '../create-confirm-dialog/create-confirm-dialog.component';
 
 @Component({
-  selector: 'app-cde-create',
-  templateUrl: './cde-create.component.html',
-  styleUrl: './cde-create.component.scss',
+    selector: 'app-cde-create',
+    templateUrl: './cde-create.component.html',
+    styleUrl: './cde-create.component.scss',
+    standalone: false
 })
 export class CdeCreateComponent implements OnInit {
   moduleName: string = '';

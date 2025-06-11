@@ -10,8 +10,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgProgress, NgProgressRef } from 'ngx-progressbar';
 
 @Component({
-  selector: 'app-loader',
-  templateUrl: 'loader.component.html',
+    selector: 'app-loader',
+    templateUrl: 'loader.component.html',
+    standalone: false
 })
 export class LoaderComponent implements OnInit, OnDestroy {
   progressRef: NgProgressRef;

@@ -9,9 +9,10 @@ export interface CommitDialogResponse {
 }
 
 @Component({
-  selector: 'app-commit-workflow-dialog',
-  templateUrl: './commit-workflow-dialog.component.html',
-  styleUrl: './commit-workflow-dialog.component.scss',
+    selector: 'app-commit-workflow-dialog',
+    templateUrl: './commit-workflow-dialog.component.html',
+    styleUrl: './commit-workflow-dialog.component.scss',
+    standalone: false
 })
 export class CommitWorkflowDialogComponent {
   message = new FormControl('', [

@@ -27,9 +27,10 @@ import { Buffer } from 'buffer';
 import { FormUtilService } from '@saman-core/common';
 
 @Component({
-  selector: 'app-template-conditions',
-  templateUrl: './template-conditions.component.html',
-  styleUrl: './template-conditions.component.scss',
+    selector: 'app-template-conditions',
+    templateUrl: './template-conditions.component.html',
+    styleUrl: './template-conditions.component.scss',
+    standalone: false
 })
 export class TemplateConditionsComponent {
   static readonly NAMESPACE = 'saman-core/property';

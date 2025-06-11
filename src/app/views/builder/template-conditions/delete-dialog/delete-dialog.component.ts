@@ -5,9 +5,10 @@ import { TemplateConditionsComponent } from '../template-conditions/template-con
 import { ConditionTypeEnum } from '@saman-core/data';
 
 @Component({
-  selector: 'app-delete-dialog',
-  templateUrl: './delete-dialog.component.html',
-  styleUrl: './delete-dialog.component.scss',
+    selector: 'app-delete-dialog',
+    templateUrl: './delete-dialog.component.html',
+    styleUrl: './delete-dialog.component.scss',
+    standalone: false
 })
 export class DeleteDialogComponent {
   message = new FormControl('', [

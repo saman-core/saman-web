@@ -4,9 +4,10 @@ import { InitCdeService } from '../init.service';
 import { buildOptions } from './options';
 
 @Component({
-  selector: 'app-cde-builder',
-  templateUrl: './cde-builder.component.html',
-  styleUrl: './cde-builder.component.scss',
+    selector: 'app-cde-builder',
+    templateUrl: './cde-builder.component.html',
+    styleUrl: './cde-builder.component.scss',
+    standalone: false
 })
 export class CdeBuilderComponent implements AfterViewInit {
   @ViewChild('formpreview') formComponent!: FormioComponent;

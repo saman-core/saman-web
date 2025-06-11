@@ -4,8 +4,9 @@ import { ClassToggleService, HeaderComponent } from '@coreui/angular';
 import { AuthService, UserSubscriptor } from '@saman-core/core';
 
 @Component({
-  selector: 'app-default-header',
-  templateUrl: './default-header.component.html',
+    selector: 'app-default-header',
+    templateUrl: './default-header.component.html',
+    standalone: false
 })
 export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   @Input() sidebarId: string = 'sidebar';

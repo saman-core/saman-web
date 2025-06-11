@@ -9,9 +9,10 @@ import {
 } from '../edit-confirm-dialog/edit-confirm-dialog.component';
 
 @Component({
-  selector: 'app-cde-edit',
-  templateUrl: './cde-edit.component.html',
-  styleUrl: './cde-edit.component.scss',
+    selector: 'app-cde-edit',
+    templateUrl: './cde-edit.component.html',
+    styleUrl: './cde-edit.component.scss',
+    standalone: false
 })
 export class CdeEditComponent implements OnInit {
   moduleName: string = '';

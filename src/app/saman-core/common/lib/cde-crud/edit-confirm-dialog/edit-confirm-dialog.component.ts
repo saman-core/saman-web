@@ -11,9 +11,10 @@ export interface EditConfirmDialogRequest {
 }
 
 @Component({
-  selector: 'app-edit-confirm-dialog',
-  templateUrl: './edit-confirm-dialog.component.html',
-  styleUrl: './edit-confirm-dialog.component.scss',
+    selector: 'app-edit-confirm-dialog',
+    templateUrl: './edit-confirm-dialog.component.html',
+    styleUrl: './edit-confirm-dialog.component.scss',
+    standalone: false
 })
 export class EditConfirmDialogComponent {
 

@@ -9,9 +9,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
 
 @Component({
-  selector: 'app-product-hierarchy',
-  templateUrl: './product-hierarchy.component.html',
-  styleUrl: './product-hierarchy.component.scss',
+    selector: 'app-product-hierarchy',
+    templateUrl: './product-hierarchy.component.html',
+    styleUrl: './product-hierarchy.component.scss',
+    standalone: false
 })
 export class ProductHierarchyComponent {
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })

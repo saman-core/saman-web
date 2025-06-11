@@ -31,9 +31,10 @@ import { EntityTypeEnum } from '../entity-type.enum';
 import { EntityTypeProperties } from '../entity-type.properties';
 
 @Component({
-  selector: 'app-hierarchy-editor',
-  templateUrl: './hierarchy-editor.component.html',
-  styleUrl: './hierarchy-editor.component.scss',
+    selector: 'app-hierarchy-editor',
+    templateUrl: './hierarchy-editor.component.html',
+    styleUrl: './hierarchy-editor.component.scss',
+    standalone: false
 })
 export class HierarchyEditorComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas') canvas: ElementRef;

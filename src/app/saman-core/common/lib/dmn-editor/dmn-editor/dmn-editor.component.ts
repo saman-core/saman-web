@@ -9,9 +9,10 @@ import { SYSTEM_TABLE } from '../common-model';
 import { AlertSubscriptor } from '@saman-core/core';
 
 @Component({
-  selector: 'app-dmn-editor',
-  templateUrl: './dmn-editor.component.html',
-  styleUrl: './dmn-editor.component.scss',
+    selector: 'app-dmn-editor',
+    templateUrl: './dmn-editor.component.html',
+    styleUrl: './dmn-editor.component.scss',
+    standalone: false
 })
 export class DmnEditorComponent implements OnInit {
   @ViewChild('dmn', { static: true }) dmnDiv?: ElementRef;

@@ -9,9 +9,10 @@ export interface CommitDialogResponse {
 }
 
 @Component({
-  selector: 'app-commit-hierarchy-dialog',
-  templateUrl: './commit-hierarchy-dialog.component.html',
-  styleUrl: './commit-hierarchy-dialog.component.scss',
+    selector: 'app-commit-hierarchy-dialog',
+    templateUrl: './commit-hierarchy-dialog.component.html',
+    styleUrl: './commit-hierarchy-dialog.component.scss',
+    standalone: false
 })
 export class CommitHierarchyDialogComponent {
   message = new FormControl('', [

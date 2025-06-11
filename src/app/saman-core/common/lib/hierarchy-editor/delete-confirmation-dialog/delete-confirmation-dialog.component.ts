@@ -12,9 +12,10 @@ export interface DeleteConfirmationDialogRequest {
 }
 
 @Component({
-  selector: 'app-delete-confirmation-dialog',
-  templateUrl: './delete-confirmation-dialog.component.html',
-  styleUrl: './delete-confirmation-dialog.component.scss',
+    selector: 'app-delete-confirmation-dialog',
+    templateUrl: './delete-confirmation-dialog.component.html',
+    styleUrl: './delete-confirmation-dialog.component.scss',
+    standalone: false
 })
 export class DeleteConfirmationDialogComponent {
 

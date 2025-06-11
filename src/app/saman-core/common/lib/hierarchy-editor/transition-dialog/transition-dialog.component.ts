@@ -28,9 +28,10 @@ export interface TransitionDialogRequest {
 }
 
 @Component({
-  selector: 'app-transition-dialog',
-  templateUrl: './transition-dialog.component.html',
-  styleUrl: './transition-dialog.component.scss',
+    selector: 'app-transition-dialog',
+    templateUrl: './transition-dialog.component.html',
+    styleUrl: './transition-dialog.component.scss',
+    standalone: false
 })
 export class TransitionDialogComponent {
   states: dia.Element[];
