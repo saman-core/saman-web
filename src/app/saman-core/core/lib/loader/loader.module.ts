@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { NgProgressModule } from 'ngx-progressbar';
 import { LoaderComponent } from './loader.component';
 import { LoaderSubscriptor } from './loader.subscriptor';
-import { NgxLoadingModule } from "ngx-loading";
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
     CommonModule,
     NgProgressModule,
-    NgxLoadingModule.forRoot({}),
+    NgxSpinnerModule,
   ],
   providers: [LoaderSubscriptor],
   declarations: [LoaderComponent],

@@ -1,35 +1,30 @@
-import { 
+import {
   Component,
-  ViewChild,
-  TemplateRef,
   OnDestroy,
   OnInit,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { LoaderSubscriptor } from './loader.subscriptor';
-import { NgProgress, NgProgressRef } from 'ngx-progressbar';
 import { Loader } from './loader.interface';
-import { ngxLoadingAnimationTypes } from 'ngx-loading';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgProgress, NgProgressRef } from 'ngx-progressbar';
 
 @Component({
   selector: 'app-loader',
   templateUrl: 'loader.component.html',
 })
 export class LoaderComponent implements OnInit, OnDestroy {
-  @ViewChild('emptyLoadingTemplate', { static: false })
-  emptyLoadingTemplate!: TemplateRef<Element>;
-  
   progressRef: NgProgressRef;
   ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;
-  loading = false;
 
   private _attemptsProgressBar = 0;
   private _attemptsLoading = 0;
-  private _unsubscribe = new Subject<boolean>();
+  private readonly _unsubscribe = new Subject<boolean>();
 
   constructor(
-    private _loaderSubscriptor: LoaderSubscriptor,
-    private progress: NgProgress
+    private readonly _loaderSubscriptor: LoaderSubscriptor,
+    private readonly progress: NgProgress,
+    private readonly spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -39,13 +34,13 @@ export class LoaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribe))
       .subscribe((loader: Loader) => {
         this.updateAttempts(loader);
-        
+
         if (this._attemptsLoading > 0.1) {
-          this.loading = true;
+          this.spinner.show();
         } else {
-          this.loading = false;
+          this.spinner.hide();
         }
-        
+
         if (this._attemptsProgressBar > 0.1) {
           this.progressRef.start();
         } else {
