@@ -57,7 +57,7 @@ export class FormUtilService {
           const value = row[key];
           const item = this._findItem(items, id, value);
           if (typeof item !== 'undefined') {
-            const newValue = FormioUtils.interpolate(label, { item: item });
+            const newValue = FormioUtils.interpolate(label, { item: item }, {});
             row[key] = newValue;
           }
           return row;
@@ -87,7 +87,7 @@ export class FormUtilService {
             const value = data[key];
             const item = this._findItem(items, id, value);
             if (typeof item !== 'undefined') {
-              const newValue = FormioUtils.interpolate(label, { item: item });
+              const newValue = FormioUtils.interpolate(label, { item: item }, {});
               data[key] = newValue;
             }
             return data;

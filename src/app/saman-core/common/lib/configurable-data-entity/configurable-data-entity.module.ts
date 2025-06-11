@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Formio, FormioModule, Templates } from '@formio/angular';
+import { Formio, FormioModule } from '@formio/angular';
 import { FormioGrid } from '@formio/angular/grid';
 import { FormioResources } from '@formio/angular/resource';
 import { CdeModule, ConditionTemplateModule, GenericResourcesModule, TemplateModule } from '@saman-core/data';
@@ -10,6 +10,7 @@ import { CdeComponent } from './cde/cde.component';
 import { CdeBuilderComponent } from './cde-builder/cde-builder.component';
 import { InitCdeService } from './init.service';
 import { template } from './template';
+import { Templates } from 'formiojs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Formio as any).icons = 'fontawesome';

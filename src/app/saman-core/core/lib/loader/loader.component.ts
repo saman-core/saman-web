@@ -15,7 +15,6 @@ import { NgProgress, NgProgressRef } from 'ngx-progressbar';
 })
 export class LoaderComponent implements OnInit, OnDestroy {
   progressRef: NgProgressRef;
-  ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;
 
   private _attemptsProgressBar = 0;
   private _attemptsLoading = 0;
