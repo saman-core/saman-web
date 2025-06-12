@@ -8,12 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { AlertModule } from '@saman-core/core';
 import { HierarchyEditorModule } from '@saman-core/common';
 import { ProductHierarchyRoutingModule } from './product-hierarchy-routing.module';
@@ -36,10 +31,7 @@ import { CommitHierarchyDialogComponent } from './commit-hierarchy-dialog/commit
     MatTooltipModule,
     MatInputModule,
     MatFormFieldModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
+    MatDialogModule,
     AlertModule,
     ProductHierarchyRoutingModule,
     HierarchyEditorModule,

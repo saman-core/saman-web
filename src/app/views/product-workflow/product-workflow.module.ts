@@ -8,12 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { AlertModule } from '@saman-core/core';
 import { WorkflowEditorModule } from '@saman-core/common';
 import { ProductWorkflowRoutingModule } from './product-workflow-routing.module';
@@ -35,10 +30,7 @@ import { MatTreeModule } from '@angular/material/tree';
     MatTooltipModule,
     MatInputModule,
     MatFormFieldModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
+    MatDialogModule,
     AlertModule,
     ProductWorkflowRoutingModule,
     WorkflowEditorModule,

@@ -10,12 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { AlertModule } from '@saman-core/core';
@@ -41,10 +36,7 @@ import { CommitDialogComponent } from './commit-dialog/commit-dialog.component';
     MatTooltipModule,
     MatInputModule,
     MatFormFieldModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
+    MatDialogModule,
     MatSidenavModule,
     MatSelectModule,
   ],

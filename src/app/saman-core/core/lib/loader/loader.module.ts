@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgProgressModule } from 'ngx-progressbar';
+import { NgProgressbar } from 'ngx-progressbar';
 import { LoaderComponent } from './loader.component';
 import { LoaderSubscriptor } from './loader.subscriptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -8,7 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   imports: [
     CommonModule,
-    NgProgressModule,
+    NgProgressbar,
     NgxSpinnerModule,
   ],
   providers: [LoaderSubscriptor],

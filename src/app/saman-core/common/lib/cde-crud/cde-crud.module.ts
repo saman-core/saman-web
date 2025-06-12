@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfigurableDataEntityModule, CdeSearchModule } from '@saman-core/common';
@@ -35,10 +30,7 @@ import { EditConfirmDialogComponent } from './edit-confirm-dialog/edit-confirm-d
     CdeSearchModule,
     AlertModule,
     CdeModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
+    MatDialogModule,
     MatButtonModule,
     MatIconModule,
   ],

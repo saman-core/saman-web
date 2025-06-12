@@ -10,7 +10,7 @@ $enable-deprecation-messages: false;
 
 // $white:     #fff;
 // $gray-base: #3c4b64;
-// $gray-100:  #ebedef;
+$gray-100:  #ebedef;
 // $gray-200:  #d8dbe0;
 // $gray-300:  #c4c9d0;
 // $gray-400:  #b1b7c1;
@@ -95,8 +95,8 @@ $enable-deprecation-messages: false;
 // $danger-25:    #f9d4d4;
 
 // $light-dark:     $gray-100;
-// $light:          $gray-100;
-// $light-50:       shift-color($light, -70);
+$light:          $gray-100;
+$light-50:       shift-color($light, -70);
 // $light-25:       shift-color($light, -80);
 
 // $dark-dark:      $gray-900;

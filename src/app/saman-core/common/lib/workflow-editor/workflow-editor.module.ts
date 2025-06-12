@@ -4,12 +4,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -36,10 +31,7 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
     AlertModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
+    MatDialogModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,

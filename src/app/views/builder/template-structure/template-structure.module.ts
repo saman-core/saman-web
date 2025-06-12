@@ -9,12 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { TemplateStructureComponent } from './template-structure/template-structure.component';
 import { TemplateStructureRoutingModule } from './template-structure-routing.module';
 import { TemplateBuilderModule } from '@saman-core/data';
@@ -34,10 +29,7 @@ import { AlertModule } from '@saman-core/core';
     MatTooltipModule,
     MatInputModule,
     MatFormFieldModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
+    MatDialogModule,
     ReactiveFormsModule,
     ConfigurableDataEntityModule,
     TemplateBuilderModule,
