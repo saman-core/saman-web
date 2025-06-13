@@ -4,7 +4,7 @@ import { Loader } from './loader.interface';
 
 @Injectable()
 export class LoaderSubscriptor {
-  private _loaderSubject = new Subject<Loader>();
+  private readonly _loaderSubject = new Subject<Loader>();
 
   public show(blockScreen: boolean, progressBar: boolean): void {
     const loader: Loader = {
