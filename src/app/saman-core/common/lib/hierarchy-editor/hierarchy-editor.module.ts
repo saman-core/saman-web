@@ -8,7 +8,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertModule } from '@saman-core/core';
-import { ConfigurableDataEntityModule } from '@saman-core/common';
 import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.component';
 import { StateDialogComponent } from './state-dialog/state-dialog.component';
 import { TransitionDialogComponent } from './transition-dialog/transition-dialog.component';
@@ -23,7 +22,6 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
   ],
   imports: [
     CommonModule,
-    ConfigurableDataEntityModule,
     AlertModule,
     FormsModule,
     ReactiveFormsModule,

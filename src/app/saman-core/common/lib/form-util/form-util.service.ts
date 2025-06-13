@@ -12,7 +12,7 @@ export type MapperTableRow = (rows: object[]) => Observable<object[]>;
 export class FormUtilService {
   static readonly VALID_TYPES = VALID_TYPES;
 
-  constructor(private _resourceRepository: GenericResourceRepository) {}
+  constructor(private readonly _resourceRepository: GenericResourceRepository) {}
 
   public getListMappers(formJson: object, keys: string[] = []): MapperTableRow[] {
     const selectTypeComponents = (componentType: string) => {
