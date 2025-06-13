@@ -10,7 +10,7 @@ export class InitCdeService {
   private _isInitialized = false;
 
   constructor(
-    private _genericResourceRepository: GenericResourceRepository,
+    private readonly _genericResourceRepository: GenericResourceRepository,
   ) {}
 
   initConf() {

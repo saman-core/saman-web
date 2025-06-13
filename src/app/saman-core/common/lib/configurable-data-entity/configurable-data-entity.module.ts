@@ -10,7 +10,7 @@ import { CdeComponent } from './cde/cde.component';
 import { CdeBuilderComponent } from './cde-builder/cde-builder.component';
 import { InitCdeService } from './init.service';
 import { template } from './template';
-import { Templates } from 'formiojs';
+import { Templates } from '@formio/js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Formio as any).icons = 'fontawesome';
