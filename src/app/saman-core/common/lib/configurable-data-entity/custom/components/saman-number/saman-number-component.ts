@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Formio } from 'formiojs';
+import { Formio } from '@formio/angular';
 import editForm from './saman-number.form';
 
 const Component = (Formio as any).Components.components.number;

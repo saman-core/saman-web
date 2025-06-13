@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Formio } from 'formiojs';
+import { Formio } from '@formio/angular';
 import EditData from './editForm/signature.edit.data';
 import EditDisplay from './editForm/signature.edit.display';
 import EditValidation from './editForm/signature.edit.validation';

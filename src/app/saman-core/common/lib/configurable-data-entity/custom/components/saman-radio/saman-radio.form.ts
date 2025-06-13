@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Formio } from 'formiojs';
+import { Formio } from '@formio/angular';
 import EditData from './editForm/radio.edit.data';
 import EditDisplay from './editForm/radio.edit.display';
 import EditValidation from './editForm/radio.edit.validation';

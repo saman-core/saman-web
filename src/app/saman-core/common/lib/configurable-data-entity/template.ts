@@ -1,6 +1,7 @@
-import { Utils } from 'formiojs';
+import { Utils } from '@formio/js';
 import { HTML } from './builder-edit-form';
-import Evaluator = Utils.Evaluator;
+
+const Evaluator = Utils.Evaluator;
 
 export const template = {
     builderEditForm: {

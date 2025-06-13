@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Formio } from 'formiojs';
+import { Formio } from '@formio/angular';
 import editForm from './saman-select.form';
 import { PageableModel } from '@saman-core/data';
 import { ServiceProvider } from '../../../service-provider';

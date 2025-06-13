@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Formio } from 'formiojs';
+import { Formio } from '@formio/angular';
 import EditDisplay from './editForm/tabs.edit.display';
 import EditLayout from './editForm/tabs.edit.layout';
 import CommonApi from '../../common-component.edit.api';

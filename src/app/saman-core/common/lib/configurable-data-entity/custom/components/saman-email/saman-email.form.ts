@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Formio } from 'formiojs';
+import { Formio } from '@formio/angular';
 import EditData from './editForm/email.edit.data';
 import EditDisplay from './editForm/email.edit.display';
 import EditValidation from './editForm/email.edit.validation';
