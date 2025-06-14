@@ -9,7 +9,8 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY dist/saman-web/browser /usr/share/nginx/html/
 
 # Cambia el propietario de los archivos al usuario nginx
-RUN chown -R nginx:nginx /usr/share/nginx/html
+RUN chown -R nginx:nginx /usr/share/nginx/html \
+    && chown -R nginx:nginx /var/cache/nginx
 
 USER nginx
 
