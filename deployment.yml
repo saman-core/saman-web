@@ -10,6 +10,6 @@ spec:
           imagePullPolicy: IfNotPresent
           name: APP_NAME
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               name: http1
               protocol: TCP
