@@ -16,7 +16,7 @@ export class CdeBuilderComponent implements AfterViewInit {
   @Output() newVal = new EventEmitter<object>();
   public options = buildOptions;
 
-  constructor(private _initService: InitCdeService) {
+  constructor(private readonly _initService: InitCdeService) {
     _initService.initConf();
   }
 
