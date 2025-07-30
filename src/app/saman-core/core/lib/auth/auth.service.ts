@@ -18,27 +18,30 @@ export class AuthService {
   }
 
   public initConfiguration(): Promise<void> {
-    return this._oauthService
-      .loadDiscoveryDocumentAndLogin()
-      .then((onFulfilled) => {
-        if (onFulfilled) {
-          this._oauthService.loadUserProfile().then(
-            (user) => this._userSubscriptor.setUser(user),
-            (err) => console.error(err),
-          );
-          this._oauthService.setupAutomaticSilentRefresh();
-        } else {
-          this._oauthService.initCodeFlow();
-        }
-      })
-      .catch((err) => {
-        const el = document.getElementById('loading-message');
-        if (el) {
-          el.innerText = 'Error OIDC:\n' + JSON.stringify(err);
-          el.style.color = 'red';
-        }
-        return Promise.reject(err);
-      });
+    return new Promise<void>((resolve, reject) => {
+      this._oauthService
+        .loadDiscoveryDocumentAndLogin()
+        .then((onFulfilled) => {
+          if (onFulfilled) {
+            this._oauthService.loadUserProfile().then(
+              (user) => this._userSubscriptor.setUser(user),
+              (err) => console.error(err),
+            );
+            this._oauthService.setupAutomaticSilentRefresh();
+            resolve();
+          } else {
+            this._oauthService.initCodeFlow();
+          }
+        })
+        .catch((err) => {
+          const el = document.getElementById('loading-message');
+          if (el) {
+            el.innerText = 'Error OIDC:\n' + JSON.stringify(err);
+            el.style.color = 'red';
+          }
+          reject(err);
+        });
+    });
   }
 
   public hasValidAccessToken(): boolean {
