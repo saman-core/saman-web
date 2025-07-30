@@ -7,14 +7,17 @@ const defaultDataFormat = 'HH:mm:ss';
 
 export default class SamanTimeComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanTime',
-      label: 'Time',
-      key: 'time',
-      inputType: 'time',
-      format: 'HH:mm',
-      dataFormat: defaultDataFormat,
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanTime',
+        label: 'Time',
+        key: 'time',
+        inputType: 'time',
+        format: 'HH:mm',
+        dataFormat: defaultDataFormat,
+      },
+      ...extend,
+    );
   }
 
   static get builderInfo() {

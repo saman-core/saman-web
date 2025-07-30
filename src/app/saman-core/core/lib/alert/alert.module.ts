@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
-import { AlertSubscriptor } from './alert.subscriptor';
 
 @NgModule({
   imports: [
-    CommonModule,
     ToastrModule.forRoot({
       tapToDismiss: true,
       preventDuplicates: false,
@@ -21,6 +18,5 @@ import { AlertSubscriptor } from './alert.subscriptor';
       positionClass: 'toast-bottom-right',
     }),
   ],
-  providers: [AlertSubscriptor],
 })
 export class AlertModule {}

@@ -5,7 +5,7 @@ export class HeaderUtils {
   public static generateHeaders(
     blockScreen: boolean,
     progressBar: boolean,
-    ignoreError: boolean
+    ignoreError: boolean,
   ): {
     headers: {
       ignoreBlockScreen: string;
@@ -26,7 +26,7 @@ export class HeaderUtils {
 
   public static generateHttpParams(
     params: { [key: string]: string },
-    pageableModel: PageableModel | null = null
+    pageableModel: PageableModel | null = null,
   ): HttpParams {
     let httpParams = new HttpParams();
     for (const [key, value] of Object.entries(params)) {

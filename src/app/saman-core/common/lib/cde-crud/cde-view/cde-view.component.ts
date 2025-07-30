@@ -1,23 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CdeComponent } from '../../configurable-data-entity/cde/cde.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-cde-view',
-    templateUrl: './cde-view.component.html',
-    styleUrl: './cde-view.component.scss',
-    standalone: false
+  selector: 'app-cde-view',
+  templateUrl: './cde-view.component.html',
+  styleUrl: './cde-view.component.scss',
+  imports: [CdeComponent, MatButton],
 })
-export class CdeViewComponent  implements OnInit {
+export class CdeViewComponent implements OnInit {
+  private _router = inject(Router);
+  private _activatedRoute = inject(ActivatedRoute);
+
   moduleName: string = '';
   productName: string = '';
   templateName: string = '';
   routeBase = '';
   id = 0;
-
-  constructor(
-    private _router: Router,
-    private _activatedRoute: ActivatedRoute,
-  ) {}
 
   ngOnInit() {
     this.id = parseInt(this._activatedRoute.snapshot.params['id']);

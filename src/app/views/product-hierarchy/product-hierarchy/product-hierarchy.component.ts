@@ -1,4 +1,4 @@
-import { Component, ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
 import { ActionHierarchyType, HierarchyEditorComponent } from '@saman-core/common';
 import {
@@ -7,14 +7,40 @@ import {
 } from '../commit-hierarchy-dialog/commit-hierarchy-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+  MatExpansionPanelDescription,
+} from '@angular/material/expansion';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatList, MatListItem } from '@angular/material/list';
 
 @Component({
-    selector: 'app-product-hierarchy',
-    templateUrl: './product-hierarchy.component.html',
-    styleUrl: './product-hierarchy.component.scss',
-    standalone: false
+  selector: 'app-product-hierarchy',
+  templateUrl: './product-hierarchy.component.html',
+  styleUrl: './product-hierarchy.component.scss',
+  imports: [
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatList,
+    MatListItem,
+    MatExpansionPanelDescription,
+  ],
 })
 export class ProductHierarchyComponent {
+  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _alertSubscriptor = inject(AlertSubscriptor);
+  private readonly _dialog = inject(MatDialog);
+
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
   dynamicEditorLoader: ViewContainerRef;
   step = 0;
@@ -22,11 +48,7 @@ export class ProductHierarchyComponent {
   moduleNameSelected = '';
   node: NodeModel;
 
-  constructor(
-    private readonly _productsGitRepository: ProductsGitRepository,
-    private readonly _alertSubscriptor: AlertSubscriptor,
-    private readonly _dialog: MatDialog,
-  ) {
+  constructor() {
     this.refreshProductTree();
   }
 

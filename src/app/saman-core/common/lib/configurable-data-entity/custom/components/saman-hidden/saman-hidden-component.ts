@@ -6,11 +6,14 @@ const Component = (Formio as any).Components.components.hidden;
 
 export default class SamanHiddenComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanHidden',
-      tableView: false,
-      inputType: 'hidden'
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanHidden',
+        tableView: false,
+        inputType: 'hidden',
+      },
+      ...extend,
+    );
   }
 
   static get builderInfo() {
@@ -21,7 +24,7 @@ export default class SamanHiddenComponent extends Component {
       weight: 0,
       documentation: '/userguide/form-building/data-components#hidden',
       showPreview: false,
-      schema: SamanHiddenComponent.schema()
+      schema: SamanHiddenComponent.schema(),
     };
   }
 

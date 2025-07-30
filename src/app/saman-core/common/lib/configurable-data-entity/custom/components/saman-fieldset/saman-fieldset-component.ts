@@ -6,17 +6,20 @@ const Component = (Formio as any).Components.components.fieldset;
 
 export default class SamanFieldsetComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      label: 'Field Set',
-      key: 'fieldSet',
-      type: 'samanFieldset',
-      legend: '',
-      components: [],
-      input: false,
-      persistent: false
-    }, ...extend);
+    return Component.schema(
+      {
+        label: 'Field Set',
+        key: 'fieldSet',
+        type: 'samanFieldset',
+        legend: '',
+        components: [],
+        input: false,
+        persistent: false,
+      },
+      ...extend,
+    );
   }
-  
+
   static get builderInfo() {
     return {
       title: 'Field Set',
@@ -25,7 +28,7 @@ export default class SamanFieldsetComponent extends Component {
       documentation: '/userguide/form-building/layout-components#field-set',
       showPreview: false,
       weight: 20,
-      schema: SamanFieldsetComponent.schema()
+      schema: SamanFieldsetComponent.schema(),
     };
   }
 

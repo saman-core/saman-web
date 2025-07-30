@@ -1,12 +1,36 @@
-import { Component, Inject, signal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, signal, inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { WorkflowEditorComponent } from '../workflow-editor/workflow-editor.component';
 import { StateTypeEnum } from '../state-type.enum';
 import _ from 'lodash';
 import { dia } from '@joint/core';
 import { duplicateNameValidator, nameFormatValidator } from '../utils/validator';
-import { MatChipInputEvent } from '@angular/material/chips';
+import {
+  MatChipInputEvent,
+  MatChipGrid,
+  MatChipRow,
+  MatChipRemove,
+  MatChipInput,
+} from '@angular/material/chips';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
 
 export interface StateDialogResponse {
   name: string;
@@ -17,19 +41,42 @@ export interface StateDialogResponse {
 }
 
 export interface StateDialogRequest {
-  action: 'create' | 'update'
+  action: 'create' | 'update';
   productName: string;
   states: dia.Element[];
   stateToUpdate?: dia.Element;
 }
 
 @Component({
-    selector: 'app-state-dialog',
-    templateUrl: './state-dialog.component.html',
-    styleUrl: './state-dialog.component.scss',
-    standalone: false
+  selector: 'app-state-dialog',
+  templateUrl: './state-dialog.component.html',
+  styleUrl: './state-dialog.component.scss',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    ReactiveFormsModule,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatChipGrid,
+    MatChipRow,
+    MatChipRemove,
+    MatIcon,
+    MatChipInput,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+  ],
 })
 export class StateDialogComponent {
+  dialogRef = inject<MatDialogRef<WorkflowEditorComponent>>(MatDialogRef);
+  request = inject<StateDialogRequest>(MAT_DIALOG_DATA);
+
   statesLabels: string[] = [];
   nameControl: FormControl<string>;
   stateTypeControl: FormControl<StateTypeEnum>;
@@ -37,12 +84,11 @@ export class StateDialogComponent {
   form: FormGroup;
   stateTypes: string[] = _.uniq(Object.keys(StateTypeEnum));
   data: StateDialogRequest;
-  roles =   signal<string[]>([]);
+  roles = signal<string[]>([]);
 
-  constructor(
-    public dialogRef: MatDialogRef<WorkflowEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public request: StateDialogRequest,
-  ) {
+  constructor() {
+    const request = this.request;
+
     this.statesLabels = request.states.map((l) => l.get('name'));
     this.nameControl = new FormControl(request.stateToUpdate?.get('name'), [
       Validators.required,
@@ -50,9 +96,10 @@ export class StateDialogComponent {
       duplicateNameValidator(this.statesLabels, request.stateToUpdate?.get('name')),
       nameFormatValidator(),
     ]);
-    this.stateTypeControl = new FormControl<StateTypeEnum>(request.stateToUpdate?.get('stateType'), [
-      Validators.required,
-    ]);
+    this.stateTypeControl = new FormControl<StateTypeEnum>(
+      request.stateToUpdate?.get('stateType'),
+      [Validators.required],
+    );
     this.rolesControl = new FormControl<string>('');
     this.roles.set(request.stateToUpdate?.get('roles') || []);
     this.form = new FormGroup({
@@ -92,7 +139,7 @@ export class StateDialogComponent {
   }
 
   removeRol(rol: string) {
-    this.roles.update(roles => {
+    this.roles.update((roles) => {
       const index = roles.indexOf(rol);
       if (index < 0) {
         return roles;
@@ -107,7 +154,7 @@ export class StateDialogComponent {
     const value = (event.value || '').trim();
 
     if (value) {
-      this.roles.update(keywords => [...keywords, value]);
+      this.roles.update((keywords) => [...keywords, value]);
     }
     event.chipInput!.clear();
   }

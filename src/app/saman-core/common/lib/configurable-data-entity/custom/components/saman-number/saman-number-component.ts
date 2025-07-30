@@ -6,17 +6,20 @@ const Component = (Formio as any).Components.components.number;
 
 export default class SamanNumberComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanNumber',
-      label: 'Number',
-      key: 'number',
-      validate: {
-        min: '',
-        max: '',
-        step: 'any',
-        integer: ''
-      }
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanNumber',
+        label: 'Number',
+        key: 'number',
+        validate: {
+          min: '',
+          max: '',
+          step: 'any',
+          integer: '',
+        },
+      },
+      ...extend,
+    );
   }
 
   static get builderInfo() {
@@ -26,7 +29,7 @@ export default class SamanNumberComponent extends Component {
       group: 'basic',
       documentation: '/userguide/form-building/form-components#number',
       weight: 30,
-      schema: SamanNumberComponent.schema()
+      schema: SamanNumberComponent.schema(),
     };
   }
 

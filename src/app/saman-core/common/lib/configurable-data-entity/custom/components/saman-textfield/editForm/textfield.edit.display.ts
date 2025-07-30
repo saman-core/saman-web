@@ -1,10 +1,10 @@
 export default [
   {
     key: 'modalEdit',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'allowMultipleMasks',
-    ignore: true
+    ignore: true,
   },
 ];

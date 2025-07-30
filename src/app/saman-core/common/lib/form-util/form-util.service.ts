@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { FormioUtils } from '@formio/angular';
 import { GenericResourceRepository } from '@saman-core/data';
 import { Observable, catchError, map, of } from 'rxjs';
@@ -8,11 +8,13 @@ import { VALID_TYPES } from './valid-types';
 
 export type MapperTableRow = (rows: object[]) => Observable<object[]>;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class FormUtilService {
-  static readonly VALID_TYPES = VALID_TYPES;
+  private readonly _resourceRepository = inject(GenericResourceRepository);
 
-  constructor(private readonly _resourceRepository: GenericResourceRepository) {}
+  static readonly VALID_TYPES = VALID_TYPES;
 
   public getListMappers(formJson: object, keys: string[] = []): MapperTableRow[] {
     const selectTypeComponents = (componentType: string) => {
@@ -105,7 +107,7 @@ export class FormUtilService {
   private _getRowsIds(rows: object[], key: string): number[] | string[] {
     let ids: number[] | string[];
     try {
-      ids = _.uniq(rows.map((r) => r[key]).filter(k => this._isKeyType(k)));
+      ids = _.uniq(rows.map((r) => r[key]).filter((k) => this._isKeyType(k)));
     } catch (e) {
       console.warn(`can not get rows Ids: ${e}`);
       ids = [];
@@ -114,7 +116,7 @@ export class FormUtilService {
   }
 
   private _isKeyType(k: any): boolean {
-    return typeof k === "string" || (!isNaN(parseFloat(k)) && isFinite(k));
+    return typeof k === 'string' || (!isNaN(parseFloat(k)) && isFinite(k));
   }
 
   private _findItem(items: object[], id: string, value: any): object | undefined {

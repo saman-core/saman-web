@@ -6,27 +6,30 @@ import CommonApi from '../../common-component.edit.api';
 
 const componentForm = (Formio as any).Components.components.panel.editForm;
 
-export default function(...extend) {
-  return componentForm([
-    {
-      key: 'display',
-      components: EditDisplay
-    },
-    {
-      key: 'layout',
-      components: EditLayout
-    },
-    {
-      key: 'api',
-      components: CommonApi
-    },
-    {
-      key: 'logic',
-      ignore: true
-    },
-    {
-      key: 'conditional',
-      ignore: true
-    }
-  ], ...extend);
+export default function (...extend) {
+  return componentForm(
+    [
+      {
+        key: 'display',
+        components: EditDisplay,
+      },
+      {
+        key: 'layout',
+        components: EditLayout,
+      },
+      {
+        key: 'api',
+        components: CommonApi,
+      },
+      {
+        key: 'logic',
+        ignore: true,
+      },
+      {
+        key: 'conditional',
+        ignore: true,
+      },
+    ],
+    ...extend,
+  );
 }

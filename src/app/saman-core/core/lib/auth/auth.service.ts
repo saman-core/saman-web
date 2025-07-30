@@ -1,34 +1,44 @@
-import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
 import { AuthConfig, OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
 import { UserSubscriptor } from '@saman-core/core';
 import { AUTH_CONFIG } from './auth.config';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  constructor(
-    @Inject(AUTH_CONFIG) _authConfig: AuthConfig,
-    private _oauthService: OAuthService,
-    private _userSubscriptor: UserSubscriptor,
-    private _router: Router,
-  ) {
+  private _oauthService = inject(OAuthService);
+  private _userSubscriptor = inject(UserSubscriptor);
+
+  constructor() {
+    const _authConfig = inject<AuthConfig>(AUTH_CONFIG);
+
     this._oauthService.configure(_authConfig);
   }
 
-  public initConfiguration(): void {
-    this._oauthService.loadDiscoveryDocumentAndLogin().then((onFulfilled) => {
-      if (onFulfilled) {
-        this._oauthService.loadUserProfile().then(
-          (user) => this._userSubscriptor.setUser(user),
-          (err) => console.error(err),
-        );
-        this._oauthService.setupAutomaticSilentRefresh();
-        this._router.navigate(['/']);
-      } else {
-        this._oauthService.initCodeFlow();
-      }
-    });
+  public initConfiguration(): Promise<void> {
+    return this._oauthService
+      .loadDiscoveryDocumentAndLogin()
+      .then((onFulfilled) => {
+        if (onFulfilled) {
+          this._oauthService.loadUserProfile().then(
+            (user) => this._userSubscriptor.setUser(user),
+            (err) => console.error(err),
+          );
+          this._oauthService.setupAutomaticSilentRefresh();
+        } else {
+          this._oauthService.initCodeFlow();
+        }
+      })
+      .catch((err) => {
+        const el = document.getElementById('loading-message');
+        if (el) {
+          el.innerText = 'Error OIDC:\n' + JSON.stringify(err);
+          el.style.color = 'red';
+        }
+        return Promise.reject(err);
+      });
   }
 
   public hasValidAccessToken(): boolean {

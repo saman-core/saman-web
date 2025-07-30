@@ -1,7 +1,8 @@
+node_modules
+/dist
+/build
+coverage
 !/*.js
-dist/
-coverage/
-**/node_modules/**
 .vscode
 .idea
 .angular

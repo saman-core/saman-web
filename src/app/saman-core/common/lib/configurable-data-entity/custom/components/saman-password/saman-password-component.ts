@@ -6,13 +6,16 @@ const Component = (Formio as any).Components.components.password;
 
 export default class SamanPasswordComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanPassword',
-      label: 'Password',
-      key: 'password',
-      protected: true,
-      tableView: false,
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanPassword',
+        label: 'Password',
+        key: 'password',
+        protected: true,
+        tableView: false,
+      },
+      ...extend,
+    );
   }
 
   static get builderInfo() {
@@ -22,7 +25,7 @@ export default class SamanPasswordComponent extends Component {
       group: 'basic',
       documentation: '/userguide/form-building/form-components#password',
       weight: 40,
-      schema: SamanPasswordComponent.schema()
+      schema: SamanPasswordComponent.schema(),
     };
   }
 

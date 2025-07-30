@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Alert, AlertType } from './alert.model';
 import { Observable, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AlertSubscriptor {
-  public subject = new Subject<Alert>();
+  private _toaster = inject(ToastrService);
 
-  constructor(private _toaster: ToastrService) {}
+  public subject = new Subject<Alert>();
 
   public getAlert(): Observable<Alert> {
     return this.subject.asObservable();

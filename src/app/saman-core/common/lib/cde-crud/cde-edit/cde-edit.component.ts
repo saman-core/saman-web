@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
@@ -7,14 +7,22 @@ import {
   EditConfirmDialogComponent,
   EditConfirmDialogResponse,
 } from '../edit-confirm-dialog/edit-confirm-dialog.component';
+import { CdeComponent } from '../../configurable-data-entity/cde/cde.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-cde-edit',
-    templateUrl: './cde-edit.component.html',
-    styleUrl: './cde-edit.component.scss',
-    standalone: false
+  selector: 'app-cde-edit',
+  templateUrl: './cde-edit.component.html',
+  styleUrl: './cde-edit.component.scss',
+  imports: [CdeComponent, MatButton],
 })
 export class CdeEditComponent implements OnInit {
+  private readonly _router = inject(Router);
+  private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _dialog = inject(MatDialog);
+  private readonly _alert = inject(AlertSubscriptor);
+  private readonly _cdeRepository = inject(CdeRepository);
+
   moduleName: string = '';
   productName: string = '';
   templateName: string = '';
@@ -22,14 +30,6 @@ export class CdeEditComponent implements OnInit {
   id = 0;
   formValid = false;
   data: object = {};
-
-  constructor(
-    private readonly _router: Router,
-    private readonly _activatedRoute: ActivatedRoute,
-    private readonly _dialog: MatDialog,
-    private readonly _alert: AlertSubscriptor,
-    private readonly _cdeRepository: CdeRepository,
-  ) {}
 
   ngOnInit() {
     this.id = parseInt(this._activatedRoute.snapshot.params['id']);

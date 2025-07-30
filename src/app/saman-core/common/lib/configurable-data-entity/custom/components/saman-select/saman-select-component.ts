@@ -62,7 +62,6 @@ export default class SamanSelectComponent extends Component {
 
   static editForm = editForm;
 
-  /* eslint-disable max-statements */
   updateItems(searchInput, forceUpdate) {
     if (!this.component.data) {
       console.warn(`Select component ${this.key} does not have data configuration.`);

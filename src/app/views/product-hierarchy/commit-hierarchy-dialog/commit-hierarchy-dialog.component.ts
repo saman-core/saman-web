@@ -1,7 +1,17 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductHierarchyComponent } from '../product-hierarchy/product-hierarchy.component';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 export interface CommitDialogResponse {
   message: string;
@@ -9,23 +19,34 @@ export interface CommitDialogResponse {
 }
 
 @Component({
-    selector: 'app-commit-hierarchy-dialog',
-    templateUrl: './commit-hierarchy-dialog.component.html',
-    styleUrl: './commit-hierarchy-dialog.component.scss',
-    standalone: false
+  selector: 'app-commit-hierarchy-dialog',
+  templateUrl: './commit-hierarchy-dialog.component.html',
+  styleUrl: './commit-hierarchy-dialog.component.scss',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    ReactiveFormsModule,
+    MatError,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+  ],
 })
 export class CommitHierarchyDialogComponent {
+  dialogRef = inject<MatDialogRef<ProductHierarchyComponent>>(MatDialogRef);
+  productName = inject(MAT_DIALOG_DATA);
+
   message = new FormControl('', [
     Validators.required,
     Validators.minLength(8),
     Validators.maxLength(256),
   ]);
   data: CommitDialogResponse;
-
-  constructor(
-    public dialogRef: MatDialogRef<ProductHierarchyComponent>,
-    @Inject(MAT_DIALOG_DATA) public productName: string,
-  ) {}
 
   cancel(): void {
     this.dialogRef.close({ message: '', accepted: false });

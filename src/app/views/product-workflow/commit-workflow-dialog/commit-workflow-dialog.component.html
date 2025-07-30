@@ -1,11 +1,11 @@
 <h2 mat-dialog-title>Commit Message</h2>
 <mat-dialog-content>
-  <p>Please write a message if you really want to persist the {{productName}} Workflow</p>
+  <p>Please write a message if you really want to persist the {{ productName }} Workflow</p>
   <mat-form-field>
     <mat-label>Message</mat-label>
-    <input matInput placeholder="type a message" [formControl]="message" required>
+    <input matInput placeholder="type a message" [formControl]="message" required />
     @if (message.invalid) {
-      <mat-error>{{getErrorMessage()}}</mat-error>
+      <mat-error>{{ getErrorMessage() }}</mat-error>
     }
   </mat-form-field>
 </mat-dialog-content>

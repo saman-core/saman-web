@@ -1,7 +1,0 @@
-!/*.js
-dist/
-coverage/
-**/node_modules/**
-.vscode
-.idea
-.angular

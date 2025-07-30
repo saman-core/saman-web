@@ -31,7 +31,7 @@
       <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
         <button mat-icon-button [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
           <mat-icon class="mat-icon-rtl-mirror">
-            {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+            {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
           </mat-icon>
         </button>
         {{ node.item }}
@@ -46,7 +46,7 @@
         Builder
       </mat-panel-title>
       <mat-panel-description>
-        @if (templateNameSelected === "") {
+        @if (templateNameSelected === '') {
           Not Template Selected
         } @else {
           Edit Template "<span style="text-transform: uppercase"

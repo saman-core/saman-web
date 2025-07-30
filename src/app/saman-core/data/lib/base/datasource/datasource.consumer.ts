@@ -38,7 +38,7 @@ export class DatasourceConsumer {
 
   getPageByMethod<T>(
     method: string,
-    pageableModel: PageableModel,
+    pageableModel: PageableModel | null,
     params: { [key: string]: string } = {},
     blockScreen: boolean = false,
     progressBar: boolean = true,
@@ -67,7 +67,7 @@ export class DatasourceConsumer {
   savePageMethod<T, D>(
     method: string,
     item: D,
-    pageableModel: PageableModel,
+    pageableModel: PageableModel | null,
     params: { [key: string]: string } = {},
     blockScreen: boolean = false,
     progressBar: boolean = true,
@@ -96,7 +96,7 @@ export class DatasourceConsumer {
   updatePageMethod<T, D>(
     method: string,
     item: D,
-    pageableModel: PageableModel,
+    pageableModel: PageableModel | null,
     params: { [key: string]: string } = {},
     blockScreen: boolean = false,
     progressBar: boolean = true,

@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Loader } from './loader.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class LoaderSubscriptor {
   private readonly _loaderSubject = new Subject<Loader>();
 

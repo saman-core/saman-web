@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatasourceConsumer } from '../../../base/datasource/datasource.consumer';
 import { DatasourceFactory } from '../../../base/datasource/datasource.factory';
 import { PageModel, PageableModel } from '@saman-core/data';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class CdeRepository {
-  constructor(private readonly _datasourceFactory: DatasourceFactory) {}
+  private readonly _datasourceFactory = inject(DatasourceFactory);
 
-  public getConsumer(moduleName: string, productName: string, templateName: string): DatasourceConsumer {
+  public getConsumer(
+    moduleName: string,
+    productName: string,
+    templateName: string,
+  ): DatasourceConsumer {
     const dataformat = 'cde1';
     const port = '9082';
     const server = `${moduleName}-cde-${productName}-${templateName}`;
@@ -22,7 +28,7 @@ export class CdeRepository {
     productName: string,
     templateName: string,
     pageableModel: PageableModel,
-    params = {}
+    params = {},
   ): Observable<PageModel<object>> {
     const consumer = this.getConsumer(moduleName, productName, templateName);
     return consumer.getPageByMethod<object>('', pageableModel, params, true, true);
@@ -32,7 +38,7 @@ export class CdeRepository {
     moduleName: string,
     productName: string,
     templateName: string,
-    id: number
+    id: number,
   ): Observable<object> {
     const consumer = this.getConsumer(moduleName, productName, templateName);
     return consumer.getByMethod<object>(`${id}`, {}, true, true);
@@ -42,7 +48,7 @@ export class CdeRepository {
     moduleName: string,
     productName: string,
     templateName: string,
-    data: object
+    data: object,
   ): Observable<object> {
     const consumer = this.getConsumer(moduleName, productName, templateName);
     return consumer.saveMethod<object, object>('', data, {}, true, true);
@@ -52,7 +58,7 @@ export class CdeRepository {
     moduleName: string,
     productName: string,
     templateName: string,
-    data: object
+    data: object,
   ): Observable<object> {
     const consumer = this.getConsumer(moduleName, productName, templateName);
     return consumer.updateMethod<object, object>('', data, {}, true, true);
@@ -62,7 +68,7 @@ export class CdeRepository {
     moduleName: string,
     productName: string,
     templateName: string,
-    id: number
+    id: number,
   ): Observable<boolean> {
     const consumer = this.getConsumer(moduleName, productName, templateName);
     return consumer.deleteMethod<boolean>(`${id}`, {}, true, true);

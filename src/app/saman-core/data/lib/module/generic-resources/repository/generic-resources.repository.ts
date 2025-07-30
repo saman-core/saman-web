@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { DatasourceConsumer } from '../../../base/datasource/datasource.consumer';
 import { DatasourceFactory } from '../../../base/datasource/datasource.factory';
 import { PageModel, PageableModel } from '@saman-core/data';
 import { AuthService } from '@saman-core/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class GenericResourceRepository {
+  private _datasourceFactory = inject(DatasourceFactory);
+  private _authService = inject(AuthService);
+
   private _dataformat = 'resources1';
   private _port = '';
-
-  constructor(
-    private _datasourceFactory: DatasourceFactory,
-    private _authService: AuthService,
-  ) {}
 
   public loadItems(
     resourceName: string,
@@ -22,7 +22,7 @@ export class GenericResourceRepository {
     searchField: string,
     searchValue: string,
   ): Observable<PageModel<object>> {
-    let params = {};
+    let params: { [key: string]: string } = {};
     try {
       params = JSON.parse(`{${filterParam}}`);
     } catch {
@@ -93,7 +93,7 @@ export class GenericResourceRepository {
   }
 }
 
-const WL = {
+const WL: { [key: string]: { dataformat: string; port: string; server: string } } = {
   state: { dataformat: 'format2', port: '9085', server: 'location' },
   municipality: { dataformat: 'format2', port: '9085', server: 'location' },
   parish: { dataformat: 'format2', port: '9085', server: 'location' },

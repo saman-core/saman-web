@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
 import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
@@ -7,15 +7,20 @@ import {
   CommitDialogComponent,
   CommitDialogResponse,
 } from '../commit-dialog/commit-dialog.component';
-import { Buffer } from 'buffer';
+import { CdeBuilderComponent as CdeBuilderComponent_1 } from '../../../../saman-core/common/lib/configurable-data-entity/cde-builder/cde-builder.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-template-form-builder',
-    templateUrl: './template-form-builder.component.html',
-    styleUrl: './template-form-builder.component.scss',
-    standalone: false
+  selector: 'app-template-form-builder',
+  templateUrl: './template-form-builder.component.html',
+  styleUrl: './template-form-builder.component.scss',
+  imports: [CdeBuilderComponent_1, MatButton],
 })
 export class TemplateFormBuilderComponent implements OnInit {
+  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _alertSubscriptor = inject(AlertSubscriptor);
+  private readonly _dialog = inject(MatDialog);
+
   @ViewChild('builder') builder!: CdeBuilderComponent;
   public initialJson: object = { components: [] };
   private _newJson: object = { components: [] };
@@ -25,15 +30,9 @@ export class TemplateFormBuilderComponent implements OnInit {
   @Input() templateName: string;
   @Output() exitEmitter = new EventEmitter<boolean>();
 
-  constructor(
-    private readonly _productsGitRepository: ProductsGitRepository,
-    private readonly _alertSubscriptor: AlertSubscriptor,
-    private readonly _dialog: MatDialog,
-  ) {}
-
   ngOnInit(): void {
     try {
-      this.initialJson = JSON.parse(Buffer.from(this.node.content, 'base64').toString('utf-8'));
+      this.initialJson = JSON.parse(decodeURIComponent(escape(atob(this.node.content))));
       this._newJson = this.initialJson;
     } catch {
       console.error('initial node content parser error');
@@ -45,7 +44,7 @@ export class TemplateFormBuilderComponent implements OnInit {
   }
 
   public save(): void {
-    this.node.content = Buffer.from(JSON.stringify(this._newJson), 'utf-8').toString('base64');
+    this.node.content = btoa(unescape(encodeURIComponent(JSON.stringify(this._newJson))));
 
     const dialogRef = this._dialog.open(CommitDialogComponent, {
       data: this.templateName,

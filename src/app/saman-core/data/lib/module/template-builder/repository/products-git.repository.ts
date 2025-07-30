@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatasourceConsumer } from '../../../base/datasource/datasource.consumer';
 import { DatasourceFactory } from '../../../base/datasource/datasource.factory';
@@ -7,15 +7,19 @@ import { NodeModel } from '../model/node.model';
 import { CommitRequestModel } from '../model/commit-request.model';
 import { ConditionsPropertyModel } from '../model/conditions-property.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ProductsGitRepository implements Repository {
+  private readonly _datasourceFactory = inject(DatasourceFactory);
+
   datasource: DatasourceConsumer;
   private readonly _dataformat = 'format2';
   private readonly _port = '9083';
   private readonly _server = 'template-builder';
   private readonly _resource = 'products';
 
-  constructor(private readonly _datasourceFactory: DatasourceFactory) {
+  constructor() {
     this.datasource = this._datasourceFactory.getConsumer(
       this._dataformat,
       this._port,
@@ -153,10 +157,7 @@ export class ProductsGitRepository implements Repository {
     return this.datasource.getByMethod<NodeModel>(`${moduleName}/er/diagram`);
   }
 
-  public persistEr(
-    moduleName: string,
-    commitRequest: CommitRequestModel,
-  ): Observable<NodeModel> {
+  public persistEr(moduleName: string, commitRequest: CommitRequestModel): Observable<NodeModel> {
     return this.datasource.saveMethod<NodeModel, CommitRequestModel>(
       `${moduleName}/er/diagram`,
       commitRequest,

@@ -1,10 +1,6 @@
-.callout-info {
-  background-color: $light-50 !important;
-
-  @at-root .dark-theme & {
-    background-color: rgba(255, 255, 255, .1) !important;
-  }
-}
+@use '@coreui/coreui/scss/variables' as *;
+@use '@coreui/coreui/scss/mixins/breakpoints' as *;
+@use '@coreui/coreui/scss/mixins/color-mode' as *;
 
 .example {
   &:not(:first-child) {
@@ -12,42 +8,22 @@
   }
 
   .tab-content {
-    background-color: $light-50 !important;
-
-    @at-root .dark-theme & {
-      background-color: rgba(255, 255, 255, .1) !important;
-    }
+    background-color: var(--#{$prefix}tertiary-bg);
   }
 
-  code[class*="language-"],
-  pre[class*="language-"] {
-    font-size: .875rem !important;
-  }
-
-  :not(pre) > code[class*="language-"],
-  pre[class*="language-"] {
-    background: transparent;
-  }
-
-  & + p,
-  & + h2,
-  & + h3,
-  & + h4,
-  & + h5,
-  & + h6 {
+  & + p {
     margin-top: 1.5rem;
   }
 
   // Components examples
-  .preview,
-  .preview .col {
+  .preview {
     + p {
       margin-top: 2rem;
     }
 
     > .form-control {
       + .form-control {
-        margin-top: .5rem;
+        margin-top: 0.5rem;
       }
     }
 
@@ -70,16 +46,19 @@
     // Images
     > svg + svg,
     > img + img {
-      margin-left: .5rem;
+      margin-left: 0.5rem;
     }
 
     // Buttons
+    .col > .btn,
+    .col-auto > .btn,
+    .d-md-block > .btn,
     > .btn,
     > .btn-group {
-      margin: .25rem .125rem;
+      margin: 0.25rem 0.125rem;
     }
     > .btn-toolbar + .btn-toolbar {
-      margin-top: .5rem;
+      margin-top: 0.5rem;
     }
 
     // List groups
@@ -87,7 +66,7 @@
       max-width: 400px;
     }
 
-    > [class*="list-group-horizontal"] {
+    > [class*='list-group-horizontal'] {
       max-width: 100%;
     }
 
@@ -115,8 +94,21 @@
 
     // Pagination
     .pagination {
-      margin-top: .5rem;
-      margin-bottom: .5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
     }
+
+    .docs-example-modal {
+      .modal {
+        position: static;
+        display: block;
+      }
+    }
+  }
+}
+
+@include color-mode(dark) {
+  .example .tab-content {
+    background-color: var(--#{$prefix}secondary-bg);
   }
 }

@@ -1,27 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { GenericResourceRepository } from '@saman-core/data';
 import { Formio } from '@formio/angular';
-import Prism from 'prismjs';
+import { Templates } from '@formio/js';
 import CustomComponents from './custom/index';
 import { ServiceProvider } from './service-provider';
+import { template } from './template';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class InitCdeService {
-  private _isInitialized = false;
-
-  constructor(
-    private readonly _genericResourceRepository: GenericResourceRepository,
-  ) {}
+  private readonly _genericResourceRepository = inject(GenericResourceRepository);
 
   initConf() {
-    if (!this._isInitialized) {
-      Formio.use(CustomComponents);
-      this._isInitialized = true;
-      ServiceProvider.genericResourceRepository = this._genericResourceRepository;
-    }
-  }
-
-  initPrism() {
-    Prism.highlightAll();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (Formio as any).icons = 'fontawesome';
+    Templates.current = template;
+    Formio.use(CustomComponents);
+    ServiceProvider.genericResourceRepository = this._genericResourceRepository;
   }
 }

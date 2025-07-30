@@ -1,7 +1,17 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { TemplateFormBuilderComponent } from '../template-form-builder/template-form-builder.component';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 export interface CommitDialogResponse {
   message: string;
@@ -9,23 +19,34 @@ export interface CommitDialogResponse {
 }
 
 @Component({
-    selector: 'app-commit-dialog',
-    templateUrl: './commit-dialog.component.html',
-    styleUrl: './commit-dialog.component.scss',
-    standalone: false
+  selector: 'app-commit-dialog',
+  templateUrl: './commit-dialog.component.html',
+  styleUrl: './commit-dialog.component.scss',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    ReactiveFormsModule,
+    MatError,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+  ],
 })
 export class CommitDialogComponent {
+  dialogRef = inject<MatDialogRef<TemplateFormBuilderComponent>>(MatDialogRef);
+  templateName = inject(MAT_DIALOG_DATA);
+
   message = new FormControl('', [
     Validators.required,
     Validators.minLength(8),
     Validators.maxLength(256),
   ]);
   data: CommitDialogResponse;
-
-  constructor(
-    public dialogRef: MatDialogRef<TemplateFormBuilderComponent>,
-    @Inject(MAT_DIALOG_DATA) public templateName: string,
-  ) {}
 
   cancel(): void {
     this.dialogRef.close({ message: '', accepted: false });

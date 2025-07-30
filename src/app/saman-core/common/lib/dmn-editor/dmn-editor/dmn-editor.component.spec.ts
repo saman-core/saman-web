@@ -8,10 +8,9 @@ describe('DmnEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DmnEditorComponent]
-    })
-    .compileComponents();
-    
+      imports: [DmnEditorComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(DmnEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

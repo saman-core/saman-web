@@ -1,16 +1,49 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { DynamicFlatNode, ProductsGitRepository } from '@saman-core/data';
 import { DynamicDataSource } from './dynamic-data-source';
 import { TemplateFormBuilderComponent } from '../template-form-builder/template-form-builder.component';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+  MatExpansionPanelDescription,
+} from '@angular/material/expansion';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatTree,
+  MatTreeNodeDef,
+  MatTreeNode,
+  MatTreeNodePadding,
+  MatTreeNodeToggle,
+} from '@angular/material/tree';
 
 @Component({
-    selector: 'app-template-structure',
-    templateUrl: './template-structure.component.html',
-    styleUrl: './template-structure.component.scss',
-    standalone: false
+  selector: 'app-template-structure',
+  templateUrl: './template-structure.component.html',
+  styleUrl: './template-structure.component.scss',
+  imports: [
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNode,
+    MatTreeNodePadding,
+    MatTreeNodeToggle,
+    MatExpansionPanelDescription,
+  ],
 })
 export class TemplateStructureComponent {
+  private readonly _productsGitRepository = inject(ProductsGitRepository);
+
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
   dynamicEditorLoader: ViewContainerRef;
   step = 0;
@@ -19,7 +52,9 @@ export class TemplateStructureComponent {
   dataSource: DynamicDataSource;
   templateNameSelected = '';
 
-  constructor(private readonly _productsGitRepository: ProductsGitRepository) {
+  constructor() {
+    const _productsGitRepository = this._productsGitRepository;
+
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
 
@@ -41,22 +76,24 @@ export class TemplateStructureComponent {
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
   openEditor(moduleName: string, productName: string, templateName: string) {
-    this._productsGitRepository.getTemplate(moduleName, productName, templateName).subscribe((node) => {
-      this.dynamicEditorLoader.clear();
-      const componentRef = this.dynamicEditorLoader.createComponent(TemplateFormBuilderComponent);
-      componentRef.instance.productName = moduleName;
-      componentRef.instance.productName = productName;
-      componentRef.instance.templateName = templateName;
-      componentRef.instance.node = node;
-      componentRef.instance.exitEmitter.subscribe(() => {
-        this.setStep(0);
-        this.templateNameSelected = '';
-        componentRef.destroy();
-      });
+    this._productsGitRepository
+      .getTemplate(moduleName, productName, templateName)
+      .subscribe((node) => {
+        this.dynamicEditorLoader.clear();
+        const componentRef = this.dynamicEditorLoader.createComponent(TemplateFormBuilderComponent);
+        componentRef.instance.productName = moduleName;
+        componentRef.instance.productName = productName;
+        componentRef.instance.templateName = templateName;
+        componentRef.instance.node = node;
+        componentRef.instance.exitEmitter.subscribe(() => {
+          this.setStep(0);
+          this.templateNameSelected = '';
+          componentRef.destroy();
+        });
 
-      this.templateNameSelected = templateName;
-      this.step = 1;
-    });
+        this.templateNameSelected = templateName;
+        this.step = 1;
+      });
   }
 
   setStep(index: number) {

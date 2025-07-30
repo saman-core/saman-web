@@ -6,14 +6,17 @@ const Component = (Formio as any).Components.components.tags;
 
 export default class SamanTagsComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanTags',
-      label: 'Tags',
-      key: 'tags',
-      delimeter: ',',
-      storeas: 'array',
-      maxTags: 0
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanTags',
+        label: 'Tags',
+        key: 'tags',
+        delimeter: ',',
+        storeas: 'array',
+        maxTags: 0,
+      },
+      ...extend,
+    );
   }
 
   static get builderInfo() {
@@ -23,7 +26,7 @@ export default class SamanTagsComponent extends Component {
       group: 'advanced',
       documentation: '/userguide/form-building/advanced-components#tags',
       weight: 30,
-      schema: SamanTagsComponent.schema()
+      schema: SamanTagsComponent.schema(),
     };
   }
 

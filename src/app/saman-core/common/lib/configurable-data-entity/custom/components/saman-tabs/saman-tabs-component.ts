@@ -6,22 +6,25 @@ const Component = (Formio as any).Components.components.tabs;
 
 export default class SamanTabsComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      label: 'Tabs',
-      type: 'samanTabs',
-      input: false,
-      key: 'tabs',
-      persistent: false,
-      tableView: false,
-      components: [
-        {
-          label: 'Tab 1',
-          key: 'tab1',
-          components: [],
-        },
-      ],
-      verticalLayout: false,
-    }, ...extend);
+    return Component.schema(
+      {
+        label: 'Tabs',
+        type: 'samanTabs',
+        input: false,
+        key: 'tabs',
+        persistent: false,
+        tableView: false,
+        components: [
+          {
+            label: 'Tab 1',
+            key: 'tab1',
+            components: [],
+          },
+        ],
+        verticalLayout: false,
+      },
+      ...extend,
+    );
   }
 
   static get builderInfo() {

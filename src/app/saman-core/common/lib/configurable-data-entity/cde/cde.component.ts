@@ -1,13 +1,5 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { FormioComponent } from '@formio/angular';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { FormioComponent, FormioModule } from '@formio/angular';
 import {
   CdeRepository,
   ConditionModel,
@@ -21,15 +13,21 @@ import { AlertSubscriptor } from '@saman-core/core';
 import { FormUtilService } from '../../form-util/form-util.service';
 import { Subject, bufferWhen, combineLatestWith, filter, take, tap } from 'rxjs';
 import _ from 'lodash';
-import { InitCdeService } from '../init.service';
+import { ConfigurableDataEntityModule } from '../configurable-data-entity.module';
 
 @Component({
-    selector: 'app-cde',
-    templateUrl: './cde.component.html',
-    styleUrl: './cde.component.scss',
-    standalone: false
+  selector: 'app-cde',
+  templateUrl: './cde.component.html',
+  styleUrl: './cde.component.scss',
+  imports: [FormioModule, ConfigurableDataEntityModule],
 })
-export class CdeComponent implements AfterViewInit, OnInit {
+export class CdeComponent implements OnInit {
+  private readonly _templateRepository = inject(TemplateRepository);
+  private readonly _conditionRepository = inject(ConditionRepository);
+  private readonly _cdeRepository = inject(CdeRepository);
+  private readonly _formUtilService = inject(FormUtilService);
+  private readonly _alertSubscriptor = inject(AlertSubscriptor);
+
   @ViewChild('formio') formComponent!: FormioComponent;
   @Input() initialData: object = {};
   @Input() moduleName: string;
@@ -43,17 +41,6 @@ export class CdeComponent implements AfterViewInit, OnInit {
   private _lastConditionDataEvaluated = {};
   formJson: object = { components: [] };
   formData = { data: {} };
-
-  constructor(
-    private readonly _initCdeService: InitCdeService,
-    private readonly _templateRepository: TemplateRepository,
-    private readonly _conditionRepository: ConditionRepository,
-    private readonly _cdeRepository: CdeRepository,
-    private readonly _formUtilService: FormUtilService,
-    private readonly _alertSubscriptor: AlertSubscriptor,
-  ) {
-    _initCdeService.initConf();
-  }
 
   ngOnInit(): void {
     this._consumer = this._conditionRepository.getConsumer(
@@ -88,10 +75,6 @@ export class CdeComponent implements AfterViewInit, OnInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    this._initCdeService.initPrism();
-  }
-
   private _init(templateJson: object, data: object): void {
     const conditionRequest: ConditionRequestModel = {
       variables: data,
@@ -114,7 +97,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
 
   private _registryAndProcessEvents(): void {
     const grouping = new Subject<boolean>();
-    let groupingInterval: NodeJS.Timeout;
+    let groupingInterval: number;
 
     this.formComponent.change
       .asObservable()
@@ -122,7 +105,7 @@ export class CdeComponent implements AfterViewInit, OnInit {
         filter((ch) => this._filterChangesByEventOrigin(ch)),
         tap(() => {
           clearTimeout(groupingInterval);
-          groupingInterval = setTimeout(() => grouping.next(true), 350);
+          groupingInterval = window.setTimeout(() => grouping.next(true), 350);
         }),
         bufferWhen(() => grouping),
       )

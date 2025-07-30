@@ -6,24 +6,27 @@ const Component = (Formio as any).Components.components.textfield;
 
 export default class SamanTextfieldComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      label: 'Text Field',
-      key: 'textField',
-      type: 'samanTextfield',
-      mask: false,
-      inputType: 'text',
-      inputFormat: 'plain',
-      inputMask: '',
-      displayMask: '',
-      tableView: true,
-      spellcheck: true,
-      truncateMultipleSpaces: false,
-      validate: {
-        minLength: '',
-        maxLength: '',
-        pattern: ''
-      }
-    }, ...extend);
+    return Component.schema(
+      {
+        label: 'Text Field',
+        key: 'textField',
+        type: 'samanTextfield',
+        mask: false,
+        inputType: 'text',
+        inputFormat: 'plain',
+        inputMask: '',
+        displayMask: '',
+        tableView: true,
+        spellcheck: true,
+        truncateMultipleSpaces: false,
+        validate: {
+          minLength: '',
+          maxLength: '',
+          pattern: '',
+        },
+      },
+      ...extend,
+    );
   }
 
   static get builderInfo() {
@@ -33,7 +36,7 @@ export default class SamanTextfieldComponent extends Component {
       group: 'basic',
       documentation: '/userguide/form-building/form-components#text-field',
       weight: 0,
-      schema: SamanTextfieldComponent.schema()
+      schema: SamanTextfieldComponent.schema(),
     };
   }
 

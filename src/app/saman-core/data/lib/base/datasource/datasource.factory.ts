@@ -1,16 +1,19 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DatasourceConsumer } from './datasource.consumer';
 import { DATA_CONFIG, DataConfType } from '../data.config';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DatasourceFactory {
+  private _http = inject(HttpClient);
+
   private _confType: DataConfType;
 
-  constructor(
-    @Inject(DATA_CONFIG) _dataConfType: DataConfType,
-    private _http: HttpClient,
-  ) {
+  constructor() {
+    const _dataConfType = inject<DataConfType>(DATA_CONFIG);
+
     this._confType = _dataConfType;
   }
 

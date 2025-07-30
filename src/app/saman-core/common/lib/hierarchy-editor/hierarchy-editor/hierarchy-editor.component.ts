@@ -4,12 +4,11 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  Inject,
   ViewContainerRef,
-  ComponentFactoryResolver,
   Input,
   Output,
   EventEmitter,
+  inject,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { dia, shapes, linkTools, elementTools, util, g } from '@joint/core';
@@ -24,32 +23,29 @@ import {
   DeleteConfirmationDialogComponent,
   DeleteConfirmationDialogResponse,
 } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { Buffer } from 'buffer';
 import { CardinalityTypeEnum } from '../cardinality-type.enum';
 import { BG_COLOR, CardinalityTypeProperties, FG_COLOR } from '../cardinality-type.properties';
 import { EntityTypeEnum } from '../entity-type.enum';
 import { EntityTypeProperties } from '../entity-type.properties';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-hierarchy-editor',
-    templateUrl: './hierarchy-editor.component.html',
-    styleUrl: './hierarchy-editor.component.scss',
-    standalone: false
+  selector: 'app-hierarchy-editor',
+  templateUrl: './hierarchy-editor.component.html',
+  styleUrl: './hierarchy-editor.component.scss',
+  imports: [MatButton],
 })
 export class HierarchyEditorComponent implements OnInit, AfterViewInit {
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly _dialog = inject(MatDialog);
+  private readonly document = inject<Document>(DOCUMENT);
+
   @ViewChild('canvas') canvas: ElementRef;
   @Input() graphJsonBase64: string = '';
   @Output() actionEmitter = new EventEmitter<ActionHierarchyType>();
 
   private graph: dia.Graph;
   private paper: dia.Paper;
-
-  constructor(
-    private readonly viewContainerRef: ViewContainerRef,
-    private readonly componentFactoryResolver: ComponentFactoryResolver,
-    private readonly _dialog: MatDialog,
-    @Inject(DOCUMENT) private readonly document: Document,
-  ) {}
 
   public ngOnInit(): void {
     this.graph = new dia.Graph({}, { cellNamespace: shapes });
@@ -69,16 +65,18 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    const graphJson = Buffer.from(this.graphJsonBase64, 'base64').toString('utf-8');
+    // Decodificación robusta base64 para Unicode
+    const graphJson = decodeURIComponent(escape(atob(this.graphJsonBase64)));
     this.canvas.nativeElement.appendChild(this.paper.el);
     if (graphJson !== '{}') this.graph.fromJSON(JSON.parse(graphJson));
     this.paper.unfreeze();
   }
 
   save(): void {
+    // Codificación robusta base64 para Unicode
     this.actionEmitter.emit({
       action: 'save',
-      dataBase64: Buffer.from(JSON.stringify(this.graph.toJSON()), 'utf-8').toString('base64'),
+      dataBase64: btoa(unescape(encodeURIComponent(JSON.stringify(this.graph.toJSON())))),
     });
   }
 
@@ -112,7 +110,6 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
       width: '800px',
       disableClose: true,
       viewContainerRef: this.viewContainerRef,
-      componentFactoryResolver: this.componentFactoryResolver,
     });
     dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
       if (response.accepted) {
@@ -158,8 +155,6 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
       height: '600px',
       width: '800px',
       disableClose: true,
-      viewContainerRef: this.viewContainerRef,
-      componentFactoryResolver: this.componentFactoryResolver,
     });
     dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
       if (response.accepted) {
@@ -201,8 +196,12 @@ export class HierarchyEditorComponent implements OnInit, AfterViewInit {
     link.set('cardinalitySource', cardinalitySource);
     link.set('cardinalityTarget', cardinalityTarget);
     link.label(0, this._createLinkLabel(name));
-    link.prop('attrs/line/sourceMarker', CardinalityTypeProperties[cardinalitySource], { rewrite: true });
-    link.prop('attrs/line/targetMarker', CardinalityTypeProperties[cardinalityTarget], { rewrite: true });
+    link.prop('attrs/line/sourceMarker', CardinalityTypeProperties[cardinalitySource], {
+      rewrite: true,
+    });
+    link.prop('attrs/line/targetMarker', CardinalityTypeProperties[cardinalityTarget], {
+      rewrite: true,
+    });
   }
 
   private _addToolsToView(paper: dia.Paper, graph: dia.Graph): void {

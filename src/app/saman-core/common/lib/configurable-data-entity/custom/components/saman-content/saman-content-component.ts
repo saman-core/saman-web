@@ -6,15 +6,18 @@ const Component = (Formio as any).Components.components.content;
 
 export default class SamanContentComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      label: 'Content',
-      type: 'samanContent',
-      key: 'content',
-      input: false,
-      html: ''
-    }, ...extend);
+    return Component.schema(
+      {
+        label: 'Content',
+        type: 'samanContent',
+        key: 'content',
+        input: false,
+        html: '',
+      },
+      ...extend,
+    );
   }
-  
+
   static get builderInfo() {
     return {
       title: 'Content',
@@ -23,7 +26,7 @@ export default class SamanContentComponent extends Component {
       preview: false,
       documentation: '/userguide/form-building/layout-components#content',
       weight: 5,
-      schema: SamanContentComponent.schema()
+      schema: SamanContentComponent.schema(),
     };
   }
 

@@ -1,5 +1,5 @@
-import { GenericResourceRepository } from "@saman-core/data";
+import { GenericResourceRepository } from '@saman-core/data';
 
 export class ServiceProvider {
-    static genericResourceRepository: GenericResourceRepository;
+  static genericResourceRepository: GenericResourceRepository;
 }

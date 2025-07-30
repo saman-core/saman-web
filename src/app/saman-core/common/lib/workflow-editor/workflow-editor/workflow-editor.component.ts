@@ -4,12 +4,11 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  Inject,
   ViewContainerRef,
-  ComponentFactoryResolver,
   Input,
   Output,
   EventEmitter,
+  inject,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { dia, shapes, linkTools, elementTools, util, g } from '@joint/core';
@@ -26,28 +25,25 @@ import {
   DeleteConfirmationDialogComponent,
   DeleteConfirmationDialogResponse,
 } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { Buffer } from 'buffer';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-workflow-editor',
-    templateUrl: './workflow-editor.component.html',
-    styleUrl: './workflow-editor.component.scss',
-    standalone: false
+  selector: 'app-workflow-editor',
+  templateUrl: './workflow-editor.component.html',
+  styleUrl: './workflow-editor.component.scss',
+  imports: [MatButton],
 })
 export class WorkflowEditorComponent implements OnInit, AfterViewInit {
+  private viewContainerRef = inject(ViewContainerRef);
+  private _dialog = inject(MatDialog);
+  private document = inject<Document>(DOCUMENT);
+
   @ViewChild('canvas') canvas: ElementRef;
   @Input() graphJsonBase64: string = '';
   @Output() actionEmitter = new EventEmitter<ActionWorkflowType>();
 
   private graph: dia.Graph;
   private paper: dia.Paper;
-
-  constructor(
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private _dialog: MatDialog,
-    @Inject(DOCUMENT) private document: Document,
-  ) {}
 
   public ngOnInit(): void {
     this.graph = new dia.Graph({}, { cellNamespace: shapes });
@@ -66,7 +62,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    const graphJson = Buffer.from(this.graphJsonBase64, 'base64').toString('utf-8');
+    const graphJson = decodeURIComponent(escape(atob(this.graphJsonBase64)));
     this.canvas.nativeElement.appendChild(this.paper.el);
     if (graphJson === '{}') this._initState(50, 200);
     else this.graph.fromJSON(JSON.parse(graphJson));
@@ -76,7 +72,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   save(): void {
     this.actionEmitter.emit({
       action: 'save',
-      dataBase64: Buffer.from(JSON.stringify(this.graph.toJSON()), 'utf-8').toString('base64'),
+      dataBase64: btoa(unescape(encodeURIComponent(JSON.stringify(this.graph.toJSON())))),
     });
   }
 
@@ -110,7 +106,6 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
       width: '800px',
       disableClose: true,
       viewContainerRef: this.viewContainerRef,
-      componentFactoryResolver: this.componentFactoryResolver,
     });
     dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
       if (response.accepted) {
@@ -157,7 +152,6 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
       width: '800px',
       disableClose: true,
       viewContainerRef: this.viewContainerRef,
-      componentFactoryResolver: this.componentFactoryResolver,
     });
     dialogRef.afterClosed().subscribe((response: TransitionDialogResponse) => {
       if (response.accepted) {
@@ -212,7 +206,7 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
       graph.getElements().forEach((v) => v.findView(paper).removeTools());
       graph.getLinks().forEach((v) => v.findView(paper).removeTools());
       if (window.getSelection) {
-        window.getSelection().removeAllRanges();
+        window.getSelection()?.removeAllRanges();
       } else if (this.document.selection) {
         this.document.selection.empty();
       }
@@ -550,8 +544,8 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
   }
 
   private _adjustVertices(link: shapes.standard.Link): void {
-    const leftMiddle = link.getSourceCell().getBBox().leftMiddle();
-    const rightMiddle = link.getTargetCell().getBBox().rightMiddle();
+    const leftMiddle = link.getSourceCell()?.getBBox().leftMiddle();
+    const rightMiddle = link.getTargetCell()?.getBBox().rightMiddle();
 
     const num = 6;
     const distance = 10;

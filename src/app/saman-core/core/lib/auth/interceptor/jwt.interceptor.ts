@@ -1,16 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { LoaderSubscriptor, AlertSubscriptor, AuthService } from '@saman-core/core';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(
-    private _loader: LoaderSubscriptor,
-    private _alert: AlertSubscriptor,
-    private _authService: AuthService,
-  ) {}
+  private _loader = inject(LoaderSubscriptor);
+  private _alert = inject(AlertSubscriptor);
+  private _authService = inject(AuthService);
 
   public intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const blockScreen = 'true' === req.headers.get('ignoreBlockScreen');

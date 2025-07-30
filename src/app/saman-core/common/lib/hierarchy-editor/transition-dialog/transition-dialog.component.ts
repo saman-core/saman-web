@@ -1,6 +1,19 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { dia } from '@joint/core';
 import { HierarchyEditorComponent } from '../hierarchy-editor/hierarchy-editor.component';
 import {
@@ -9,6 +22,10 @@ import {
   nameFormatValidator,
 } from '../utils/validator';
 import { CardinalityTypeEnum } from '../cardinality-type.enum';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
 
 export interface TransitionDialogResponse {
   name: string;
@@ -28,12 +45,30 @@ export interface TransitionDialogRequest {
 }
 
 @Component({
-    selector: 'app-transition-dialog',
-    templateUrl: './transition-dialog.component.html',
-    styleUrl: './transition-dialog.component.scss',
-    standalone: false
+  selector: 'app-transition-dialog',
+  templateUrl: './transition-dialog.component.html',
+  styleUrl: './transition-dialog.component.scss',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    ReactiveFormsModule,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+  ],
 })
 export class TransitionDialogComponent {
+  dialogRef = inject<MatDialogRef<HierarchyEditorComponent>>(MatDialogRef);
+  request = inject<TransitionDialogRequest>(MAT_DIALOG_DATA);
+
   states: dia.Element[];
   cardinalitiesOneMany: CardinalityTypeEnum[] = Object.values(CardinalityTypeEnum);
   cardinalitiesOne: CardinalityTypeEnum[] = this.cardinalitiesOneMany.filter((cardinality) =>
@@ -48,10 +83,9 @@ export class TransitionDialogComponent {
   form: FormGroup;
   data: TransitionDialogRequest;
 
-  constructor(
-    public dialogRef: MatDialogRef<HierarchyEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public request: TransitionDialogRequest,
-  ) {
+  constructor() {
+    const request = this.request;
+
     this.states = request.states;
     this.linksLabels = request.links.map((l) => l.get('name'));
     this.nameControl = new FormControl(request.linkToUpdate?.get('name'), [

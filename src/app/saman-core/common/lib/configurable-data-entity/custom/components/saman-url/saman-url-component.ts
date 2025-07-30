@@ -6,12 +6,15 @@ const Component = (Formio as any).Components.components.url;
 
 export default class SamanUrlComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanUrl',
-      label: 'Url',
-      key: 'url',
-      inputType: 'url'
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanUrl',
+        label: 'Url',
+        key: 'url',
+        inputType: 'url',
+      },
+      ...extend,
+    );
   }
 
   static get builderInfo() {
@@ -21,7 +24,7 @@ export default class SamanUrlComponent extends Component {
       icon: 'link',
       documentation: '/userguide/form-building/advanced-components#url',
       weight: 20,
-      schema: SamanUrlComponent.schema()
+      schema: SamanUrlComponent.schema(),
     };
   }
 

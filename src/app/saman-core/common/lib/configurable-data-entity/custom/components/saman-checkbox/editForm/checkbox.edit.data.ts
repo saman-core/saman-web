@@ -15,22 +15,22 @@ export default [
   },
   {
     key: 'dataType',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'customDefaultValuePanel',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'calculateValuePanel',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'calculateServer',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'allowCalculateOverride',
-    ignore: true
+    ignore: true,
   },
 ];

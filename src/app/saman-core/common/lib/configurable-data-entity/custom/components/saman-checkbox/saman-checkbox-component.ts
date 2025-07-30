@@ -6,18 +6,21 @@ const Component = (Formio as any).Components.components.checkbox;
 
 export default class SamanCheckboxComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanCheckbox',
-      inputType: 'checkbox',
-      label: 'Checkbox',
-      key: 'checkbox',
-      dataGridLabel: true,
-      labelPosition: 'right',
-      value: '',
-      name: ''
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanCheckbox',
+        inputType: 'checkbox',
+        label: 'Checkbox',
+        key: 'checkbox',
+        dataGridLabel: true,
+        labelPosition: 'right',
+        value: '',
+        name: '',
+      },
+      ...extend,
+    );
   }
-  
+
   static get builderInfo() {
     return {
       title: 'Checkbox',
@@ -25,7 +28,7 @@ export default class SamanCheckboxComponent extends Component {
       icon: 'check-square',
       documentation: '/userguide/form-building/form-components#check-box',
       weight: 50,
-      schema: SamanCheckboxComponent.schema()
+      schema: SamanCheckboxComponent.schema(),
     };
   }
 

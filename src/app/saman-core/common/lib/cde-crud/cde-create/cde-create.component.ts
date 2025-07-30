@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdeRepository } from '@saman-core/data';
@@ -7,28 +7,28 @@ import {
   CreateConfirmDialogComponent,
   CreateConfirmDialogResponse,
 } from '../create-confirm-dialog/create-confirm-dialog.component';
+import { CdeComponent } from '../../configurable-data-entity/cde/cde.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-cde-create',
-    templateUrl: './cde-create.component.html',
-    styleUrl: './cde-create.component.scss',
-    standalone: false
+  selector: 'app-cde-create',
+  templateUrl: './cde-create.component.html',
+  styleUrl: './cde-create.component.scss',
+  imports: [CdeComponent, MatButton],
 })
 export class CdeCreateComponent implements OnInit {
+  private readonly _router = inject(Router);
+  private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _dialog = inject(MatDialog);
+  private readonly _alert = inject(AlertSubscriptor);
+  private readonly _cdeRepository = inject(CdeRepository);
+
   moduleName: string = '';
   productName: string = '';
   templateName: string = '';
   routeBase = '';
   formValid = false;
   data: object = {};
-
-  constructor(
-    private readonly _router: Router,
-    private readonly _activatedRoute: ActivatedRoute,
-    private readonly _dialog: MatDialog,
-    private readonly _alert: AlertSubscriptor,
-    private readonly _cdeRepository: CdeRepository,
-  ) {}
 
   ngOnInit() {
     this._activatedRoute.data.subscribe((data) => {

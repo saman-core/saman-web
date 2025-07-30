@@ -1,14 +1,39 @@
-import { Component, Inject, signal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, signal, inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
+import {
+  MatChipInputEvent,
+  MatChipGrid,
+  MatChipRow,
+  MatChipRemove,
+  MatChipInput,
+} from '@angular/material/chips';
 import { dia } from '@joint/core';
 import { WorkflowEditorComponent } from '../workflow-editor/workflow-editor.component';
-import { duplicateNameValidator, forbiddenTargetStateValidator, nameFormatValidator } from '../utils/validator';
+import {
+  duplicateNameValidator,
+  forbiddenTargetStateValidator,
+  nameFormatValidator,
+} from '../utils/validator';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatIcon } from '@angular/material/icon';
+import { CdeComponent } from '../../configurable-data-entity/cde/cde.component';
+import { MatButton } from '@angular/material/button';
 
 export interface TransitionDialogResponse {
   name: string;
@@ -20,7 +45,7 @@ export interface TransitionDialogResponse {
 }
 
 export interface TransitionDialogRequest {
-  action: 'Create' | 'Update'
+  action: 'Create' | 'Update';
   productName: string;
   states: dia.Element[];
   links: dia.Link[];
@@ -28,12 +53,36 @@ export interface TransitionDialogRequest {
 }
 
 @Component({
-    selector: 'app-transition-dialog',
-    templateUrl: './transition-dialog.component.html',
-    styleUrl: './transition-dialog.component.scss',
-    standalone: false
+  selector: 'app-transition-dialog',
+  templateUrl: './transition-dialog.component.html',
+  styleUrl: './transition-dialog.component.scss',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    ReactiveFormsModule,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatChipGrid,
+    MatChipRow,
+    MatChipRemove,
+    MatIcon,
+    MatChipInput,
+    CdeComponent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+  ],
 })
 export class TransitionDialogComponent {
+  dialogRef = inject<MatDialogRef<WorkflowEditorComponent>>(MatDialogRef);
+  request = inject<TransitionDialogRequest>(MAT_DIALOG_DATA);
+
   states: dia.Element[];
   linksLabels: string[] = [];
   nameControl: FormControl<string>;
@@ -47,12 +96,11 @@ export class TransitionDialogComponent {
   templateName = 'workflow';
   formValid = false;
   cdeData: object = {};
-  roles =   signal<string[]>([]);
+  roles = signal<string[]>([]);
 
-  constructor(
-    public dialogRef: MatDialogRef<WorkflowEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public request: TransitionDialogRequest,
-  ) {
+  constructor() {
+    const request = this.request;
+
     this.states = request.states;
     this.linksLabels = request.links.map((l) => l.get('name'));
     this.nameControl = new FormControl(request.linkToUpdate?.get('name'), [
@@ -61,11 +109,14 @@ export class TransitionDialogComponent {
       duplicateNameValidator(this.linksLabels, request.linkToUpdate?.get('name')),
       nameFormatValidator(),
     ]);
-    this.sourceStateControl = new FormControl<dia.Element>(request.linkToUpdate?.getSourceElement(), [Validators.required]);
-    this.targetStateControl = new FormControl<dia.Element>(request.linkToUpdate?.getTargetElement(), [
-      Validators.required,
-      forbiddenTargetStateValidator(),
-    ]);
+    this.sourceStateControl = new FormControl<dia.Element>(
+      request.linkToUpdate?.getSourceElement(),
+      [Validators.required],
+    );
+    this.targetStateControl = new FormControl<dia.Element>(
+      request.linkToUpdate?.getTargetElement(),
+      [Validators.required, forbiddenTargetStateValidator()],
+    );
     this.rolesControl = new FormControl<string>('');
     this.roles.set(request.linkToUpdate?.get('roles') || []);
     this.form = new FormGroup({
@@ -134,7 +185,7 @@ export class TransitionDialogComponent {
   }
 
   removeRol(rol: string) {
-    this.roles.update(roles => {
+    this.roles.update((roles) => {
       const index = roles.indexOf(rol);
       if (index < 0) {
         return roles;
@@ -149,7 +200,7 @@ export class TransitionDialogComponent {
     const value = (event.value || '').trim();
 
     if (value) {
-      this.roles.update(keywords => [...keywords, value]);
+      this.roles.update((keywords) => [...keywords, value]);
     }
     event.chipInput!.clear();
   }

@@ -1,10 +1,27 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { HierarchyEditorComponent } from '../hierarchy-editor/hierarchy-editor.component';
 import { dia } from '@joint/core';
 import { duplicateNameValidator, nameFormatValidator } from '../utils/validator';
 import { EntityTypeEnum } from '../entity-type.enum';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
 
 export interface StateDialogResponse {
   name: string;
@@ -21,22 +38,39 @@ export interface StateDialogRequest {
 }
 
 @Component({
-    selector: 'app-state-dialog',
-    templateUrl: './state-dialog.component.html',
-    styleUrl: './state-dialog.component.scss',
-    standalone: false
+  selector: 'app-state-dialog',
+  templateUrl: './state-dialog.component.html',
+  styleUrl: './state-dialog.component.scss',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    ReactiveFormsModule,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+  ],
 })
 export class StateDialogComponent {
+  dialogRef = inject<MatDialogRef<HierarchyEditorComponent>>(MatDialogRef);
+  request = inject<StateDialogRequest>(MAT_DIALOG_DATA);
+
   stateTypes: EntityTypeEnum[] = Object.values(EntityTypeEnum);
   nameControl: FormControl<string>;
   commentControl: FormControl<string>;
   stateTypeControl: FormControl<EntityTypeEnum>;
   form: FormGroup;
 
-  constructor(
-    public dialogRef: MatDialogRef<HierarchyEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public request: StateDialogRequest,
-  ) {
+  constructor() {
+    const request = this.request;
+
     const statesLabels = request.states.map((l) => l.get('name'));
     this.nameControl = new FormControl(request.stateToUpdate?.get('name'), [
       Validators.required,

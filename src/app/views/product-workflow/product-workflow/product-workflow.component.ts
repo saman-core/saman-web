@@ -1,4 +1,4 @@
-import { Component, ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import {
   CommitRequestModel,
   DynamicFlatNode,
@@ -14,14 +14,49 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { DynamicDataSource } from './dynamic-data-source';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+  MatExpansionPanelDescription,
+} from '@angular/material/expansion';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatTree,
+  MatTreeNodeDef,
+  MatTreeNode,
+  MatTreeNodePadding,
+  MatTreeNodeToggle,
+} from '@angular/material/tree';
 
 @Component({
-    selector: 'app-product-workflow',
-    templateUrl: './product-workflow.component.html',
-    styleUrl: './product-workflow.component.scss',
-    standalone: false
+  selector: 'app-product-workflow',
+  templateUrl: './product-workflow.component.html',
+  styleUrl: './product-workflow.component.scss',
+  imports: [
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNode,
+    MatTreeNodePadding,
+    MatTreeNodeToggle,
+    MatExpansionPanelDescription,
+  ],
 })
 export class ProductWorkflowComponent {
+  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _alertSubscriptor = inject(AlertSubscriptor);
+  private readonly _dialog = inject(MatDialog);
+
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
   dynamicEditorLoader: ViewContainerRef;
   step = 0;
@@ -31,11 +66,9 @@ export class ProductWorkflowComponent {
   productNameSelected = '';
   node: NodeModel;
 
-  constructor(
-    private readonly _productsGitRepository: ProductsGitRepository,
-    private readonly _alertSubscriptor: AlertSubscriptor,
-    private readonly _dialog: MatDialog,
-  ) {
+  constructor() {
+    const _productsGitRepository = this._productsGitRepository;
+
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
 

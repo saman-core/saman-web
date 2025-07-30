@@ -6,20 +6,23 @@ const Component = (Formio as any).Components.components.file;
 
 export default class SamanFileComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanFile',
-      label: 'Upload',
-      key: 'file',
-      image: false,
-      privateDownload: false,
-      imageSize: '200',
-      filePattern: '*',
-      fileMinSize: '0KB',
-      fileMaxSize: '1GB',
-      uploadOnly: false,
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanFile',
+        label: 'Upload',
+        key: 'file',
+        image: false,
+        privateDownload: false,
+        imageSize: '200',
+        filePattern: '*',
+        fileMinSize: '0KB',
+        fileMaxSize: '1GB',
+        uploadOnly: false,
+      },
+      ...extend,
+    );
   }
-  
+
   static get builderInfo() {
     return {
       title: 'File',

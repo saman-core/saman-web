@@ -1,5 +1,5 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import {
   CommitRequestModel,
   DynamicFlatNode,
@@ -15,7 +15,18 @@ import {
   TemplateConditionDialogComponent,
 } from '../template-condition-dialog/template-condition-dialog.component';
 import { combineLatestWith } from 'rxjs/operators';
-import { MatTable } from '@angular/material/table';
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+} from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import {
   DeleteDialogComponent,
@@ -23,16 +34,62 @@ import {
   DeleteDialogResponse,
 } from '../delete-dialog/delete-dialog.component';
 import { AlertSubscriptor } from '@saman-core/core';
-import { Buffer } from 'buffer';
 import { FormUtilService } from '@saman-core/common';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+  MatExpansionPanelDescription,
+} from '@angular/material/expansion';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatTree,
+  MatTreeNodeDef,
+  MatTreeNode,
+  MatTreeNodePadding,
+  MatTreeNodeToggle,
+} from '@angular/material/tree';
 
 @Component({
-    selector: 'app-template-conditions',
-    templateUrl: './template-conditions.component.html',
-    styleUrl: './template-conditions.component.scss',
-    standalone: false
+  selector: 'app-template-conditions',
+  templateUrl: './template-conditions.component.html',
+  styleUrl: './template-conditions.component.scss',
+  imports: [
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNode,
+    MatTreeNodePadding,
+    MatTreeNodeToggle,
+    MatExpansionPanelDescription,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatMiniFabButton,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+  ],
 })
 export class TemplateConditionsComponent {
+  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _dialog = inject(MatDialog);
+  private readonly _alertSubscriptor = inject(AlertSubscriptor);
+  private readonly _fomrUtilService = inject(FormUtilService);
+
   static readonly NAMESPACE = 'saman-core/property';
   static readonly NOT_FOUND = ' [Not_Found]';
   @ViewChild(MatTable) table: MatTable<unknown>;
@@ -58,12 +115,9 @@ export class TemplateConditionsComponent {
   conType = ConditionTypeEnum;
   template: object = {};
 
-  constructor(
-    private readonly _productsGitRepository: ProductsGitRepository,
-    private readonly _dialog: MatDialog,
-    private readonly _alertSubscriptor: AlertSubscriptor,
-    private readonly _fomrUtilService: FormUtilService,
-  ) {
+  constructor() {
+    const _productsGitRepository = this._productsGitRepository;
+
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
 
@@ -267,7 +321,14 @@ export class TemplateConditionsComponent {
           data: node,
         };
         this._productsGitRepository
-          .deleteCondition(moduleName, productName, templateName, node.name, conditionType, commitRequest)
+          .deleteCondition(
+            moduleName,
+            productName,
+            templateName,
+            node.name,
+            conditionType,
+            commitRequest,
+          )
           .subscribe({
             next: (node) => {
               this._alertSubscriptor.success(
@@ -289,7 +350,7 @@ export class TemplateConditionsComponent {
   }
 
   private _fillElementData(node: NodeModel, conditions: ConditionsPropertyModel[]): void {
-    const json = JSON.parse(Buffer.from(node.content, 'base64').toString('utf-8'));
+    const json = JSON.parse(decodeURIComponent(escape(atob(node.content))));
     this.template = json;
     const properties: string[] = this._fomrUtilService.getDataComponentsKey(json);
     const conditionsWithOutproperty: ConditionNodes[] = [];

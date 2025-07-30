@@ -6,17 +6,20 @@ const Component = (Formio as any).Components.components.radio;
 
 export default class SamanRadioComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanRadio',
-      inputType: 'radio',
-      label: 'Radio',
-      key: 'radio',
-      values: [{ label: '', value: '' }],
-      data: {
-        url: '',
+    return Component.schema(
+      {
+        type: 'samanRadio',
+        inputType: 'radio',
+        label: 'Radio',
+        key: 'radio',
+        values: [{ label: '', value: '' }],
+        data: {
+          url: '',
+        },
+        fieldSet: false,
       },
-      fieldSet: false
-    }, ...extend);
+      ...extend,
+    );
   }
 
   static get builderInfo() {
@@ -26,7 +29,7 @@ export default class SamanRadioComponent extends Component {
       icon: 'dot-circle-o',
       weight: 80,
       documentation: '/userguide/form-building/form-components#radio',
-      schema: SamanRadioComponent.schema()
+      schema: SamanRadioComponent.schema(),
     };
   }
 

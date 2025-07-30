@@ -9,14 +9,14 @@ import {
   OnInit,
   Output,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
-import { FormControl } from '@angular/forms';
-import { FormioComponent } from '@formio/angular';
+import { MatSort, Sort, MatSortHeader } from '@angular/material/sort';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormioComponent, FormioModule } from '@formio/angular';
 import { CdeRepository, PageableModel, TemplateRepository } from '@saman-core/data';
 import { FormUtilService, MapperTableRow } from '@saman-core/common';
-import { InitCdeService } from '@saman-core/common/lib/configurable-data-entity/init.service';
 import {
   BehaviorSubject,
   Observable,
@@ -33,14 +33,85 @@ import {
   tap,
 } from 'rxjs';
 import _ from 'lodash';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+  MatExpansionPanelActionRow,
+} from '@angular/material/expansion';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+  MatNoDataRow,
+} from '@angular/material/table';
+import { NgIf, NgFor } from '@angular/common';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatMenuTrigger, MatMenu, MatMenuContent, MatMenuItem } from '@angular/material/menu';
+import { MatRipple } from '@angular/material/core';
+import { ConfigurableDataEntityModule } from '../../configurable-data-entity/configurable-data-entity.module';
 
 @Component({
-    selector: 'app-cde-search',
-    templateUrl: './cde-search.component.html',
-    styleUrl: './cde-search.component.scss',
-    standalone: false
+  selector: 'app-cde-search',
+  templateUrl: './cde-search.component.html',
+  styleUrl: './cde-search.component.scss',
+  imports: [
+    ConfigurableDataEntityModule,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    FormioModule,
+    MatExpansionPanelActionRow,
+    MatButton,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconButton,
+    MatIcon,
+    MatTable,
+    MatSort,
+    NgIf,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCheckbox,
+    MatCellDef,
+    MatCell,
+    NgFor,
+    MatSortHeader,
+    MatMenuTrigger,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatRipple,
+    MatNoDataRow,
+    MatPaginator,
+    MatMenu,
+    MatMenuContent,
+    MatMenuItem,
+  ],
 })
 export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
+  private readonly _templateRepository = inject(TemplateRepository);
+  private readonly _cdeRepository = inject(CdeRepository);
+  private readonly _formUtilService = inject(FormUtilService);
+  private readonly _cdref = inject(ChangeDetectorRef);
+
   private readonly _unsubscribe = new Subject<void>();
   private readonly _filterData = new BehaviorSubject<object>({});
   private _isRequestStarted = false;
@@ -75,16 +146,6 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   filterFormJson: object = {};
   hasMenu = false;
   step = 1;
-
-  constructor(
-    private readonly _initCdeService: InitCdeService,
-    private readonly _templateRepository: TemplateRepository,
-    private readonly _cdeRepository: CdeRepository,
-    private readonly _formUtilService: FormUtilService,
-    private readonly _cdref: ChangeDetectorRef,
-  ) {
-    this._initCdeService.initConf();
-  }
 
   ngOnInit(): void {
     this.selection = new SelectionModel<object>(this.isMultipleSelection);
@@ -186,9 +247,11 @@ export class CdeSearchComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   masterToggle(): void {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.data.forEach((row) => this.selection.select(row));
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.data.forEach((row) => this.selection.select(row));
+    }
     this.modelEmitter.emit(this.selection.selected);
   }
 

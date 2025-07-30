@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatasourceConsumer } from '../../../base/datasource/datasource.consumer';
 import { DatasourceFactory } from '../../../base/datasource/datasource.factory';
 import { ConditionModel } from '../model/condition.model';
 import { ConditionRequestModel } from '../model/condition-request.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ConditionRepository {
-  constructor(private readonly _datasourceFactory: DatasourceFactory) {}
+  private readonly _datasourceFactory = inject(DatasourceFactory);
 
   public getConsumer(
     moduleName: string,

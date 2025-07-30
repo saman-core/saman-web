@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UserSubscriptor {
-  private _user = new Subject<object>();
+  private _user = new BehaviorSubject<object>({ picture: '', username: '' });
 
   public getObserver(): Observable<object> {
     return this._user.asObservable();

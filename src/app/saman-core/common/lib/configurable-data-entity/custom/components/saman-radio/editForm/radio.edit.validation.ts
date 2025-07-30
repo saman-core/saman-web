@@ -1,14 +1,14 @@
 export default [
   {
     key: 'errors',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'json-validation-json',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'custom-validation-js',
-    ignore: true
+    ignore: true,
   },
 ];

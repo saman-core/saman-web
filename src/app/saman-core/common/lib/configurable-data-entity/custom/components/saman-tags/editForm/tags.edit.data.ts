@@ -1,7 +1,7 @@
 export default [
   {
     key: 'storeas',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'persistent',
@@ -14,30 +14,30 @@ export default [
   },
   {
     key: 'encrypted',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'multiple',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'dataType',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'customDefaultValuePanel',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'calculateValuePanel',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'calculateServer',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'allowCalculateOverride',
-    ignore: true
+    ignore: true,
   },
 ];

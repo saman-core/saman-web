@@ -16,7 +16,9 @@ export default [
         context.instance.data.idPath = 'id';
       }
       if (dataSrc === 'values') {
-        context.instance.root.getComponent('valueProperty').setValue(null, { noUpdateEvent: true, resetValue: true });
+        context.instance.root
+          .getComponent('valueProperty')
+          .setValue(null, { noUpdateEvent: true, resetValue: true });
         delete context.instance.data.idPath;
         delete context.instance.data.data.resource;
       }
@@ -36,7 +38,8 @@ export default [
     key: 'data.json',
     label: 'Data Source Raw JSON',
     tooltip: 'A valid JSON array to use as a data source.',
-    description: '<div>Example: <pre>["apple", "banana", "orange"].</pre></div> <div>Example 2: <pre>[{"name": "John", "email": "john.doe@test.com"}, {"name": "Jane", "email": "jane.doe@test.com"}].</pre></div>',
+    description:
+      '<div>Example: <pre>["apple", "banana", "orange"].</pre></div> <div>Example 2: <pre>[{"name": "John", "email": "john.doe@test.com"}, {"name": "Jane", "email": "jane.doe@test.com"}].</pre></div>',
     conditional: {
       json: { '===': [{ var: 'data.dataSrc' }, 'json'] },
     },
@@ -46,27 +49,19 @@ export default [
     input: true,
     label: 'Lazy Load Data',
     key: 'lazyLoad',
-    tooltip: 'When set, this will not fire off the request to the URL until this control is within focus. This can improve performance if you have many Select dropdowns on your form where the API\'s will only fire when the control is activated.',
+    tooltip:
+      "When set, this will not fire off the request to the URL until this control is within focus. This can improve performance if you have many Select dropdowns on your form where the API's will only fire when the control is activated.",
     weight: 11,
     conditional: {
       json: {
         and: [
           {
-            in: [
-              { var: 'data.dataSrc' },
-              [
-                'resource',
-                'url',
-              ],
-            ],
+            in: [{ var: 'data.dataSrc' }, ['resource', 'url']],
           },
           {
-            '!==': [
-              { var: 'data.widget' },
-              'html5'
-            ]
-          }
-        ]
+            '!==': [{ var: 'data.widget' }, 'html5'],
+          },
+        ],
       },
     },
   },
@@ -75,7 +70,8 @@ export default [
     input: true,
     label: 'Data Source Values',
     key: 'data.values',
-    tooltip: 'Values to use as the data source. Labels are shown in the select field. Values are the corresponding values saved with the submission.',
+    tooltip:
+      'Values to use as the data source. Labels are shown in the select field. Values are the corresponding values saved with the submission.',
     weight: 10,
     reorder: true,
     defaultValue: [{ label: '', value: '' }],
@@ -103,24 +99,24 @@ export default [
     type: 'select',
     input: true,
     data: {
-      "values": [
+      values: [
         {
-          "label": "occupation",
-          "value": "occupation"
+          label: 'occupation',
+          value: 'occupation',
         },
         {
-          "label": "state",
-          "value": "state"
+          label: 'state',
+          value: 'state',
         },
         {
-          "label": "municipality",
-          "value": "municipality"
+          label: 'municipality',
+          value: 'municipality',
         },
         {
-          "label": "parish",
-          "value": "parish"
-        }
-      ]
+          label: 'parish',
+          value: 'parish',
+        },
+      ],
     },
     valueProperty: 'value',
     label: 'Resource',
@@ -136,7 +132,8 @@ export default [
     input: true,
     label: 'Select Fields',
     key: 'selectFields',
-    tooltip: 'The properties on the resource to return as part of the options. Separate property names by commas. If left blank, all properties will be returned.',
+    tooltip:
+      'The properties on the resource to return as part of the options. Separate property names by commas. If left blank, all properties will be returned.',
     placeholder: 'Comma separated list of fields to select.',
     weight: 14,
     conditional: {
@@ -155,16 +152,11 @@ export default [
     label: 'Search Query Name',
     weight: 16,
     description: 'Name of URL query parameter',
-    tooltip: 'The name of the search querystring parameter used when sending a request to filter results with. The server at the URL must handle this query parameter.',
+    tooltip:
+      'The name of the search querystring parameter used when sending a request to filter results with. The server at the URL must handle this query parameter.',
     conditional: {
       json: {
-        in: [
-          { var: 'data.dataSrc' },
-          [
-            'url',
-            'resource',
-          ],
-        ],
+        in: [{ var: 'data.dataSrc' }, ['url', 'resource']],
       },
     },
   },
@@ -175,7 +167,8 @@ export default [
     label: 'Search request delay',
     weight: 16,
     description: 'The delay (in seconds) before the search request is sent.',
-    tooltip: 'The delay in seconds before the search request is sent, measured from the last character input in the search field.',
+    tooltip:
+      'The delay in seconds before the search request is sent, measured from the last character input in the search field.',
     validate: {
       min: 0,
       customMessage: '',
@@ -187,13 +180,7 @@ export default [
     defaultValue: 0.3,
     conditional: {
       json: {
-        in: [
-          { var: 'data.dataSrc' },
-          [
-            'url',
-            'resource',
-          ],
-        ],
+        in: [{ var: 'data.dataSrc' }, ['url', 'resource']],
       },
     },
   },
@@ -221,16 +208,11 @@ export default [
     label: 'Filter Query',
     weight: 18,
     description: 'The filter query for results.',
-    tooltip: 'Use this to provide additional filtering using query parameters. For Dependent Select Box you can use &quot;parent_id&quot;: &quot;{&nbsp;{ row.parent }&nbsp;}&quot;',
+    tooltip:
+      'Use this to provide additional filtering using query parameters. For Dependent Select Box you can use &quot;parent_id&quot;: &quot;{&nbsp;{ row.parent }&nbsp;}&quot;',
     conditional: {
       json: {
-        in: [
-          { var: 'data.dataSrc' },
-          [
-            'url',
-            'resource',
-          ],
-        ],
+        in: [{ var: 'data.dataSrc' }, ['url', 'resource']],
       },
     },
   },
@@ -244,13 +226,7 @@ export default [
     tooltip: 'Use this to provide additional sorting using query parameters',
     conditional: {
       json: {
-        in: [
-          { var: 'data.dataSrc' },
-          [
-            'url',
-            'resource',
-          ],
-        ],
+        in: [{ var: 'data.dataSrc' }, ['url', 'resource']],
       },
     },
   },
@@ -266,15 +242,9 @@ export default [
     conditional: {
       json: {
         and: [
-          { in: [
-            { var: 'data.dataSrc' },
-            [
-              'url',
-              'resource'
-            ],
-          ] },
-          { '!==': [{ var: 'data.disableLimit' }, true] }
-        ]
+          { in: [{ var: 'data.dataSrc' }, ['url', 'resource']] },
+          { '!==': [{ var: 'data.disableLimit' }, true] },
+        ],
       },
     },
   },
@@ -291,28 +261,23 @@ export default [
       custom(context) {
         const values = [];
         values.push({ label: 'Any Change', value: 'data' });
-        context.utils.eachComponent(context.instance.options.editForm.components, function(component, path) {
-          if (component.key !== context.data.key) {
-            values.push({
-              label: component.label || component.key,
-              value: path
-            });
-          }
-        });
+        context.utils.eachComponent(
+          context.instance.options.editForm.components,
+          function (component, path) {
+            if (component.key !== context.data.key) {
+              values.push({
+                label: component.label || component.key,
+                value: path,
+              });
+            }
+          },
+        );
         return values;
-      }
+      },
     },
     conditional: {
       json: {
-        in: [
-          { var: 'data.dataSrc' },
-          [
-            'url',
-            'resource',
-            'values',
-            'custom'
-          ],
-        ],
+        in: [{ var: 'data.dataSrc' }, ['url', 'resource', 'values', 'custom']],
       },
     },
   },
@@ -329,27 +294,23 @@ export default [
       custom(context) {
         const values = [];
         values.push({ label: 'Any Change', value: 'data' });
-        context.utils.eachComponent(context.instance.options.editForm.components, function(component, path) {
-          if (component.key !== context.data.key) {
-            values.push({
-              label: component.label || component.key,
-              value: path
-            });
-          }
-        });
+        context.utils.eachComponent(
+          context.instance.options.editForm.components,
+          function (component, path) {
+            if (component.key !== context.data.key) {
+              values.push({
+                label: component.label || component.key,
+                value: path,
+              });
+            }
+          },
+        );
         return values;
-      }
+      },
     },
     conditional: {
       json: {
-        in: [
-          { var: 'data.dataSrc' },
-          [
-            'url',
-            'resource',
-            'values'
-          ],
-        ],
+        in: [{ var: 'data.dataSrc' }, ['url', 'resource', 'values']],
       },
     },
   },
@@ -363,15 +324,7 @@ export default [
     tooltip: 'When the Refresh On field is changed, clear this components value.',
     conditional: {
       json: {
-        in: [
-          { var: 'data.dataSrc' },
-          [
-            'url',
-            'resource',
-            'values',
-            'custom'
-          ],
-        ],
+        in: [{ var: 'data.dataSrc' }, ['url', 'resource', 'values', 'custom']],
       },
     },
   },
@@ -382,7 +335,8 @@ export default [
     key: 'searchEnabled',
     label: 'Enable Static Search',
     defaultValue: true,
-    tooltip: 'When checked, the select dropdown will allow for searching within the static list of items provided.',
+    tooltip:
+      'When checked, the select dropdown will allow for searching within the static list of items provided.',
   },
   {
     type: 'checkbox',
@@ -391,19 +345,14 @@ export default [
     key: 'noRefreshOnScroll',
     label: 'Disable Options Refresh When Scrolling',
     defaultValue: false,
-    tooltip: 'When checked, the select with search input won\'t perform new api requests when scrolling through the list of options.',
+    tooltip:
+      "When checked, the select with search input won't perform new api requests when scrolling through the list of options.",
     conditional: {
       json: {
         and: [
-          {  in: [
-              { var: 'data.dataSrc' },
-              [
-                'url',
-                'resource'
-              ],
-            ] },
-          { '===': [{ var: 'data.searchEnabled' }, true] }
-        ]
+          { in: [{ var: 'data.dataSrc' }, ['url', 'resource']] },
+          { '===': [{ var: 'data.searchEnabled' }, true] },
+        ],
       },
     },
   },
@@ -425,7 +374,8 @@ export default [
     requireDecimal: false,
     defaultValue: 0.3,
     weight: 22,
-    tooltip: 'At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match, a threshold of 1.0 would match anything.',
+    tooltip:
+      'At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match, a threshold of 1.0 would match anything.',
   },
   {
     type: 'textarea',
@@ -457,22 +407,22 @@ export default [
   },
   {
     key: 'encrypted',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'customDefaultValuePanel',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'calculateValuePanel',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'calculateServer',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'allowCalculateOverride',
-    ignore: true
+    ignore: true,
   },
 ];

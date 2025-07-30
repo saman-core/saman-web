@@ -1,55 +1,44 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "src/",
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
     "strict": false,
-    "noImplicitAny": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
+    "skipLibCheck": true,
+    "isolatedModules": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
+    "module": "preserve",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "lib": ["ES2022", "dom"],
     "paths": {
-      "@saman-core/data": [
-        "app/saman-core/data"
-      ],
-      "@saman-core/data/*": [
-        "app/saman-core/data/*"
-      ],
-      "@saman-core/core": [
-        "app/saman-core/core"
-      ],
-      "@saman-core/core/*": [
-        "app/saman-core/core/*"
-      ],
-      "@saman-core/common": [
-        "app/saman-core/common"
-      ],
-      "@saman-core/common/*": [
-        "app/saman-core/common/*"
-      ]
+      "@saman-core/data": ["src/app/saman-core/data"],
+      "@saman-core/data/*": ["src/app/saman-core/data/*"],
+      "@saman-core/core": ["src/app/saman-core/core"],
+      "@saman-core/core/*": ["src/app/saman-core/core/*"],
+      "@saman-core/common": ["src/app/saman-core/common"],
+      "@saman-core/common/*": ["src/app/saman-core/common/*"]
     }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
     "strictTemplates": true
-  }
+  },
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.spec.json" }]
 }

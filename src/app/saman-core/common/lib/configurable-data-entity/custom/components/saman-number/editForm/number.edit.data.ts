@@ -14,7 +14,7 @@ export default [
     label: 'Long number',
     tooltip: 'Change the default Integer data type to Long',
     key: 'longNumber',
-    input: true
+    input: true,
   },
   {
     key: 'encrypted',
@@ -23,26 +23,26 @@ export default [
   },
   {
     key: 'multiple',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'dataType',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'customDefaultValuePanel',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'calculateValuePanel',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'calculateServer',
-    ignore: true
+    ignore: true,
   },
   {
     key: 'allowCalculateOverride',
-    ignore: true
+    ignore: true,
   },
 ];

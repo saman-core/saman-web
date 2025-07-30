@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdeRepository } from '@saman-core/data';
@@ -8,14 +8,23 @@ import {
   DeleteConfirmDialogComponent,
   DeleteConfirmDialogResponse,
 } from '../delete-confirm-dialog/delete-confirm-dialog.component';
+import { CdeSearchComponent } from '../../cde-search/cde-search/cde-search.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'app-cde-crud',
-    templateUrl: './cde-crud.component.html',
-    styleUrl: './cde-crud.component.scss',
-    standalone: false
+  selector: 'app-cde-crud',
+  templateUrl: './cde-crud.component.html',
+  styleUrl: './cde-crud.component.scss',
+  imports: [CdeSearchComponent, MatButton, MatIcon],
 })
 export class CdeCrudComponent implements OnInit, OnDestroy {
+  private readonly _router = inject(Router);
+  private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _dialog = inject(MatDialog);
+  private readonly _alert = inject(AlertSubscriptor);
+  private readonly _cdeRepository = inject(CdeRepository);
+
   initializedRequests = true;
   searchProperty: string = 'id';
   isMultipleSelection: boolean = false;
@@ -29,14 +38,6 @@ export class CdeCrudComponent implements OnInit, OnDestroy {
   templateName = '';
   routeBase = '';
   refreshTable = new Subject<boolean>();
-
-  constructor(
-    private readonly _router: Router,
-    private readonly _activatedRoute: ActivatedRoute,
-    private readonly _dialog: MatDialog,
-    private readonly _alert: AlertSubscriptor,
-    private readonly _cdeRepository: CdeRepository,
-  ) {}
 
   ngOnInit() {
     this._activatedRoute.data.subscribe((data) => {

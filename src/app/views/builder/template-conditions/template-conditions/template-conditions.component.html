@@ -20,7 +20,10 @@
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-        <button mat-icon-button (click)="openConditionSelector(node.grandParent, node.parent, node.item)">
+        <button
+          mat-icon-button
+          (click)="openConditionSelector(node.grandParent, node.parent, node.item)"
+        >
           <mat-icon aria-hidden="false" aria-label="Edit" fontIcon="edit"></mat-icon>
         </button>
         {{ node.item }}
@@ -28,7 +31,7 @@
       <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
         <button mat-icon-button [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
           <mat-icon class="mat-icon-rtl-mirror">
-            {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+            {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
           </mat-icon>
         </button>
         {{ node.item }}
@@ -43,7 +46,7 @@
         Conditions
       </mat-panel-title>
       <mat-panel-description>
-        @if (templateNameSelected === "") {
+        @if (templateNameSelected === '') {
           Not Template Selected
         } @else {
           Conditions for "<span style="text-transform: uppercase"
@@ -80,7 +83,15 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(moduleSelected, productNameSelected, templateNameSelected, element.property, conType.VALUE)"
+                (click)="
+                  createDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.property,
+                    conType.VALUE
+                  )
+                "
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -90,7 +101,13 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(moduleSelected, productNameSelected, templateNameSelected, element.value.name, conType.VALUE)
+                  updateDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.value.name,
+                    conType.VALUE
+                  )
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -100,7 +117,13 @@
                 matTooltip="Delete DMN"
                 color="warn"
                 (click)="
-                  deleteDmn(moduleSelected, productNameSelected, templateNameSelected, element.value, conType.VALUE)
+                  deleteDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.value,
+                    conType.VALUE
+                  )
                 "
               >
                 <mat-icon>delete</mat-icon>
@@ -117,7 +140,15 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(moduleSelected, productNameSelected, templateNameSelected, element.property, conType.VISIBLE)"
+                (click)="
+                  createDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.property,
+                    conType.VISIBLE
+                  )
+                "
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -127,7 +158,13 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(moduleSelected, productNameSelected, templateNameSelected, element.visible.name, conType.VISIBLE)
+                  updateDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.visible.name,
+                    conType.VISIBLE
+                  )
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -137,7 +174,13 @@
                 matTooltip="Delete DMN"
                 color="warn"
                 (click)="
-                  deleteDmn(moduleSelected, productNameSelected, templateNameSelected, element.visible, conType.VISIBLE)
+                  deleteDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.visible,
+                    conType.VISIBLE
+                  )
                 "
               >
                 <mat-icon>delete</mat-icon>
@@ -154,7 +197,15 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(moduleSelected, productNameSelected, templateNameSelected, element.property, conType.DISABLE)"
+                (click)="
+                  createDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.property,
+                    conType.DISABLE
+                  )
+                "
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -164,7 +215,13 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(moduleSelected, productNameSelected, templateNameSelected, element.disable.name, conType.DISABLE)
+                  updateDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.disable.name,
+                    conType.DISABLE
+                  )
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -174,7 +231,13 @@
                 matTooltip="Delete DMN"
                 color="warn"
                 (click)="
-                  deleteDmn(moduleSelected, productNameSelected, templateNameSelected, element.disable, conType.DISABLE)
+                  deleteDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.disable,
+                    conType.DISABLE
+                  )
                 "
               >
                 <mat-icon>delete</mat-icon>
@@ -191,7 +254,15 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(moduleSelected, productNameSelected, templateNameSelected, element.property, conType.ALERT)"
+                (click)="
+                  createDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.property,
+                    conType.ALERT
+                  )
+                "
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -201,7 +272,13 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(moduleSelected, productNameSelected, templateNameSelected, element.alert.name, conType.ALERT)
+                  updateDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.alert.name,
+                    conType.ALERT
+                  )
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -211,7 +288,13 @@
                 matTooltip="Delete DMN"
                 color="warn"
                 (click)="
-                  deleteDmn(moduleSelected, productNameSelected, templateNameSelected, element.alert, conType.ALERT)
+                  deleteDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.alert,
+                    conType.ALERT
+                  )
                 "
               >
                 <mat-icon>delete</mat-icon>
@@ -228,7 +311,15 @@
                 mat-mini-fab
                 matTooltip="Add DMN"
                 color="accent"
-                (click)="createDmn(moduleSelected, productNameSelected, templateNameSelected, element.property, conType.VALIDATE)"
+                (click)="
+                  createDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.property,
+                    conType.VALIDATE
+                  )
+                "
               >
                 <mat-icon>add</mat-icon>
               </button>
@@ -238,7 +329,13 @@
                 matTooltip="Edit DMN"
                 color="primary"
                 (click)="
-                  updateDmn(moduleSelected, productNameSelected, templateNameSelected, element.validate.name, conType.VALIDATE)
+                  updateDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.validate.name,
+                    conType.VALIDATE
+                  )
                 "
               >
                 <mat-icon>draw</mat-icon>
@@ -248,7 +345,13 @@
                 matTooltip="Delete DMN"
                 color="warn"
                 (click)="
-                  deleteDmn(moduleSelected, productNameSelected, templateNameSelected, element, conType.VALIDATE)
+                  deleteDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element,
+                    conType.VALIDATE
+                  )
                 "
               >
                 <mat-icon>delete</mat-icon>
@@ -257,42 +360,62 @@
           </mat-cell>
         </ng-container>
 
-<ng-container matColumnDef="options">
-  <mat-header-cell *matHeaderCellDef> Options </mat-header-cell>
-  <mat-cell *matCellDef="let element">
-    @if (isUndefined(element.options)) {
-      <button
-        mat-mini-fab
-        matTooltip="Add DMN"
-        color="accent"
-        (click)="createDmn(moduleSelected, productNameSelected, templateNameSelected, element.property, conType.OPTIONS)"
-      >
-        <mat-icon>add</mat-icon>
-      </button>
-    } @else {
-      <button
-        mat-mini-fab
-        matTooltip="Edit DMN"
-        color="primary"
-        (click)="
-          updateDmn(moduleSelected, productNameSelected, templateNameSelected, element.validate.name, conType.OPTIONS)
-        "
-      >
-        <mat-icon>draw</mat-icon>
-      </button>
-      <button
-        mat-mini-fab
-        matTooltip="Delete DMN"
-        color="warn"
-        (click)="
-          deleteDmn(moduleSelected, productNameSelected, templateNameSelected, element, conType.OPTIONS)
-        "
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    }
-  </mat-cell>
-</ng-container>
+        <ng-container matColumnDef="options">
+          <mat-header-cell *matHeaderCellDef> Options </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            @if (isUndefined(element.options)) {
+              <button
+                mat-mini-fab
+                matTooltip="Add DMN"
+                color="accent"
+                (click)="
+                  createDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.property,
+                    conType.OPTIONS
+                  )
+                "
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+            } @else {
+              <button
+                mat-mini-fab
+                matTooltip="Edit DMN"
+                color="primary"
+                (click)="
+                  updateDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element.validate.name,
+                    conType.OPTIONS
+                  )
+                "
+              >
+                <mat-icon>draw</mat-icon>
+              </button>
+              <button
+                mat-mini-fab
+                matTooltip="Delete DMN"
+                color="warn"
+                (click)="
+                  deleteDmn(
+                    moduleSelected,
+                    productNameSelected,
+                    templateNameSelected,
+                    element,
+                    conType.OPTIONS
+                  )
+                "
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-cell>
+        </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

@@ -6,17 +6,20 @@ const Component = (Formio as any).Components.components.email;
 
 export default class SamanEmailComponent extends Component {
   static schema(...extend) {
-    return Component.schema({
-      type: 'samanEmail',
-      label: 'Email',
-      key: 'email',
-      inputType: 'email',
-      kickbox: {
-        enabled: false
-      }
-    }, ...extend);
+    return Component.schema(
+      {
+        type: 'samanEmail',
+        label: 'Email',
+        key: 'email',
+        inputType: 'email',
+        kickbox: {
+          enabled: false,
+        },
+      },
+      ...extend,
+    );
   }
-  
+
   static get builderInfo() {
     return {
       title: 'Email',
@@ -24,7 +27,7 @@ export default class SamanEmailComponent extends Component {
       icon: 'at',
       documentation: '/userguide/form-building/advanced-components#email',
       weight: 10,
-      schema: SamanEmailComponent.schema()
+      schema: SamanEmailComponent.schema(),
     };
   }
 
