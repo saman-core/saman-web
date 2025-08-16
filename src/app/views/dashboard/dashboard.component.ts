@@ -2,6 +2,7 @@
 import { NgStyle } from '@angular/common';
 import {
   Component,
+  computed,
   DestroyRef,
   DOCUMENT,
   effect,
@@ -14,6 +15,7 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ChartOptions } from 'chart.js';
 import {
+  BorderDirective,
   ButtonDirective,
   ButtonGroupComponent,
   CardBodyComponent,
@@ -26,6 +28,7 @@ import {
   ProgressComponent,
   RowComponent,
   TableDirective,
+  WidgetStatBComponent,
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
@@ -66,6 +69,8 @@ interface IUser {
     ProgressComponent,
     CardHeaderComponent,
     TableDirective,
+    WidgetStatBComponent,
+    BorderDirective,
   ],
 })
 export class DashboardComponent implements OnInit {
@@ -73,6 +78,9 @@ export class DashboardComponent implements OnInit {
   readonly #document: Document = inject(DOCUMENT);
   readonly #renderer: Renderer2 = inject(Renderer2);
   readonly #chartsData: DashboardChartsData = inject(DashboardChartsData);
+
+  value = signal<number>(75.9);
+  valuePercent = computed(() => `${this.value()}%`);
 
   public users: IUser[] = [
     {

@@ -2,6 +2,13 @@
 
 // Import styles with default layout.
 @use '@coreui/coreui/scss/coreui' as * with (
+  $container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1600px
+  ),
   $enable-deprecation-messages: false
 );
 
