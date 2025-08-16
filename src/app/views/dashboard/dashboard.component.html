@@ -96,92 +96,88 @@
 </c-row>
 
 <c-row>
-  <c-col md="6" xl="8" xs="12">
-    <c-card class="mb-4">
-      <c-card-body>
-        <table
-          [hover]="true"
-          [responsive]="true"
-          [striped]="true"
-          align="middle"
-          cTable
-          class="mb-0 border"
+  <c-col md="6" xl="8" xs="12" class="mb-4">
+    <c-card>
+      <c-card-header class="d-flex justify-content-between align-items-center">
+        <span>Recent Activity</span>
+        <a href="#" class="text-decoration-none text-primary" style="font-size: 0.95rem"
+          >View all</a
         >
-          <thead class="text-nowrap text-truncate">
-            <tr>
-              <th class="bg-body-tertiary text-center">
-                <svg cIcon name="cilPeople"></svg>
-              </th>
-              <th class="bg-body-tertiary">User</th>
-              <th class="bg-body-tertiary text-center">Country</th>
-              <th class="bg-body-tertiary">Usage</th>
-              <th class="bg-body-tertiary text-center">Payment Method</th>
-              <th class="bg-body-tertiary">Activity</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (user of users; track user.name; let i = $index) {
-              <tr>
-                <td class="text-center"></td>
-                <td>
-                  <div>{{ user.name }}</div>
-                  <div class="small text-body-secondary text-nowrap">
-                    <span> {{ user.state }} | Registered: {{ user.registered }} </span>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <svg
-                    cIcon
-                    id="{{ user.country + user.name }}"
-                    name="cif{{ user.country }}"
-                    size="xl"
-                    title="{{ user.country }}"
-                  ></svg>
-                </td>
-                <td>
-                  <div class="d-flex justify-content-between">
-                    <div class="float-start">
-                      <strong>{{ user.usage }}%</strong>
-                    </div>
-                    <div class="float-end ms-1 text-nowrap">
-                      <small class="text-body-secondary">
-                        {{ user.period }}
-                      </small>
-                    </div>
-                  </div>
-                  <c-progress
-                    thin
-                    [value]="user.usage"
-                    color="{{ user.color }}"
-                    aria-label="Usage"
-                  />
-                </td>
-                <td class="text-center">
-                  <svg cIcon name="cibCc{{ user.payment }}" size="xl"></svg>
-                </td>
-                <td>
-                  <div class="small text-body-secondary">Last login</div>
-                  <div class="fw-semibold text-nowrap">{{ user.activity }}</div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+      </c-card-header>
+      <c-card-body>
+        <div class="p-3">
+          <div class="d-flex align-items-start mb-4">
+            <span
+              class="d-flex align-items-center justify-content-center me-3"
+              style="background: #e3f6ff; border-radius: 50%; width: 32px; height: 32px"
+            >
+              <svg cIcon name="cilSync" style="color: #39f" width="20" height="20"></svg>
+            </span>
+            <div>
+              <div>
+                <strong>Jane Smith</strong> pushed 3 commits to
+                <a href="#" class="text-primary text-decoration-none">financials/loan-app</a>
+              </div>
+              <div class="text-body-secondary">
+                Updated loan calculator template, fixed validation rules
+              </div>
+              <div class="small text-body-secondary">2 hours ago</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-start mb-4">
+            <span
+              class="d-flex align-items-center justify-content-center me-3"
+              style="background: #eaffea; border-radius: 50%; width: 32px; height: 32px"
+            >
+              <svg cIcon name="cilSend" style="color: #28a745" width="20" height="20"></svg>
+            </span>
+            <div>
+              <div>
+                <strong>Deployment completed</strong> for
+                <a href="#" class="text-primary text-decoration-none">insurance/claims-processor</a>
+              </div>
+              <div class="text-body-secondary">Production deployment v2.4.0 successful</div>
+              <div class="small text-body-secondary">4 hours ago</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-start mb-4">
+            <span
+              class="d-flex align-items-center justify-content-center me-3"
+              style="background: #fffbe3; border-radius: 50%; width: 32px; height: 32px"
+            >
+              <svg cIcon name="cilList" style="color: #ffc107" width="20" height="20"></svg>
+            </span>
+            <div>
+              <div>
+                <strong>Module schema updated</strong> for
+                <a href="#" class="text-primary text-decoration-none">banking/customer-profile</a>
+              </div>
+              <div class="text-body-secondary">
+                Added compliance fields and updated relationships
+              </div>
+              <div class="small text-body-secondary">Yesterday</div>
+            </div>
+          </div>
+        </div>
       </c-card-body>
     </c-card>
   </c-col>
 
-  <c-col md="6" xl="4" xs="12">
-    <c-card [color]="'light'" [textColor]="''" class="mb-3">
+  <c-col md="6" xl="4" xs="12" class="mb-4">
+    <c-card [color]="'light'" [textColor]="''" class="h-100">
       <c-card-header class="d-flex justify-content-between align-items-center">
-        <span style="font-size:1.25rem; font-weight:600;">Workspaces</span>
-        <a href="#" class="text-decoration-none text-primary" style="font-size:0.95rem;">View all</a>
+        <span>Workspaces</span>
+        <a href="#" class="text-decoration-none text-primary" style="font-size: 0.95rem"
+          >View all</a
+        >
       </c-card-header>
-      <c-card-body class="bg-gradient">
+      <c-card-body class="bg-gradient d-flex flex-column">
         <div class="mb-3 p-3">
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <span style="font-weight:600;">Finance Enterprise</span>
-            <span class="badge bg-info bg-opacity-10 text-info" style="font-size:0.95rem;">active</span>
+            <span style="font-weight: 600">Finance Enterprise</span>
+            <span class="badge bg-info bg-opacity-10 text-info" style="font-size: 0.95rem"
+              >active</span
+            >
           </div>
           <div class="text-body-secondary mb-1">Finance department workspace</div>
           <div class="d-flex justify-content-between align-items-center small text-body-secondary">
@@ -189,9 +185,15 @@
             <span>Updated: 10/5/2025</span>
           </div>
         </div>
-        <button cButton class="w-100 border bg-light text-body-secondary" style="font-size:1rem;">
-          <span class="me-2">+</span> Create New Workspace
-        </button>
+        <div class="mt-auto">
+          <button
+            cButton
+            class="w-100 border border-warning bg-white text-body-secondary"
+            style="font-size: 1rem"
+          >
+            <span class="me-2">+</span> Create New Workspace
+          </button>
+        </div>
       </c-card-body>
     </c-card>
   </c-col>
@@ -200,173 +202,80 @@
 <c-row>
   <c-col md="6" xl="6" xs="12">
     <c-card class="mb-4">
-      <c-card-header>Traffic {{ '&' }} Sales</c-card-header>
+      <c-card-header>System Health</c-card-header>
       <c-card-body>
-        <c-row>
-          <c-col xs="6">
-            <div class="border-start border-start-4 border-start-info py-1 px-3 mb-3">
-              <div class="text-body-secondary text-truncate small">New Clients</div>
-              <div class="fs-5 fw-semibold">9,123</div>
-            </div>
-          </c-col>
-          <c-col xs="6">
-            <div class="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-              <div class="text-body-secondary text-truncate small">Recurring Clients</div>
-              <div class="fs-5 fw-semibold">22,643</div>
-            </div>
-          </c-col>
-        </c-row>
-        <hr class="mt-0" />
-
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div>
-            <strong>insurance/claims-processor</strong>
-            <div class="small text-body-secondary">99.8% uptime</div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span style="font-weight: 500">insurance/claims-processor</span>
+            <span class="text-body-secondary" style="font-size: 0.95rem">99.8% uptime</span>
           </div>
-          <span class="badge bg-success">OK</span>
+          <c-progress class="mb-2" value="99.8" color="secondary" style="height: 6px" />
         </div>
-        <c-progress class="my-2" thin value="99.8" color="success" aria-label="Uptime" />
-
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div>
-            <strong>banking/customer-profile</strong>
-            <div class="small text-body-secondary">94.0% uptime</div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span style="font-weight: 500">banking/customer-profile</span>
+            <span class="text-body-secondary" style="font-size: 0.95rem">100% uptime</span>
           </div>
-          <span class="badge bg-success">OK</span>
+          <c-progress class="mb-2" value="100" color="secondary" style="height: 6px" />
         </div>
-        <c-progress class="my-2" thin value="94.0" color="success" aria-label="Uptime" />
-
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div>
-            <strong>banking/transaction-processor</strong>
-            <div class="small text-body-secondary">67.0% uptime</div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span style="font-weight: 500">banking/transaction-processor</span>
+            <span class="text-body-secondary" style="font-size: 0.95rem">95.7% uptime</span>
           </div>
-          <span class="badge bg-success">OK</span>
+          <c-progress class="mb-2" value="95.7" color="secondary" style="height: 6px" />
         </div>
-        <c-progress class="my-2" thin value="67.0" color="success" aria-label="Uptime" />
-
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div>
-            <strong>investments/portfolio-analysis</strong>
-            <div class="small text-body-secondary">91.0% uptime</div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span style="font-weight: 500; color: #d32f2f">
+              <svg height="10" width="10" style="margin-right: 6px">
+                <circle cx="5" cy="5" r="5" fill="#d32f2f" />
+              </svg>
+              investments/portfolio-analysis</span
+            >
+            <span class="text-body-secondary" style="font-size: 0.95rem">84.3% uptime</span>
           </div>
-          <span class="badge bg-success">OK</span>
+          <c-progress class="mb-2" value="84.3" color="danger" style="height: 6px" />
         </div>
-        <c-progress class="my-2" thin value="91.0" color="success" aria-label="Uptime" />
-
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div>
-            <strong>compliance/kyc-verification</strong>
-            <div class="small text-body-secondary">73.0% uptime</div>
+        <div class="mb-1">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span style="font-weight: 500">compliance/kyc-verification</span>
+            <span class="text-body-secondary" style="font-size: 0.95rem">99.1% uptime</span>
           </div>
-          <span class="badge bg-success">OK</span>
+          <c-progress class="mb-2" value="99.1" color="secondary" style="height: 6px" />
         </div>
-        <c-progress class="my-2" thin value="73.8" color="success" aria-label="Uptime" />
       </c-card-body>
     </c-card>
   </c-col>
 
   <c-col md="6" xl="6" xs="12">
     <c-card class="mb-4">
-      <c-card-header>Traffic {{ '&' }} Sales</c-card-header>
+      <c-card-header>Productivity Metrics</c-card-header>
       <c-card-body>
-        <c-row>
-          <c-col xs="6">
-            <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-              <div class="text-body-secondary text-truncate small">Page views</div>
-              <div class="fs-5 fw-semibold">78,623</div>
-            </div>
-          </c-col>
-          <c-col xs="6">
-            <div class="border-start border-start-4 border-start-success py-1 px-3 mb-3">
-              <div class="text-body-secondary text-truncate small">Organic</div>
-              <div class="fs-5 fw-semibold">49,123</div>
-            </div>
-          </c-col>
-        </c-row>
-
-        <hr class="mt-0" />
-
-        <div class="progress-group mb-4">
-          <div class="progress-group-header">
-            <svg cIcon class="icon icon-lg me-2" name="cilUser"></svg>
-            <span>Male</span>
-            <span class="ms-auto font-semibold">43%</span>
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span style="font-weight: 600">Development Time Saved</span>
+            <span style="font-weight: 600; color: #222">+23%</span>
           </div>
-          <div class="progress-group-bars">
-            <c-progress thin color="warning" value="43" aria-label="Male users" />
+          <div class="text-body-secondary mb-1">
+            Average time saved compared to traditional development
           </div>
+          <c-progress class="mb-1" value="67" color="secondary" style="height: 6px" />
+          <div class="text-body-secondary" style="font-size: 0.95rem">67% of capacity</div>
         </div>
-        <div class="progress-group mb-5">
-          <div class="progress-group-header">
-            <svg cIcon class="icon icon-lg me-2" name="cilUserFemale"></svg>
-            <span>Female</span>
-            <span class="ms-auto font-semibold">37%</span>
+        <div class="mb-4">
+          <span style="font-weight: 600">Component Reusability</span>
+          <div class="text-body-secondary mb-1">
+            Percentage of components reused across projects
           </div>
-          <div class="progress-group-bars">
-            <c-progress thin color="warning" value="37" aria-label="Feale users" />
-          </div>
+          <c-progress class="mb-1" value="75" color="info" style="height: 6px" />
+          <div class="text-body-secondary" style="font-size: 0.95rem">Target: 75%</div>
         </div>
-
-        <div class="progress-group">
-          <div class="progress-group-header">
-            <svg cIcon class="icon icon-lg me-2" name="cibGoogle"></svg>
-            <span>Organic Search</span>
-            <span class="ms-auto font-semibold">
-              191,235 <span class="text-body-secondary small">(56%)</span>
-            </span>
-          </div>
-          <div class="progress-group-bars">
-            <c-progress thin color="success" value="56" aria-label="Organic search" />
-          </div>
-        </div>
-        <div class="progress-group">
-          <div class="progress-group-header">
-            <svg cIcon class="icon icon-lg me-2" name="cibFacebook"></svg>
-            <span>Facebook</span>
-            <span class="ms-auto font-semibold">
-              51,223 <span class="text-body-secondary small">(15%)</span>
-            </span>
-          </div>
-          <div class="progress-group-bars">
-            <c-progress thin color="success" value="15" aria-label="Facebook" />
-          </div>
-        </div>
-        <div class="progress-group">
-          <div class="progress-group-header">
-            <svg cIcon class="icon icon-lg me-2" name="cibTwitter"></svg>
-            <span>Twitter</span>
-            <span class="ms-auto font-semibold">
-              37,564 <span class="text-body-secondary small">(11%)</span>
-            </span>
-          </div>
-          <div class="progress-group-bars">
-            <c-progress thin color="success" value="11" aria-label="Twitter" />
-          </div>
-        </div>
-        <div class="progress-group">
-          <div class="progress-group-header">
-            <svg cIcon class="icon icon-lg me-2" name="cibLinkedin"></svg>
-            <span>LinkedIn</span>
-            <span class="ms-auto font-semibold">
-              27,319 <span class="text-body-secondary small">(8%)</span>
-            </span>
-          </div>
-          <div class="progress-group-bars">
-            <c-progress thin color="success" value="8" aria-label="LinkedIn" />
-          </div>
-        </div>
-        <div class="divider d-flex justify-content-center">
-          <button
-            cButton
-            class="text-muted btn-link"
-            color="transparent"
-            size="sm"
-            type="button"
-            aria-label="Options"
-          >
-            <svg cIcon name="cil-options"></svg>
-          </button>
+        <div class="mb-2">
+          <span style="font-weight: 600">Deployment Frequency</span>
+          <div class="text-body-secondary mb-1">Average number of deployments per day</div>
+          <c-progress class="mb-1" value="80" color="secondary" style="height: 6px" />
+          <div class="text-body-secondary" style="font-size: 0.95rem">80% of capacity</div>
         </div>
       </c-card-body>
     </c-card>
