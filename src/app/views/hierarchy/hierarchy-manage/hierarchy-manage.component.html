@@ -1,0 +1,58 @@
+<div class="card">
+  <div class="card-body p-4">
+    <div class="btn-group mb-5 module-tabs" role="group">
+      <button type="button" class="btn btn-lg btn-light active-tab">Manage</button>
+      <button type="button" class="btn btn-lg btn-beige">Hierarchy</button>
+    </div>
+    <div class="row align-items-center mb-4">
+      <div class="col">
+        <h1 class="module-title mb-0">Module Management</h1>
+      </div>
+      <div class="col-auto">
+        <button mat-raised-button color="primary" class="create-btn px-4 py-2 shadow-sm rounded">
+          <mat-icon class="me-2">add</mat-icon>
+          Create Module
+        </button>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="search-field w-100">
+          <mat-label>Search modules...</mat-label>
+          <input matInput />
+          <button mat-icon-button matSuffix>
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let module of modules">
+        <mat-card
+          class="module-card shadow-sm rounded h-100 d-flex flex-column justify-content-between w-100"
+        >
+          <h2 class="module-card-title">{{ module.title }}</h2>
+          <div class="module-card-desc text-secondary mb-2">{{ module.desc }}</div>
+          <div class="module-card-info d-flex justify-content-between mb-1">
+            <span>Version:</span>
+            <span>{{ module.version }}</span>
+          </div>
+          <div class="module-card-info d-flex justify-content-between mb-3">
+            <span>Last Updated:</span>
+            <span>{{ module.updated }}</span>
+          </div>
+          <div class="module-card-actions d-flex gap-2 mt-2">
+            <button mat-stroked-button color="primary" class="px-4">
+              <mat-icon class="me-1">edit</mat-icon>
+              Edit
+            </button>
+            <button mat-raised-button color="warn" class="px-4">
+              <mat-icon class="me-1">delete</mat-icon>
+              Delete
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
