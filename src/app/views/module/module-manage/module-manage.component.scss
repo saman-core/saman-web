@@ -1,23 +1,14 @@
-.btn-group.module-tabs {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
 .btn-group .btn {
   font-size: 0.98rem;
   font-weight: 500;
-  border-radius: 10px 0 0 10px !important;
   min-width: 120px;
   padding: 7px 0;
-  border: 2px solid transparent;
-  box-shadow: none;
-  transition:
-    background 0.2s,
-    border 0.2s;
 }
+
 .btn-group .btn:last-child {
   border-radius: 0 10px 10px 0 !important;
 }
+
 .btn-group .active-tab {
   background: #fff;
   border: 2px solid #e0e0e0;
@@ -25,6 +16,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   z-index: 2;
 }
+
 .btn-group .btn-beige {
   background: #e9e3d6;
   color: #7a7367;
@@ -32,22 +24,10 @@
   z-index: 1;
 }
 
-.module-tabs .mat-tab-label {
-  font-size: 1rem;
-  font-weight: 500;
-  min-width: 120px;
-}
-
 .module-title {
   font-size: 2rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.create-btn {
-  min-width: 160px;
   font-weight: 500;
-  font-size: 1rem;
+  margin: 0;
 }
 
 .search-field {
@@ -55,12 +35,6 @@
   margin-bottom: 32px;
   background: #fff;
   border-radius: 8px;
-}
-
-.module-cards-row {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
 }
 
 .module-card {
@@ -75,9 +49,10 @@
   flex-direction: column;
   gap: 8px;
 }
+
 .module-card-title {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 4px;
 }
 
@@ -85,18 +60,4 @@
   font-size: 1rem;
   color: #666;
   margin-bottom: 12px;
-}
-
-.module-card-info {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.95rem;
-  color: #444;
-  margin-bottom: 2px;
-}
-
-.module-card-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 16px;
 }

@@ -7,11 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-hierarchy-manage',
-  templateUrl: './hierarchy-manage.component.html',
-  styleUrls: ['./hierarchy-manage.component.scss'],
+  selector: 'app-module-manage',
+  templateUrl: './module-manage.component.html',
+  styleUrls: ['./module-manage.component.scss'],
   standalone: true,
   imports: [
     MatCardModule,
@@ -22,9 +23,11 @@ import { CommonModule } from '@angular/common';
     MatListModule,
     MatTabsModule,
     CommonModule,
+    ReactiveFormsModule,
   ],
 })
-export class HierarchyManageComponent {
+export class ModuleManageComponent {
+  searchFormControl = new FormControl('');
   modules = [
     {
       title: 'Customer Management',
