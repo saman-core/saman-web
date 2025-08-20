@@ -29,10 +29,10 @@
     <div class="row g-4">
       <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let module of modules">
         <mat-card
-          class="module-card shadow-sm rounded h-100 d-flex flex-column justify-content-between w-100"
+          class="card-registry shadow-sm rounded h-100 d-flex flex-column justify-content-between w-100"
         >
-          <h2 class="module-card-title">{{ module.title }}</h2>
-          <div class="module-card-desc text-secondary mb-2">{{ module.desc }}</div>
+          <h2 class="card-registry-title">{{ module.title }}</h2>
+          <div class="card-registry-desc text-secondary mb-2">{{ module.desc }}</div>
           <div class="fs-7 d-flex justify-content-between mb-1">
             <span>Version:</span>
             <span>{{ module.version }}</span>
@@ -41,7 +41,7 @@
             <span>Last Updated:</span>
             <span>{{ module.updated }}</span>
           </div>
-          <div class="module-card-actions d-flex gap-2 mt-2">
+          <div class="card-registry-actions d-flex gap-2 mt-2">
             <button mat-stroked-button color="primary" class="px-4">
               <mat-icon class="me-1">edit</mat-icon>
               Edit
