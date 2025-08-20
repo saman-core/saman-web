@@ -26,7 +26,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Hierarchy',
-        url: 'hierarchy',
+        url: 'module/hierarchy',
         icon: 'nav-icon-bullet',
       },
     ],

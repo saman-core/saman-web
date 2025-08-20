@@ -14,6 +14,13 @@ export const routes: Routes = [
           title: 'Manage'
         }
       },
+      {
+        path: 'hierarchy',
+        loadComponent: () => import('./module-hierarchy/module-hierarchy.component').then((m) => m.ModuleHierarchyComponent),
+        data: {
+          title: 'Hierarchy'
+        }
+      },
     ],
   },
 ];
