@@ -8,7 +8,7 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProductHierarchyComponent } from '../product-hierarchy/product-hierarchy.component';
+import { ModuleHierarchyComponent } from '../module-hierarchy/module-hierarchy.component';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
@@ -38,7 +38,7 @@ export interface CommitDialogResponse {
   ],
 })
 export class CommitHierarchyDialogComponent {
-  dialogRef = inject<MatDialogRef<ProductHierarchyComponent>>(MatDialogRef);
+  dialogRef = inject<MatDialogRef<ModuleHierarchyComponent>>(MatDialogRef);
   productName = inject(MAT_DIALOG_DATA);
 
   message = new FormControl('', [
