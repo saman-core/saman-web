@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,10 +25,18 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     MatTabsModule,
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
 })
 export class ModuleManageComponent {
+  private readonly _router = inject(Router);
+
   searchFormControl = new FormControl('');
+
+  navigateToHierarchy() {
+    this._router.navigate(['/module/hierarchy']);
+  }
+
   modules = [
     {
       title: 'Policy Management',

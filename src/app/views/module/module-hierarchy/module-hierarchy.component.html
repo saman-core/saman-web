@@ -1,34 +1,43 @@
 <div class="card">
   <div class="btn-group d-inline-block p-4 border-bottom" role="group">
-    <button type="button" class="btn btn-lg btn-beige">Manage</button>
+    <button type="button" class="btn btn-lg btn-beige" (click)="navigateToManage()">Manage</button>
     <button type="button" class="btn btn-lg btn-light active-tab">Hierarchy</button>
   </div>
   <div class="card-body p-4">
-    <div class="row align-items-center mb-4">
-      <div class="col">
+    <div class="row align-items-top mb-4">
+      <div class="col-10 col-md-10 col-xl-8 col-xxl-8">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Select a module</mat-label>
-          <mat-select>
-            <mat-option value="" disabled selected>Select a module</mat-option>
-            <!-- Aquí se pueden iterar los módulos si se desea -->
+          <mat-select [(value)]="moduleNameSelected" (selectionChange)="openEditor($event.value)">
+            <mat-option value="" disabled>Select a module</mat-option>
+            <mat-option *ngFor="let module of modules" [value]="module">{{ module }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-auto d-flex gap-2">
-        <button mat-icon-button><mat-icon>search</mat-icon></button>
-        <button mat-icon-button><mat-icon>zoom_in</mat-icon></button>
-        <button mat-icon-button><mat-icon>zoom_out</mat-icon></button>
-        <button mat-icon-button><mat-icon>refresh</mat-icon></button>
-        <button mat-icon-button><mat-icon>file_download</mat-icon></button>
-        <button mat-raised-button color="primary">Save</button>
+      <div class="col-2 col-md-2 col-xl-4 col-xxl-4">
+        <button mat-icon-button><mat-icon (click)="refreshProductTree()">refresh</mat-icon></button>
       </div>
     </div>
-    <div class="row justify-content-center align-items-center" style="height: 220px">
-      <div class="col-12 d-flex flex-column align-items-center justify-content-center">
-        <mat-icon style="height: 50px; width: 50px; font-size: 48px; color: #bdbdbd">share</mat-icon>
-        <h3 class="mt-3 mb-1 text-secondary">No module selected</h3>
-        <div class="text-muted">Please select a module to edit its entity relationship diagram</div>
+    <div class="row align-items-center mb-4">
+      <div class="col">
+        @if (moduleNameSelected !== '') {
+        <h1 class="module-title mb-0">Hierarchy Diagram for {{ moduleNameSelected }}</h1>
+        }
       </div>
     </div>
+    @if (moduleNameSelected === '') {
+      <div class="row justify-content-center align-items-center" style="height: 220px">
+        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+          <mat-icon style="height: 50px; width: 50px; font-size: 48px; color: #bdbdbd"
+            >share</mat-icon
+          >
+          <h3 class="mt-3 mb-1 text-secondary">No module selected</h3>
+          <div class="text-muted">
+            Please select a module to edit its entity relationship diagram
+          </div>
+        </div>
+      </div>
+    }
+    <ng-template #dynamicEditorLoader></ng-template>
   </div>
 </div>

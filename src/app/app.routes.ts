@@ -32,10 +32,6 @@ export const routes: Routes = [
           import('./views/builder/template-conditions/routes').then((m) => m.routes),
       },
       {
-        path: 'hierarchy',
-        loadChildren: () => import('./views/product-hierarchy/routes').then((m) => m.routes),
-      },
-      {
         path: 'module',
         loadChildren: () => import('./views/module/routes').then((m) => m.routes),
       },
