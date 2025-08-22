@@ -38,7 +38,7 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Manage',
-        url: '#',
+        url: 'product/manage',
         icon: 'nav-icon-bullet',
       },
       {

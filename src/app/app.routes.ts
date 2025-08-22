@@ -36,6 +36,10 @@ export const routes: Routes = [
         loadChildren: () => import('./views/module/routes').then((m) => m.routes),
       },
       {
+        path: 'product',
+        loadChildren: () => import('./views/product/routes').then((m) => m.routes),
+      },
+      {
         path: 'workflow',
         loadChildren: () => import('./views/product-workflow/routes').then((m) => m.routes),
       },

@@ -48,20 +48,19 @@ export class ModuleHierarchyComponent {
 
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
   dynamicEditorLoader: ViewContainerRef;
-  step = 0;
   modules: string[] = [];
   moduleNameSelected = '';
   node: NodeModel;
 
   constructor() {
-    this.refreshProductTree();
+    this.refreshModules();
   }
 
   navigateToManage() {
     this._router.navigate(['/module/manage']);
   }
 
-  refreshProductTree() {
+  refreshModules() {
     this._productsGitRepository.getAllModules().subscribe((products) => {
       this.modules = products.map((p) => p.name);
     });
@@ -78,12 +77,7 @@ export class ModuleHierarchyComponent {
       });
 
       this.moduleNameSelected = moduleName;
-      this.step = 1;
     });
-  }
-
-  setStep(index: number) {
-    this.step = index;
   }
 
   actionsListener(
@@ -96,7 +90,6 @@ export class ModuleHierarchyComponent {
         break;
       case 'cancel':
         this.node = null;
-        this.setStep(0);
         this.moduleNameSelected = '';
         componentRef.destroy();
         break;
