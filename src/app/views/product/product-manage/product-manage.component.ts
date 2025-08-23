@@ -7,9 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
 import { ProductsGitRepository } from '@saman-core/data';
 
 @Component({
@@ -46,14 +46,14 @@ export class ProductManageComponent {
     this.refreshModules();
   }
 
+  navigateToWorkflow() {
+    this._router.navigate(['/product/workflow']);
+  }
+
   refreshModules() {
     this._productsGitRepository.getAllModules().subscribe((products) => {
       this.modules = products.map((p) => p.name);
     });
-  }
-
-  navigateToWorkflow() {
-    this._router.navigate(['/module/hierarchy']);
   }
 
   openEditor(data) {

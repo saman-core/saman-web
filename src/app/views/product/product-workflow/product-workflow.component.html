@@ -1,40 +1,49 @@
 <div class="card">
   <div class="btn-group d-inline-block p-4 border-bottom" role="group">
     <button type="button" class="btn btn-lg btn-beige" (click)="navigateToManage()">Manage</button>
-    <button type="button" class="btn btn-lg btn-light active-tab">Hierarchy</button>
+    <button type="button" class="btn btn-lg btn-light active-tab">Workflow</button>
   </div>
   <div class="card-body p-4">
     <div class="row align-items-top mb-4">
-      <div class="col-10 col-md-10 col-xl-8 col-xxl-8">
+      <div class="col-12 col-md-6 col-xl-5 col-xxl-5">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Select a module</mat-label>
-          <mat-select [(value)]="moduleNameSelected" (selectionChange)="openEditor($event.value)">
+          <mat-select [(value)]="moduleNameSelected" (selectionChange)="refreshProducts()">
             <mat-option value="" disabled>Select a module</mat-option>
             <mat-option *ngFor="let module of modules" [value]="module">{{ module }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-2 col-md-2 col-xl-4 col-xxl-4">
+      <div class="col-11 col-md-5 col-xl-5 col-xxl-5">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select a product</mat-label>
+          <mat-select [(value)]="productNameSelected" (selectionChange)="openEditor($event.value)">
+            <mat-option value="" disabled>Select a product</mat-option>
+            <mat-option *ngFor="let product of products" [value]="product">{{ product }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-1 col-xl-2">
         <button mat-icon-button><mat-icon (click)="refreshModules()">refresh</mat-icon></button>
       </div>
     </div>
     <div class="row align-items-center mb-4">
       <div class="col">
-        @if (moduleNameSelected !== '') {
-          <h1 class="module-title mb-0">Hierarchy Diagram for {{ moduleNameSelected }}</h1>
+        @if (productNameSelected !== '') {
+          <h1 class="module-title mb-0">
+            Workflow Diagram for {{ moduleNameSelected }}-{{ productNameSelected }}
+          </h1>
         }
       </div>
     </div>
-    @if (moduleNameSelected === '') {
+    @if (productNameSelected === '') {
       <div class="row justify-content-center align-items-center" style="height: 220px">
         <div class="col-12 d-flex flex-column align-items-center justify-content-center">
           <mat-icon style="height: 50px; width: 50px; font-size: 48px; color: #bdbdbd"
             >share</mat-icon
           >
-          <h3 class="mt-3 mb-1 text-secondary">No module selected</h3>
-          <div class="text-muted">
-            Please select a module to edit its entity relationship diagram
-          </div>
+          <h3 class="mt-3 mb-1 text-secondary">No product module selected</h3>
+          <div class="text-muted">Please select a product module to edit its workflow</div>
         </div>
       </div>
     }

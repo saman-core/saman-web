@@ -40,10 +40,6 @@ export const routes: Routes = [
         loadChildren: () => import('./views/product/routes').then((m) => m.routes),
       },
       {
-        path: 'workflow',
-        loadChildren: () => import('./views/product-workflow/routes').then((m) => m.routes),
-      },
-      {
         path: 'cde-auto-auto1',
         loadChildren: () => import('./views/cde-auto-auto1/routes').then((m) => m.routes),
       },

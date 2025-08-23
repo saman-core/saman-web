@@ -43,7 +43,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Workflow',
-        url: 'workflow',
+        url: 'product/workflow',
         icon: 'nav-icon-bullet',
       },
       {
