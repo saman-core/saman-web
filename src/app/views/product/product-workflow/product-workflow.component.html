@@ -19,7 +19,9 @@
           <mat-label>Select a product</mat-label>
           <mat-select [(value)]="productNameSelected" (selectionChange)="openEditor($event.value)">
             <mat-option value="" disabled>Select a product</mat-option>
-            <mat-option *ngFor="let product of products" [value]="product">{{ product }}</mat-option>
+            <mat-option *ngFor="let product of products" [value]="product">{{
+              product
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

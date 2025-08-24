@@ -18,7 +18,9 @@ export const routes: Routes = [
       {
         path: 'workflow',
         loadComponent: () =>
-          import('./product-workflow/product-workflow.component').then((m) => m.ProductWorkflowComponent),
+          import('./product-workflow/product-workflow.component').then(
+            (m) => m.ProductWorkflowComponent,
+          ),
         data: {
           title: 'Workflow',
         },

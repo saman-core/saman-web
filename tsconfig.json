@@ -39,9 +39,7 @@
     "typeCheckHostBindings": true,
     "strictTemplates": true
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "files": [],
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.spec.json" }]
 }

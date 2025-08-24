@@ -27,13 +27,11 @@ import { CardinalityTypeEnum } from '../cardinality-type.enum';
 import { BG_COLOR, CardinalityTypeProperties, FG_COLOR } from '../cardinality-type.properties';
 import { EntityTypeEnum } from '../entity-type.enum';
 import { EntityTypeProperties } from '../entity-type.properties';
-import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-hierarchy-editor',
   templateUrl: './hierarchy-editor.component.html',
   styleUrl: './hierarchy-editor.component.scss',
-  imports: [MatButton],
 })
 export class HierarchyEditorComponent implements OnInit, AfterViewInit {
   private readonly viewContainerRef = inject(ViewContainerRef);

@@ -13,9 +13,9 @@ import { FormsModule } from '@angular/forms';
 import { ProductsGitRepository } from '@saman-core/data';
 
 @Component({
-  selector: 'app-product-manage',
-  templateUrl: './product-manage.component.html',
-  styleUrls: ['./product-manage.component.scss'],
+  selector: 'app-template-manage',
+  templateUrl: './template-manage.component.html',
+  styleUrls: ['./template-manage.component.scss'],
   standalone: true,
   imports: [
     MatCardModule,
@@ -31,31 +31,54 @@ import { ProductsGitRepository } from '@saman-core/data';
     RouterModule,
   ],
 })
-export class ProductManageComponent {
-  modules: string[] = [];
-  moduleNameSelected = '';
-  items = [];
-
+export class TemplateManageComponent {
   private readonly _router = inject(Router);
   private readonly _productsGitRepository = inject(ProductsGitRepository);
+
+  modules: string[] = [];
+  products: string[] = [];
+  moduleNameSelected = '';
+  productNameSelected = '';
+  items = [];
 
   constructor() {
     this.refreshModules();
   }
 
-  navigateToWorkflow() {
-    this._router.navigate(['/product/workflow']);
+  navigateToStructure() {
+    this._router.navigate(['/template/structure']);
+  }
+
+  navigateToCondition() {
+    this._router.navigate(['/template/condition']);
   }
 
   refreshModules() {
     this._productsGitRepository.getAllModules().subscribe((products) => {
       this.modules = products.map((p) => p.name);
     });
+    this.refreshProducts();
+  }
+
+  refreshProducts() {
+    if (this.moduleNameSelected != '') {
+      this._productsGitRepository
+        .getAllProductsByModule(this.moduleNameSelected)
+        .subscribe((products) => {
+          this.products = products.map((p) => p.name);
+          this.productNameSelected = '';
+          this.items = [];
+        });
+    } else {
+      this.products = [];
+      this.productNameSelected = '';
+      this.items = [];
+    }
   }
 
   openEditor() {
     this._productsGitRepository
-      .getAllProductsByModule(this.moduleNameSelected)
+      .getAllTemplatesByProduct(this.moduleNameSelected, this.productNameSelected)
       .subscribe((templates) => {
         this.items = templates.map((t) => {
           return {

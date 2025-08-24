@@ -4,22 +4,26 @@ export const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Modules'
+      title: 'Modules',
     },
     children: [
       {
         path: 'manage',
-        loadComponent: () => import('./module-manage/module-manage.component').then((m) => m.ModuleManageComponent),
+        loadComponent: () =>
+          import('./module-manage/module-manage.component').then((m) => m.ModuleManageComponent),
         data: {
-          title: 'Manage'
-        }
+          title: 'Manage',
+        },
       },
       {
         path: 'hierarchy',
-        loadComponent: () => import('./module-hierarchy/module-hierarchy.component').then((m) => m.ModuleHierarchyComponent),
+        loadComponent: () =>
+          import('./module-hierarchy/module-hierarchy.component').then(
+            (m) => m.ModuleHierarchyComponent,
+          ),
         data: {
-          title: 'Hierarchy'
-        }
+          title: 'Hierarchy',
+        },
       },
     ],
   },

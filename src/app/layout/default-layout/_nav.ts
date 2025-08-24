@@ -60,7 +60,7 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Manage',
-        url: '#',
+        url: 'template/manage',
         icon: 'nav-icon-bullet',
       },
       {
