@@ -1,7 +1,7 @@
 import { Component, ComponentRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatTooltip } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
 import { ActionHierarchyType, HierarchyEditorComponent } from '@saman-core/common';
@@ -35,8 +34,7 @@ import {
     MatSelectModule,
     MatTabsModule,
     CommonModule,
-    ReactiveFormsModule,
-    MatTooltip,
+    FormsModule,
     RouterModule,
   ],
 })
@@ -75,8 +73,6 @@ export class ModuleHierarchyComponent {
       componentRef.instance.actionEmitter.subscribe((action: ActionHierarchyType) => {
         this.actionsListener(action, componentRef);
       });
-
-      this.moduleNameSelected = moduleName;
     });
   }
 

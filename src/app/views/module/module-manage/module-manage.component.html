@@ -1,7 +1,9 @@
 <div class="card">
   <div class="btn-group d-inline-block p-4 border-bottom" role="group">
     <button type="button" class="btn btn-lg btn-light active-tab">Manage</button>
-    <button type="button" class="btn btn-lg btn-beige" (click)="navigateToHierarchy()">Hierarchy</button>
+    <button type="button" class="btn btn-lg btn-beige" (click)="navigateToHierarchy()">
+      Hierarchy
+    </button>
   </div>
   <div class="card-body p-4">
     <div class="row align-items-center mb-4">
@@ -27,7 +29,7 @@
       </div>
     </div>
     <div class="row g-4">
-      <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let module of modules">
+      <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let module of filteredModules">
         <mat-card
           class="card-registry shadow-sm rounded h-100 d-flex flex-column justify-content-between w-100"
         >

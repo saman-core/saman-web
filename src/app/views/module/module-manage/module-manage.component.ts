@@ -9,6 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ProductsGitRepository } from '@saman-core/data';
 
 @Component({
   selector: 'app-module-manage',
@@ -30,85 +31,43 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class ModuleManageComponent {
   private readonly _router = inject(Router);
+  private readonly _productsGitRepository = inject(ProductsGitRepository);
 
   searchFormControl = new FormControl('');
+  modules = [];
+  filteredModules = [];
+
+  constructor() {
+    this.refreshModules();
+    this.searchFormControl.valueChanges.subscribe((text: string) => {
+      this.filterModules(text);
+    });
+  }
 
   navigateToHierarchy() {
     this._router.navigate(['/module/hierarchy']);
   }
 
-  modules = [
-    {
-      title: 'Policy Management',
-      desc: 'Administration and issuance of insurance policies.',
-      version: '2.3.1',
-      updated: '08/01/2025',
-    },
-    {
-      title: 'Claims',
-      desc: 'Registration and tracking of claims and incidents.',
-      version: '1.8.0',
-      updated: '07/15/2025',
-    },
-    {
-      title: 'Client Management',
-      desc: 'Administration of insureds data and documents.',
-      version: '3.0.0',
-      updated: '06/20/2025',
-    },
-    {
-      title: 'Collections',
-      desc: 'Payments control, invoicing and receipts.',
-      version: '2.1.5',
-      updated: '07/05/2025',
-    },
-    {
-      title: 'Agent Management',
-      desc: 'Administration of agents and commissions.',
-      version: '1.5.2',
-      updated: '06/28/2025',
-    },
-    {
-      title: 'Reports',
-      desc: 'System reports and statistics generation.',
-      version: '1.2.0',
-      updated: '07/10/2025',
-    },
-    {
-      title: 'Settings',
-      desc: 'General system settings and parameterization.',
-      version: '1.0.0',
-      updated: '06/01/2025',
-    },
-    {
-      title: 'Client Portal',
-      desc: 'Web access for insureds and policy consultation.',
-      version: '2.0.0',
-      updated: '07/18/2025',
-    },
-    {
-      title: 'Coverages',
-      desc: 'Definition and management of insurance coverages.',
-      version: '1.0.0',
-      updated: '08/10/2025',
-    },
-    {
-      title: 'Reinsurance',
-      desc: 'Reinsurance contracts and ceded risk management.',
-      version: '1.0.0',
-      updated: '08/12/2025',
-    },
-    {
-      title: 'Coinsurance',
-      desc: 'Management of coinsurance agreements and shared risks.',
-      version: '1.0.0',
-      updated: '08/14/2025',
-    },
-    {
-      title: 'Agreements',
-      desc: 'Administration of agreements and strategic partnerships.',
-      version: '1.0.0',
-      updated: '08/16/2025',
-    },
-  ];
+  refreshModules() {
+    this._productsGitRepository.getAllModules().subscribe((products) => {
+      this.modules = products.map((p) => {
+        return {
+          title: p.name,
+          desc: 'lorem ipsum dolor sit amet',
+          version: '2.3.1',
+          updated: '08/01/2025',
+        };
+      });
+      this.filteredModules = [...this.modules];
+    });
+  }
+
+  filterModules(text: string) {
+    const search = (text || '').trim().toLowerCase();
+    if (!search) {
+      this.filteredModules = [...this.modules];
+    } else {
+      this.filteredModules = this.modules.filter((m) => m.title.toLowerCase().includes(search));
+    }
+  }
 }

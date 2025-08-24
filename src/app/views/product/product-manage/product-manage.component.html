@@ -21,7 +21,7 @@
       <div class="col-10 col-md-10 col-xl-8 col-xxl-8">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Select a module</mat-label>
-          <mat-select [(value)]="moduleNameSelected" (selectionChange)="openEditor($event.value)">
+          <mat-select [(value)]="moduleNameSelected" (selectionChange)="openEditor()">
             <mat-option value="" disabled>Select a module</mat-option>
             <mat-option *ngFor="let module of modules" [value]="module">{{ module }}</mat-option>
           </mat-select>

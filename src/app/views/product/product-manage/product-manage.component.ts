@@ -9,7 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ProductsGitRepository } from '@saman-core/data';
 
 @Component({
@@ -27,7 +27,7 @@ import { ProductsGitRepository } from '@saman-core/data';
     MatSelectModule,
     MatTabsModule,
     CommonModule,
-    ReactiveFormsModule,
+    FormsModule,
     RouterModule,
   ],
 })
@@ -37,9 +37,6 @@ export class ProductManageComponent {
   items = [];
 
   private readonly _router = inject(Router);
-
-  searchFormControl = new FormControl('');
-
   private readonly _productsGitRepository = inject(ProductsGitRepository);
 
   constructor() {
@@ -56,12 +53,12 @@ export class ProductManageComponent {
     });
   }
 
-  openEditor(data) {
-    this._productsGitRepository.getAllProductsByModule(data).subscribe((templates) => {
+  openEditor() {
+    this._productsGitRepository.getAllProductsByModule(this.moduleNameSelected).subscribe((templates) => {
       this.items = templates.map((t) => {
         return {
           title: t.name,
-          desc: 'Administration and issuance of insurance policies.',
+          desc: 'lorem ipsum dolor sit amet',
           version: '2.3.1',
           updated: '08/01/2025',
         };
