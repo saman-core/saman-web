@@ -15,22 +15,14 @@ import {
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ChartOptions } from 'chart.js';
 import {
-  BorderDirective,
   ButtonDirective,
-  ButtonGroupComponent,
   CardBodyComponent,
   CardComponent,
-  CardFooterComponent,
   CardHeaderComponent,
   ColComponent,
-  FormCheckLabelDirective,
-  GutterDirective,
   ProgressComponent,
   RowComponent,
-  TableDirective,
-  WidgetStatBComponent,
 } from '@coreui/angular';
-import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
 
 import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
@@ -60,17 +52,8 @@ interface IUser {
     ButtonDirective,
     IconDirective,
     ReactiveFormsModule,
-    ButtonGroupComponent,
-    FormCheckLabelDirective,
-    ChartjsComponent,
-    NgStyle,
-    CardFooterComponent,
-    GutterDirective,
     ProgressComponent,
     CardHeaderComponent,
-    TableDirective,
-    WidgetStatBComponent,
-    BorderDirective,
   ],
 })
 export class DashboardComponent implements OnInit {

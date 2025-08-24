@@ -25,18 +25,16 @@ import {
   DeleteConfirmationDialogComponent,
   DeleteConfirmationDialogResponse,
 } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-workflow-editor',
   templateUrl: './workflow-editor.component.html',
   styleUrl: './workflow-editor.component.scss',
-  imports: [MatButton],
 })
 export class WorkflowEditorComponent implements OnInit, AfterViewInit {
-  private viewContainerRef = inject(ViewContainerRef);
-  private _dialog = inject(MatDialog);
-  private document = inject<Document>(DOCUMENT);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly _dialog = inject(MatDialog);
+  private readonly _document = inject<Document>(DOCUMENT);
 
   @ViewChild('canvas') canvas: ElementRef;
   @Input() graphJsonBase64: string = '';
@@ -207,8 +205,8 @@ export class WorkflowEditorComponent implements OnInit, AfterViewInit {
       graph.getLinks().forEach((v) => v.findView(paper).removeTools());
       if (window.getSelection) {
         window.getSelection()?.removeAllRanges();
-      } else if (this.document.selection) {
-        this.document.selection.empty();
+      } else if (this._document.selection) {
+        this._document.selection.empty();
       }
     });
 
