@@ -50,7 +50,7 @@ export class TemplateManageComponent {
   }
 
   navigateToCondition() {
-    this._router.navigate(['/template/condition']);
+    this._router.navigate(['/template/conditions']);
   }
 
   refreshModules() {

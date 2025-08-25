@@ -17,6 +17,16 @@ export const routes: Routes = [
           title: 'Manage',
         },
       },
+      {
+        path: 'conditions',
+        loadComponent: () =>
+          import('./template-conditions/template-conditions/template-conditions.component').then(
+            (m) => m.TemplateConditionsComponent,
+          ),
+        data: {
+          title: 'Conditions',
+        },
+      },
     ],
   },
 ];

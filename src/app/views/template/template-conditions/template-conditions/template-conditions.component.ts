@@ -1,14 +1,11 @@
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
 import {
   CommitRequestModel,
-  DynamicFlatNode,
   NodeModel,
   ProductsGitRepository,
   ConditionTypeEnum,
   ConditionsPropertyModel,
 } from '@saman-core/data';
-import { DynamicDataSource } from './dynamic-data-source';
 import {
   ConditionDialogRequest,
   ConditionDialogResponse,
@@ -35,42 +32,22 @@ import {
 } from '../delete-condition-dialog/delete-condition-dialog.component';
 import { AlertSubscriptor } from '@saman-core/core';
 import { FormUtilService } from '@saman-core/common';
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle,
-  MatExpansionPanelDescription,
-} from '@angular/material/expansion';
 import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
-import {
-  MatTree,
-  MatTreeNodeDef,
-  MatTreeNode,
-  MatTreeNodePadding,
-  MatTreeNodeToggle,
-} from '@angular/material/tree';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-template-conditions',
   templateUrl: './template-conditions.component.html',
   styleUrl: './template-conditions.component.scss',
   imports: [
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
     MatIconButton,
     MatTooltip,
     MatIcon,
-    MatTree,
-    MatTreeNodeDef,
-    MatTreeNode,
-    MatTreeNodePadding,
-    MatTreeNodeToggle,
-    MatExpansionPanelDescription,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
@@ -82,6 +59,10 @@ import {
     MatHeaderRow,
     MatRowDef,
     MatRow,
+    MatSelectModule,
+    CommonModule,
+    FormsModule,
+    RouterModule,
   ],
 })
 export class TemplateConditionsComponent {
@@ -89,11 +70,12 @@ export class TemplateConditionsComponent {
   private readonly _dialog = inject(MatDialog);
   private readonly _alertSubscriptor = inject(AlertSubscriptor);
   private readonly _fomrUtilService = inject(FormUtilService);
+  private readonly _router = inject(Router);
+  private readonly _cdr= inject(ChangeDetectorRef);
 
   static readonly NAMESPACE = 'saman-core/property';
   static readonly NOT_FOUND = ' [Not_Found]';
-  @ViewChild(MatTable) table: MatTable<unknown>;
-  displayedColumns: string[] = [
+  readonly DISPLAYED_COLUMNS: string[] = [
     'property',
     'value',
     'visible',
@@ -102,46 +84,74 @@ export class TemplateConditionsComponent {
     'validate',
     'options',
   ];
-  elementData: ConditionNodes[] = [];
-  @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })
-  dynamicEditorLoader: ViewContainerRef;
-  step = 0;
-  data = '{}';
-  treeControl: FlatTreeControl<DynamicFlatNode>;
-  dataSource: DynamicDataSource;
-  moduleSelected = '';
-  templateNameSelected = '';
+  readonly conType = ConditionTypeEnum;
+  modules: string[] = [];
+  products: string[] = [];
+  templates: string[] = [];
+  moduleNameSelected = '';
   productNameSelected = '';
-  conType = ConditionTypeEnum;
+  templateNameSelected = '';
   template: object = {};
+  elementData: ConditionNodes[] = [];
 
   constructor() {
-    const _productsGitRepository = this._productsGitRepository;
-
-    this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, _productsGitRepository);
-
-    this._productsGitRepository.getAllModules().subscribe((products) => {
-      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', '', true));
-    });
+    this.refreshModules();
   }
 
-  refreshProductTree() {
+  navigateToStructure() {
+    this._router.navigate(['/template/structure']);
+  }
+
+  navigateToManage() {
+    this._router.navigate(['/template/manage']);
+  }
+
+  refreshModules() {
     this._productsGitRepository.getAllModules().subscribe((products) => {
-      this.dataSource.data = products.map((p) => new DynamicFlatNode(p.name, 0, '', '', true));
+      this.modules = products.map((p) => p.name);
     });
+    this.refreshProducts();
+  }
+
+  refreshProducts() {
+    if (this.moduleNameSelected != '') {
+      this._productsGitRepository
+        .getAllProductsByModule(this.moduleNameSelected)
+        .subscribe((products) => {
+          this.products = products.map((p) => p.name);
+          this.productNameSelected = '';
+        });
+    } else {
+      this.products = [];
+      this.productNameSelected = '';
+    }
+    this.refreshTemplates();
+  }
+
+  refreshTemplates() {
+    if (this.productNameSelected != '') {
+      this._productsGitRepository
+        .getAllTemplatesByProduct(this.moduleNameSelected, this.productNameSelected)
+        .subscribe((templates) => {
+          this.templates = templates.map((p) => p.name);
+          this.templateNameSelected = '';
+        });
+    } else {
+      this.templates = [];
+      this.templateNameSelected = '';
+    }
   }
 
   refreshConditionsTable(): void {
     this.elementData = [];
-    this.table.renderRows();
+    this._cdr.detectChanges();
     const templateObservable = this._productsGitRepository.getTemplate(
-      this.moduleSelected,
+      this.moduleNameSelected,
       this.productNameSelected,
       this.templateNameSelected,
     );
     const conditionsObservable = this._productsGitRepository.getAllConditionsPropertiesByTemplate(
-      this.moduleSelected,
+      this.moduleNameSelected,
       this.productNameSelected,
       this.templateNameSelected,
     );
@@ -149,39 +159,6 @@ export class TemplateConditionsComponent {
     combinedObservable.subscribe(([node, conditions]) => {
       this._fillElementData(node, conditions);
     });
-  }
-
-  getLevel = (node: DynamicFlatNode) => node.level;
-
-  isExpandable = (node: DynamicFlatNode) => node.expandable;
-
-  hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
-
-  openConditionSelector(moduleName: string, productName: string, templateName: string) {
-    this.elementData = [];
-    this.table.renderRows();
-    const templateObservable = this._productsGitRepository.getTemplate(
-      moduleName,
-      productName,
-      templateName,
-    );
-    const conditionsObservable = this._productsGitRepository.getAllConditionsPropertiesByTemplate(
-      moduleName,
-      productName,
-      templateName,
-    );
-    const combinedObservable = templateObservable.pipe(combineLatestWith(conditionsObservable));
-    combinedObservable.subscribe(([node, conditions]) => {
-      this._fillElementData(node, conditions);
-      this.moduleSelected = moduleName;
-      this.templateNameSelected = templateName;
-      this.productNameSelected = productName;
-      this.step = 1;
-    });
-  }
-
-  setStep(index: number) {
-    this.step = index;
   }
 
   public isUndefined(v): boolean {
@@ -368,7 +345,7 @@ export class TemplateConditionsComponent {
       }
     });
     this.elementData = this.elementData.concat(conditionsWithOutproperty);
-    this.table.renderRows();
+    this._cdr.detectChanges();
   }
 
   private _fillConditionNodes(

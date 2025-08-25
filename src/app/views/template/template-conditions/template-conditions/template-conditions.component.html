@@ -1,0 +1,419 @@
+<div class="card">
+  <div class="btn-group d-inline-block p-4 border-bottom" role="group">
+    <button type="button" class="btn btn-lg btn-beige" (click)="navigateToManage()">Manage</button>
+    <button type="button" class="btn btn-lg btn-beige" (click)="navigateToStructure()">
+      Structure
+    </button>
+    <button type="button" class="btn btn-lg btn-light active-tab">Condition</button>
+  </div>
+  <div class="card-body p-4">
+    <div class="row align-items-center mb-4">
+      <div class="col">
+        <h1 class="module-title mb-0">Template Conditions</h1>
+      </div>
+    </div>
+    <div class="row align-items-top mb-4">
+      <div class="col-12 col-md-4 col-xl-4 col-xxl-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select a module</mat-label>
+          <mat-select [(value)]="moduleNameSelected" (selectionChange)="refreshProducts()">
+            <mat-option value="" disabled>Select a module</mat-option>
+            <mat-option *ngFor="let module of modules" [value]="module">{{ module }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-4 col-xl-3 col-xxl-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select a product</mat-label>
+          <mat-select [(value)]="productNameSelected" (selectionChange)="refreshTemplates()">
+            <mat-option value="" disabled>Select a product</mat-option>
+            <mat-option *ngFor="let product of products" [value]="product">{{
+              product
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-11 col-md-1 col-xl-3 col-xxl-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select a template</mat-label>
+          <mat-select [(value)]="templateNameSelected" (selectionChange)="refreshConditionsTable()">
+            <mat-option value="" disabled>Select a template</mat-option>
+            <mat-option *ngFor="let template of templates" [value]="template">{{
+              template
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-1 col-xl-2">
+        <button mat-icon-button><mat-icon (click)="refreshModules()">refresh</mat-icon></button>
+      </div>
+    </div>
+    @if (templateNameSelected === '') {
+      <div class="row justify-content-center align-items-center" style="height: 220px">
+        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+          <mat-icon style="height: 50px; width: 50px; font-size: 48px; color: #bdbdbd"
+            >share</mat-icon
+          >
+          <h3 class="mt-3 mb-1 text-secondary">No template selected</h3>
+          <div class="text-muted">Please select a template to show its conditions</div>
+        </div>
+      </div>
+    } @else {
+      <div class="row g-4">
+        <section class="example-container mat-elevation-z8" tabindex="0">
+          <mat-table [dataSource]="elementData">
+            <ng-container matColumnDef="property" [sticky]="true">
+              <mat-header-cell *matHeaderCellDef> Properties </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{ element.property }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="value">
+              <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                @if (isUndefined(element.value)) {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Add DMN"
+                    color="accent"
+                    (click)="
+                      createDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.property,
+                        conType.VALUE
+                      )
+                    "
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                } @else {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Edit DMN"
+                    color="primary"
+                    (click)="
+                      updateDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.value.name,
+                        conType.VALUE
+                      )
+                    "
+                  >
+                    <mat-icon>draw</mat-icon>
+                  </button>
+                  <button
+                    mat-mini-fab
+                    matTooltip="Delete DMN"
+                    color="warn"
+                    (click)="
+                      deleteDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.value,
+                        conType.VALUE
+                      )
+                    "
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="visible">
+              <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                @if (isUndefined(element.visible)) {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Add DMN"
+                    color="accent"
+                    (click)="
+                      createDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.property,
+                        conType.VISIBLE
+                      )
+                    "
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                } @else {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Edit DMN"
+                    color="primary"
+                    (click)="
+                      updateDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.visible.name,
+                        conType.VISIBLE
+                      )
+                    "
+                  >
+                    <mat-icon>draw</mat-icon>
+                  </button>
+                  <button
+                    mat-mini-fab
+                    matTooltip="Delete DMN"
+                    color="warn"
+                    (click)="
+                      deleteDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.visible,
+                        conType.VISIBLE
+                      )
+                    "
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="disable">
+              <mat-header-cell *matHeaderCellDef> Disable </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                @if (isUndefined(element.disable)) {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Add DMN"
+                    color="accent"
+                    (click)="
+                      createDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.property,
+                        conType.DISABLE
+                      )
+                    "
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                } @else {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Edit DMN"
+                    color="primary"
+                    (click)="
+                      updateDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.disable.name,
+                        conType.DISABLE
+                      )
+                    "
+                  >
+                    <mat-icon>draw</mat-icon>
+                  </button>
+                  <button
+                    mat-mini-fab
+                    matTooltip="Delete DMN"
+                    color="warn"
+                    (click)="
+                      deleteDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.disable,
+                        conType.DISABLE
+                      )
+                    "
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="alert">
+              <mat-header-cell *matHeaderCellDef> Alert </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                @if (isUndefined(element.alert)) {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Add DMN"
+                    color="accent"
+                    (click)="
+                      createDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.property,
+                        conType.ALERT
+                      )
+                    "
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                } @else {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Edit DMN"
+                    color="primary"
+                    (click)="
+                      updateDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.alert.name,
+                        conType.ALERT
+                      )
+                    "
+                  >
+                    <mat-icon>draw</mat-icon>
+                  </button>
+                  <button
+                    mat-mini-fab
+                    matTooltip="Delete DMN"
+                    color="warn"
+                    (click)="
+                      deleteDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.alert,
+                        conType.ALERT
+                      )
+                    "
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="validate">
+              <mat-header-cell *matHeaderCellDef> Validate </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                @if (isUndefined(element.validate)) {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Add DMN"
+                    color="accent"
+                    (click)="
+                      createDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.property,
+                        conType.VALIDATE
+                      )
+                    "
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                } @else {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Edit DMN"
+                    color="primary"
+                    (click)="
+                      updateDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.validate.name,
+                        conType.VALIDATE
+                      )
+                    "
+                  >
+                    <mat-icon>draw</mat-icon>
+                  </button>
+                  <button
+                    mat-mini-fab
+                    matTooltip="Delete DMN"
+                    color="warn"
+                    (click)="
+                      deleteDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element,
+                        conType.VALIDATE
+                      )
+                    "
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+              <mat-header-cell *matHeaderCellDef> Options </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                @if (isUndefined(element.options)) {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Add DMN"
+                    color="accent"
+                    (click)="
+                      createDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.property,
+                        conType.OPTIONS
+                      )
+                    "
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                } @else {
+                  <button
+                    mat-mini-fab
+                    matTooltip="Edit DMN"
+                    color="primary"
+                    (click)="
+                      updateDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element.validate.name,
+                        conType.OPTIONS
+                      )
+                    "
+                  >
+                    <mat-icon>draw</mat-icon>
+                  </button>
+                  <button
+                    mat-mini-fab
+                    matTooltip="Delete DMN"
+                    color="warn"
+                    (click)="
+                      deleteDmn(
+                        moduleNameSelected,
+                        productNameSelected,
+                        templateNameSelected,
+                        element,
+                        conType.OPTIONS
+                      )
+                    "
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="DISPLAYED_COLUMNS; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: DISPLAYED_COLUMNS"></mat-row>
+          </mat-table>
+        </section>
+      </div>
+    }
+  </div>
+</div>

@@ -70,7 +70,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Condition',
-        url: 'template-conditions',
+        url: 'template/conditions',
         icon: 'nav-icon-bullet',
       },
     ],
