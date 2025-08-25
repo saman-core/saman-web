@@ -7,8 +7,8 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
+import { TemplateFormBuilderComponent } from '../template-form-builder/template-form-builder.component';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TemplateConditionDialogComponent } from '../template-condition-dialog/template-condition-dialog.component';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
@@ -18,15 +18,10 @@ export interface CommitDialogResponse {
   accepted: boolean;
 }
 
-export interface CommitDialogRequest {
-  templateName: string;
-  condition: string;
-}
-
 @Component({
-  selector: 'app-commit-dialog',
-  templateUrl: './commit-dialog.component.html',
-  styleUrl: './commit-dialog.component.scss',
+  selector: 'app-commit-structure-dialog',
+  templateUrl: './commit-structure-dialog.component.html',
+  styleUrl: './commit-structure-dialog.component.scss',
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -42,9 +37,9 @@ export interface CommitDialogRequest {
     MatDialogClose,
   ],
 })
-export class CommitDialogComponent {
-  dialogRef = inject<MatDialogRef<TemplateConditionDialogComponent>>(MatDialogRef);
-  request = inject<CommitDialogRequest>(MAT_DIALOG_DATA);
+export class CommitStructureDialogComponent {
+  dialogRef = inject<MatDialogRef<TemplateFormBuilderComponent>>(MatDialogRef);
+  templateName = inject(MAT_DIALOG_DATA);
 
   message = new FormControl('', [
     Validators.required,

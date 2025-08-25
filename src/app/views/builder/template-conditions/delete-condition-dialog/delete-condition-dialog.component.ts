@@ -15,9 +15,9 @@ import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/in
 import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-delete-dialog',
-  templateUrl: './delete-dialog.component.html',
-  styleUrl: './delete-dialog.component.scss',
+  selector: 'app-delete-condition-dialog',
+  templateUrl: './delete-condition-dialog.component.html',
+  styleUrl: './delete-condition-dialog.component.scss',
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -33,7 +33,7 @@ import { MatButton } from '@angular/material/button';
     MatDialogClose,
   ],
 })
-export class DeleteDialogComponent {
+export class DeleteConditionDialogComponent {
   dialogRef = inject<MatDialogRef<TemplateConditionsComponent>>(MatDialogRef);
   requestData = inject<DeleteDialogRequest>(MAT_DIALOG_DATA);
 

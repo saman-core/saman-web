@@ -10,15 +10,14 @@ import {
 import { TemplateConditionsComponent } from '../template-conditions/template-conditions.component';
 import { DmnEditorComponent } from '@saman-core/common';
 import {
-  CommitDialogComponent,
+  CommitConditionDialogComponent,
   CommitDialogRequest,
   CommitDialogResponse,
-} from '../commit-dialog/commit-dialog.component';
+} from '../commit-condition-dialog/commit-condition-dialog.component';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatDrawerContainer, MatDrawer, MatDrawerContent } from '@angular/material/sidenav';
-import { DmnEditorComponent as DmnEditorComponent_1 } from '../../../../saman-core/common/lib/dmn-editor/dmn-editor/dmn-editor.component';
 
 @Component({
   selector: 'app-template-condition-dialog',
@@ -33,7 +32,7 @@ import { DmnEditorComponent as DmnEditorComponent_1 } from '../../../../saman-co
     MatDrawerContainer,
     MatDrawer,
     MatDrawerContent,
-    DmnEditorComponent_1,
+    DmnEditorComponent,
     MatDialogActions,
     MatButton,
   ],
@@ -68,7 +67,7 @@ export class TemplateConditionDialogComponent {
       templateName: '',
       condition: '',
     };
-    const commitDialogRef = this._dialog.open(CommitDialogComponent, {
+    const commitDialogRef = this._dialog.open(CommitConditionDialogComponent, {
       data: commitDialogRequest,
     });
     commitDialogRef.afterClosed().subscribe((response: CommitDialogResponse) => {

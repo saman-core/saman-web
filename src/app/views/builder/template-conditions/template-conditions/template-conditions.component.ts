@@ -29,10 +29,10 @@ import {
 } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  DeleteDialogComponent,
+  DeleteConditionDialogComponent,
   DeleteDialogRequest,
   DeleteDialogResponse,
-} from '../delete-dialog/delete-dialog.component';
+} from '../delete-condition-dialog/delete-condition-dialog.component';
 import { AlertSubscriptor } from '@saman-core/core';
 import { FormUtilService } from '@saman-core/common';
 import {
@@ -310,7 +310,7 @@ export class TemplateConditionsComponent {
       conditionType: conditionType,
       templateName: templateName,
     };
-    const dialogRef = this._dialog.open(DeleteDialogComponent, {
+    const dialogRef = this._dialog.open(DeleteConditionDialogComponent, {
       data: deleteDialogRequest,
     });
 

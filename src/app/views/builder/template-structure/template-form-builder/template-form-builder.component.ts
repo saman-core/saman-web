@@ -4,17 +4,16 @@ import { AlertSubscriptor } from '@saman-core/core';
 import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
 import { CdeBuilderComponent } from '@saman-core/common';
 import {
-  CommitDialogComponent,
+  CommitStructureDialogComponent,
   CommitDialogResponse,
-} from '../commit-dialog/commit-dialog.component';
-import { CdeBuilderComponent as CdeBuilderComponent_1 } from '../../../../saman-core/common/lib/configurable-data-entity/cde-builder/cde-builder.component';
+} from '../commit-structure-dialog/commit-structure-dialog.component';
 import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-template-form-builder',
   templateUrl: './template-form-builder.component.html',
   styleUrl: './template-form-builder.component.scss',
-  imports: [CdeBuilderComponent_1, MatButton],
+  imports: [CdeBuilderComponent, MatButton],
 })
 export class TemplateFormBuilderComponent implements OnInit {
   private readonly _productsGitRepository = inject(ProductsGitRepository);
@@ -46,7 +45,7 @@ export class TemplateFormBuilderComponent implements OnInit {
   public save(): void {
     this.node.content = btoa(unescape(encodeURIComponent(JSON.stringify(this._newJson))));
 
-    const dialogRef = this._dialog.open(CommitDialogComponent, {
+    const dialogRef = this._dialog.open(CommitStructureDialogComponent, {
       data: this.templateName,
     });
 
