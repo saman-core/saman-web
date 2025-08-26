@@ -65,7 +65,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Structure',
-        url: 'template-structure',
+        url: 'template/structure',
         icon: 'nav-icon-bullet',
       },
       {

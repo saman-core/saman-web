@@ -27,6 +27,16 @@ export const routes: Routes = [
           title: 'Conditions',
         },
       },
+      {
+        path: 'structure',
+        loadComponent: () =>
+          import('./template-structure/template-structure/template-structure.component').then(
+            (m) => m.TemplateStructureComponent,
+          ),
+        data: {
+          title: 'Structure',
+        },
+      },
     ],
   },
 ];

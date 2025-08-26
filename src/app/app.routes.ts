@@ -22,11 +22,6 @@ export const routes: Routes = [
         loadChildren: () => import('./views/pages/routes').then((m) => m.routes),
       },
       {
-        path: 'template-structure',
-        loadChildren: () =>
-          import('./views/builder/template-structure/routes').then((m) => m.routes),
-      },
-      {
         path: 'module',
         loadChildren: () => import('./views/module/routes').then((m) => m.routes),
       },
