@@ -4,6 +4,11 @@
     <button type="button" class="btn btn-lg btn-light active-tab">Workflow</button>
   </div>
   <div class="card-body p-4">
+    <div class="row align-items-center mb-4">
+      <div class="col">
+        <h1 class="module-title mb-0">Product Workflow Diagram</h1>
+      </div>
+    </div>
     <div class="row align-items-top mb-4">
       <div class="col-12 col-md-6 col-xl-5 col-xxl-5">
         <mat-form-field appearance="outline" class="w-100">
@@ -27,15 +32,6 @@
       </div>
       <div class="col-1 col-xl-2">
         <button mat-icon-button><mat-icon (click)="refreshModules()">refresh</mat-icon></button>
-      </div>
-    </div>
-    <div class="row align-items-center mb-4">
-      <div class="col">
-        @if (productNameSelected !== '') {
-          <h1 class="module-title mb-0">
-            Workflow Diagram for {{ moduleNameSelected }}-{{ productNameSelected }}
-          </h1>
-        }
       </div>
     </div>
     @if (productNameSelected === '') {

@@ -4,6 +4,11 @@
     <button type="button" class="btn btn-lg btn-light active-tab">Hierarchy</button>
   </div>
   <div class="card-body p-4">
+    <div class="row align-items-center mb-4">
+      <div class="col">
+        <h1 class="module-title mb-0">Module Hierarchy Diagram</h1>
+      </div>
+    </div>
     <div class="row align-items-top mb-4">
       <div class="col-10 col-md-10 col-xl-8 col-xxl-8">
         <mat-form-field appearance="outline" class="w-100">
@@ -16,13 +21,6 @@
       </div>
       <div class="col-2 col-md-2 col-xl-4 col-xxl-4">
         <button mat-icon-button><mat-icon (click)="refreshModules()">refresh</mat-icon></button>
-      </div>
-    </div>
-    <div class="row align-items-center mb-4">
-      <div class="col">
-        @if (moduleNameSelected !== '') {
-          <h1 class="module-title mb-0">Hierarchy Diagram for {{ moduleNameSelected }}</h1>
-        }
       </div>
     </div>
     @if (moduleNameSelected === '') {
