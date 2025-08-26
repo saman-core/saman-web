@@ -59,8 +59,8 @@
         </div>
       </div>
     } @else {
-      <div class="row g-4">
-        <section class="example-container mat-elevation-z8" tabindex="0">
+      <div class="g-4">
+        <section class="mat-elevation-z8" tabindex="0">
           <mat-table [dataSource]="elementData">
             <ng-container matColumnDef="property" [sticky]="true">
               <mat-header-cell *matHeaderCellDef> Properties </mat-header-cell>
@@ -72,9 +72,9 @@
               <mat-cell *matCellDef="let element">
                 @if (isUndefined(element.value)) {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Add DMN"
-                    color="accent"
+                    color="primary"
                     (click)="
                       createDmn(
                         moduleNameSelected,
@@ -89,9 +89,9 @@
                   </button>
                 } @else {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Edit DMN"
-                    color="primary"
+                    color="accent"
                     (click)="
                       updateDmn(
                         moduleNameSelected,
@@ -105,7 +105,7 @@
                     <mat-icon>draw</mat-icon>
                   </button>
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Delete DMN"
                     color="warn"
                     (click)="
@@ -129,9 +129,9 @@
               <mat-cell *matCellDef="let element">
                 @if (isUndefined(element.visible)) {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Add DMN"
-                    color="accent"
+                    color="primary"
                     (click)="
                       createDmn(
                         moduleNameSelected,
@@ -146,9 +146,9 @@
                   </button>
                 } @else {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Edit DMN"
-                    color="primary"
+                    color="accent"
                     (click)="
                       updateDmn(
                         moduleNameSelected,
@@ -162,7 +162,7 @@
                     <mat-icon>draw</mat-icon>
                   </button>
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Delete DMN"
                     color="warn"
                     (click)="
@@ -186,9 +186,9 @@
               <mat-cell *matCellDef="let element">
                 @if (isUndefined(element.disable)) {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Add DMN"
-                    color="accent"
+                    color="primary"
                     (click)="
                       createDmn(
                         moduleNameSelected,
@@ -203,9 +203,9 @@
                   </button>
                 } @else {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Edit DMN"
-                    color="primary"
+                    color="accent"
                     (click)="
                       updateDmn(
                         moduleNameSelected,
@@ -219,7 +219,7 @@
                     <mat-icon>draw</mat-icon>
                   </button>
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Delete DMN"
                     color="warn"
                     (click)="
@@ -243,9 +243,9 @@
               <mat-cell *matCellDef="let element">
                 @if (isUndefined(element.alert)) {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Add DMN"
-                    color="accent"
+                    color="primary"
                     (click)="
                       createDmn(
                         moduleNameSelected,
@@ -260,9 +260,9 @@
                   </button>
                 } @else {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Edit DMN"
-                    color="primary"
+                    color="accent"
                     (click)="
                       updateDmn(
                         moduleNameSelected,
@@ -276,7 +276,7 @@
                     <mat-icon>draw</mat-icon>
                   </button>
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Delete DMN"
                     color="warn"
                     (click)="
@@ -300,9 +300,9 @@
               <mat-cell *matCellDef="let element">
                 @if (isUndefined(element.validate)) {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Add DMN"
-                    color="accent"
+                    color="primary"
                     (click)="
                       createDmn(
                         moduleNameSelected,
@@ -317,9 +317,9 @@
                   </button>
                 } @else {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Edit DMN"
-                    color="primary"
+                    color="accent"
                     (click)="
                       updateDmn(
                         moduleNameSelected,
@@ -333,7 +333,7 @@
                     <mat-icon>draw</mat-icon>
                   </button>
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Delete DMN"
                     color="warn"
                     (click)="
@@ -357,9 +357,9 @@
               <mat-cell *matCellDef="let element">
                 @if (isUndefined(element.options)) {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Add DMN"
-                    color="accent"
+                    color="primary"
                     (click)="
                       createDmn(
                         moduleNameSelected,
@@ -374,9 +374,9 @@
                   </button>
                 } @else {
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Edit DMN"
-                    color="primary"
+                    color="accent"
                     (click)="
                       updateDmn(
                         moduleNameSelected,
@@ -390,7 +390,7 @@
                     <mat-icon>draw</mat-icon>
                   </button>
                   <button
-                    mat-mini-fab
+                    matMiniFab
                     matTooltip="Delete DMN"
                     color="warn"
                     (click)="

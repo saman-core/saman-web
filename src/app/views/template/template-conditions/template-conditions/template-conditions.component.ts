@@ -32,9 +32,9 @@ import {
 } from '../delete-condition-dialog/delete-condition-dialog.component';
 import { AlertSubscriptor } from '@saman-core/core';
 import { FormUtilService } from '@saman-core/common';
-import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -45,16 +45,15 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './template-conditions.component.html',
   styleUrl: './template-conditions.component.scss',
   imports: [
-    MatIconButton,
+    MatButtonModule,
     MatTooltip,
-    MatIcon,
+    MatIconModule,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
     MatHeaderCell,
     MatCellDef,
     MatCell,
-    MatMiniFabButton,
     MatHeaderRowDef,
     MatHeaderRow,
     MatRowDef,

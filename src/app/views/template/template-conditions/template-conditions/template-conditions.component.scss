@@ -1,15 +1,10 @@
-.example-container {
-  height: auto;
-  overflow: auto;
-}
-
 .mat-mdc-table-sticky {
-  background: #59abfd;
-  opacity: 1;
-}
-
-.example-sticky-toggle-group {
-  margin: 8px;
+  margin-bottom: 0;
+  color: var(--cui-card-cap-color);
+  background-color: var(--cui-card-cap-bg);
+  border-bottom: var(--cui-card-border-width) solid var(--cui-card-border-color);
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
 .mat-column-filler {
@@ -32,17 +27,41 @@
 }
 
 .mat-mdc-table-sticky-border-elem-top {
-  border-bottom: 2px solid midnightblue;
+  border-bottom: var(--cui-card-border-width) solid var(--cui-card-border-color);
 }
 
 .mat-mdc-table-sticky-border-elem-right {
-  border-left: 2px solid midnightblue;
+  border-left: var(--cui-card-border-width) solid var(--cui-card-border-color);
 }
 
 .mat-mdc-table-sticky-border-elem-bottom {
-  border-top: 2px solid midnightblue;
+  border-top: var(--cui-card-border-width) solid var(--cui-card-border-color);
 }
 
 .mat-mdc-table-sticky-border-elem-left {
-  border-right: 2px solid midnightblue;
+  border-right: var(--cui-card-border-width) solid var(--cui-card-border-color);
+}
+
+.mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.example-label {
+  font-size: 14px;
+  margin: 0 16px 0 8px;
+  min-width: 120px;
+}
+
+.example-button-row {
+  max-width: 600px;
+}
+
+.example-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.example-flex-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
