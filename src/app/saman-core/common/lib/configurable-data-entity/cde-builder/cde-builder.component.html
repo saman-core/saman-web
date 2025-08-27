@@ -1,7 +1,35 @@
-<form-builder [form]="form" (change)="onChange($event)" [options]="options"></form-builder>
-<hr />
-<h4 class="text-center text-muted">Preview</h4>
-<hr />
-<div class="well jsonviewer">
-  <formio #formpreview [form]="form" [refresh]="refreshForm"></formio>
-</div>
+<ng-container *ngIf="selectedStep === 0">
+  <div class="row align-items-center mb-4">
+    <div class="col">
+      <button
+        mat-raised-button
+        color="primary"
+        class="px-4 py-2 shadow-sm rounded"
+        (click)="selectedStep = 1"
+      >
+        <mat-icon class="me-2">highlight</mat-icon>
+        Preview
+      </button>
+    </div>
+  </div>
+  <form-builder [form]="form" (change)="onChange($event)" [options]="options"></form-builder>
+</ng-container>
+<ng-container *ngIf="selectedStep === 1">
+  <div class="row align-items-center mb-4">
+    <div class="col">
+      <button
+        mat-raised-button
+        color="primary"
+        class="px-4 py-2 shadow-sm rounded"
+        (click)="selectedStep = 0"
+      >
+        <mat-icon>keyboard_return</mat-icon>
+        <mat-icon class="me-2">build</mat-icon>
+        Build
+      </button>
+    </div>
+  </div>
+  <div class="card p-4 shadow-lg">
+    <formio #formpreview [form]="form" [refresh]="refreshForm"></formio>
+  </div>
+</ng-container>
