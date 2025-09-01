@@ -1,29 +1,23 @@
 import { Routes } from '@angular/router';
 
 const moduleName = 'po';
-const productName = 'vida';
-const templateName = 'vidatradicional';
-const routeBase = 'cde-vida-vidatradicional';
+const productName = 'auto';
+const templateName = 'auto1';
+const routeBase = 'cde-auto-auto1';
 const initializedRequests = true;
 const searchProperty: string = 'id';
 const viewAction: boolean = true;
 const editAction: boolean = true;
 const deleteAction: boolean = true;
 const avancedSearch: boolean = true;
-const displayedColumns: string[] = [
-  'id',
-  'producto',
-  'fechaInicio1',
-  'duracionDelContrato',
-  'moneda',
-];
+const displayedColumns: string[] = ['cedula', 'nombre', 'ocupacion', 'cloudServer', 'sexo'];
 
 export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('@saman-core/common').then((m) => m.CdeCrudComponent),
     data: {
-      title: $localize`CDE`,
+      title: $localize`Auto`,
       moduleName: moduleName,
       productName: productName,
       templateName: templateName,
@@ -41,7 +35,7 @@ export const routes: Routes = [
     path: 'edit/:id',
     loadComponent: () => import('@saman-core/common').then((m) => m.CdeEditComponent),
     data: {
-      title: $localize`CDE`,
+      title: $localize`Auto`,
       moduleName: moduleName,
       productName: productName,
       templateName: templateName,
@@ -52,7 +46,7 @@ export const routes: Routes = [
     path: 'create',
     loadComponent: () => import('@saman-core/common').then((m) => m.CdeCreateComponent),
     data: {
-      title: $localize`CDE`,
+      title: $localize`Auto`,
       moduleName: moduleName,
       productName: productName,
       templateName: templateName,
@@ -63,7 +57,7 @@ export const routes: Routes = [
     path: 'view/:id',
     loadComponent: () => import('@saman-core/common').then((m) => m.CdeViewComponent),
     data: {
-      title: $localize`CDE`,
+      title: $localize`Auto`,
       moduleName: moduleName,
       productName: productName,
       templateName: templateName,

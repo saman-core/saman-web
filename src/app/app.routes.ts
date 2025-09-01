@@ -35,11 +35,11 @@ export const routes: Routes = [
       },
       {
         path: 'cde-auto-auto1',
-        loadChildren: () => import('./views/cde-auto-auto1/routes').then((m) => m.routes),
+        loadChildren: () => import('./views/demos/cde-auto-auto1/routes').then((m) => m.routes),
       },
       {
         path: 'cde-vida-vidatradicional',
-        loadChildren: () => import('./views/cde-vida-vidatradicional/routes').then((m) => m.routes),
+        loadChildren: () => import('./views/demos/cde-vida-vidatradicional/routes').then((m) => m.routes),
       },
     ],
   },
