@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertSubscriptor } from '@saman-core/core';
-import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
+import { CommitRequestModel, NodeModel, OpsGitRepository } from '@saman-core/data';
 import { CdeBuilderComponent } from '@saman-core/common';
 import {
   CommitStructureDialogComponent,
@@ -16,7 +16,7 @@ import { MatButton } from '@angular/material/button';
   imports: [CdeBuilderComponent, MatButton],
 })
 export class TemplateFormBuilderComponent implements OnInit {
-  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _productsGitRepository = inject(OpsGitRepository);
   private readonly _alertSubscriptor = inject(AlertSubscriptor);
   private readonly _dialog = inject(MatDialog);
 

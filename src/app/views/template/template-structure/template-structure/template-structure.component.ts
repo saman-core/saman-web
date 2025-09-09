@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewContainerRef, inject } from '@angular/core';
-import { ProductsGitRepository } from '@saman-core/data';
+import { OpsGitRepository } from '@saman-core/data';
 import { TemplateFormBuilderComponent } from '../template-form-builder/template-form-builder.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -15,7 +15,7 @@ import { Router, RouterModule } from '@angular/router';
   imports: [MatIconButton, MatIcon, MatSelectModule, CommonModule, FormsModule, RouterModule],
 })
 export class TemplateStructureComponent implements OnInit {
-  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _productsGitRepository = inject(OpsGitRepository);
   private readonly _router = inject(Router);
 
   @ViewChild('dynamicEditorLoader', { read: ViewContainerRef, static: true })

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { DatasourceConsumer } from '../../../base/datasource/datasource.consumer';
 import { DatasourceFactory } from '../../../base/datasource/datasource.factory';
 import { ConditionTypeEnum, Repository } from '@saman-core/data';
+import { NodeDetailsModel } from '../model/node-details.model';
 import { NodeModel } from '../model/node.model';
 import { CommitRequestModel } from '../model/commit-request.model';
 import { ConditionsPropertyModel } from '../model/conditions-property.model';
@@ -10,14 +11,14 @@ import { ConditionsPropertyModel } from '../model/conditions-property.model';
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsGitRepository implements Repository {
+export class OpsGitRepository implements Repository {
   private readonly _datasourceFactory = inject(DatasourceFactory);
 
   datasource: DatasourceConsumer;
   private readonly _dataformat = 'format2';
   private readonly _port = '9083';
-  private readonly _server = 'template-builder';
-  private readonly _resource = 'products';
+  private readonly _server = 'ops-builder';
+  private readonly _resource = 'ops';
 
   constructor() {
     this.datasource = this._datasourceFactory.getConsumer(
@@ -28,8 +29,8 @@ export class ProductsGitRepository implements Repository {
     );
   }
 
-  public getAllModules(): Observable<NodeModel[]> {
-    return this.datasource.getAllByMethod<NodeModel>('');
+  public getAllModules(): Observable<NodeDetailsModel[]> {
+    return this.datasource.getAllByMethod<NodeDetailsModel>('');
   }
 
   public getAllProductsByModule(moduleName: string): Observable<NodeModel[]> {

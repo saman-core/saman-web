@@ -10,7 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProductsGitRepository } from '@saman-core/data';
+import { OpsGitRepository } from '@saman-core/data';
 
 @Component({
   selector: 'app-product-manage',
@@ -37,7 +37,7 @@ export class ProductManageComponent {
   items = [];
 
   private readonly _router = inject(Router);
-  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _productsGitRepository = inject(OpsGitRepository);
 
   constructor() {
     this.refreshModules();

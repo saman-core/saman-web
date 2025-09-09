@@ -11,7 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
-import { CommitRequestModel, NodeModel, ProductsGitRepository } from '@saman-core/data';
+import { CommitRequestModel, NodeModel, OpsGitRepository } from '@saman-core/data';
 import { ActionWorkflowType, WorkflowEditorComponent } from '@saman-core/common';
 import { AlertSubscriptor } from '@saman-core/core';
 import {
@@ -39,7 +39,7 @@ import {
 })
 export class ProductWorkflowComponent {
   private readonly _router = inject(Router);
-  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _productsGitRepository = inject(OpsGitRepository);
   private readonly _alertSubscriptor = inject(AlertSubscriptor);
   private readonly _dialog = inject(MatDialog);
 

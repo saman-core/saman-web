@@ -6,8 +6,8 @@ import { HeaderUtils } from './common/header.utils';
 
 export class DatasourceConsumer {
   constructor(
-    private _http: HttpClient,
-    private _url: string,
+    private readonly _http: HttpClient,
+    private readonly _url: string,
   ) {}
 
   getByMethod<T>(

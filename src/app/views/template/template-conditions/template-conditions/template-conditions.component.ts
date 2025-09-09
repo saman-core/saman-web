@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   CommitRequestModel,
   NodeModel,
-  ProductsGitRepository,
+  OpsGitRepository,
   ConditionTypeEnum,
   ConditionsPropertyModel,
 } from '@saman-core/data';
@@ -65,12 +65,12 @@ import { MatSelectModule } from '@angular/material/select';
   ],
 })
 export class TemplateConditionsComponent {
-  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _productsGitRepository = inject(OpsGitRepository);
   private readonly _dialog = inject(MatDialog);
   private readonly _alertSubscriptor = inject(AlertSubscriptor);
   private readonly _fomrUtilService = inject(FormUtilService);
   private readonly _router = inject(Router);
-  private readonly _cdr= inject(ChangeDetectorRef);
+  private readonly _cdr = inject(ChangeDetectorRef);
 
   static readonly NAMESPACE = 'saman-core/property';
   static readonly NOT_FOUND = ' [Not_Found]';

@@ -9,7 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ProductsGitRepository } from '@saman-core/data';
+import { OpsGitRepository } from '@saman-core/data';
 
 @Component({
   selector: 'app-module-manage',
@@ -31,7 +31,7 @@ import { ProductsGitRepository } from '@saman-core/data';
 })
 export class ModuleManageComponent {
   private readonly _router = inject(Router);
-  private readonly _productsGitRepository = inject(ProductsGitRepository);
+  private readonly _productsGitRepository = inject(OpsGitRepository);
 
   searchFormControl = new FormControl('');
   modules = [];
@@ -53,9 +53,9 @@ export class ModuleManageComponent {
       this.modules = products.map((p) => {
         return {
           title: p.name,
-          desc: 'lorem ipsum dolor sit amet',
-          version: '2.3.1',
-          updated: '08/01/2025',
+          desc: p.properties['description'],
+          type: p.properties['type'],
+          updated: p.lastModified,
         };
       });
       this.filteredModules = [...this.modules];
